@@ -31,3 +31,17 @@
     - Resume a previous game from where you left off (as long as you didn’t close the whole program).
 
 ## Timeline
+1. **April 22:** 
+    - Done familiarizing ourselves with java LITIENGINE library
+    - Should have good a starting point for all games
+2. **April 30:** 
+    - Finish connect 4
+    - Start snake 
+    - Start cup pong
+3. **May 4:** 
+    - Finish snake game
+    - Should be halfway through cup pong
+    - start menu layout
+4. **May 6:** 
+    - Finish game menu and 
+    - Add any finishing touches to project

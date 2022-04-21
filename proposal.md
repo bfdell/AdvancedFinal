@@ -41,7 +41,7 @@
 3. **May 4:** 
     - Finish snake game
     - Should be halfway through cup pong
-    - start menu layout
+    - Start menu layout
 4. **May 6:** 
-    - Finish game menu and 
+    - Finish game menu
     - Add any finishing touches to project

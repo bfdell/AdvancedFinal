@@ -1,4 +1,4 @@
-# Brian Dell, David Tang, Jaclyn Wirth, Madelyn Papa Proposal
+# Brian Dell, David Tang, Jaclyn Wirth, Madelyn Papa, Spencer Caramanna Proposal
 
 
 ## Point Breakdown

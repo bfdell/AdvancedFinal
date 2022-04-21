@@ -1,13 +1,12 @@
-package com.example;
-// import de.gurkenlabs.game;
-import de.gurkenlabs.litiengine.Game;
+package csis.dptw;
 
+import de.gurkenlabs.litiengine.Game;
 
 /**
  * Hello world!
  *
  */
-public class Main 
+public class App 
 {
     public static void main( String[] args )
     {

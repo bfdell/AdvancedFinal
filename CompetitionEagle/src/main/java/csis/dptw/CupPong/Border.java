@@ -1,3 +1,5 @@
+package csis.dptw.CupPong;
+
 import java.util.*;
 
 public class Border {

@@ -1,11 +1,22 @@
+package csis.dptw.CupPong;
+
 import javax.swing.*;
+
+import csis.dptw.Game;
+
 import java.awt.event.*;
 
 import java.awt.*;
 import java.awt.geom.*;
 
-public class CupPong extends MouseAdapter implements Runnable {
- JPanel mainPanel; 
+public class CupPong extends Game implements Runnable, MouseListener, MouseMotionListener {
+ 
+    public CupPong(LayoutManager layout) {
+        super(layout);
+        //TODO Auto-generated constructor stub
+    }
+
+JPanel mainPanel; 
 
  public final int LANE_WIDTH = 500;
  public double boardYPercent = .3; 
@@ -90,6 +101,48 @@ public class CupPong extends MouseAdapter implements Runnable {
 
     }
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new CupPong());
+        javax.swing.SwingUtilities.invokeLater(new CupPong(new FlowLayout()));
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
     }
 }

@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 import java.awt.*;
 
 public class Map extends JPanel {
-
+    private Object Background;
     private java.util.List<Entity> entities = new java.util.ArrayList<Entity>();
     public Map(LayoutManager layout) {
         super();
@@ -12,12 +12,12 @@ public class Map extends JPanel {
     }
 
     public void addEntity(Entity entity) {
-        entity.paint((Graphics2D) this.getGraphics());
+       entities.add(entity);
     }
 
     @Override
     public void paintComponent(Graphics g) {
-
+        paintBackground((Graphics2D) g);
         paintEntities((Graphics2D) g);
 
     }
@@ -27,5 +27,9 @@ public class Map extends JPanel {
         for(Entity entity : entities) {
             entity.paint(g);
         }
+    }
+
+    public void paintBackground(Graphics2D g) {
+
     }
 }

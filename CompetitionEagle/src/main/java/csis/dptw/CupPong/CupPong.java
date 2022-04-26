@@ -2,76 +2,53 @@ package csis.dptw.CupPong;
 
 import javax.swing.*;
 
-import csis.dptw.Game;
+import csis.dptw.*;
 
 import java.awt.event.*;
 
 import java.awt.*;
 import java.awt.geom.*;
 
-public class CupPong extends Game implements Runnable, MouseListener, MouseMotionListener {
- 
+public class CupPong extends Game {
+
     public CupPong(LayoutManager layout) {
-        super(layout);
-        //TODO Auto-generated constructor stub
+        super();//FIX TIHIS LINE BECCUSE GAMAE PANEL IS BEING INITIOALIZED IN ANONYMOUS INNER CLASS
+        run();
     }
 
-JPanel mainPanel; 
+    public final int LANE_WIDTH = 500;
+    ///////////////////////
+    public double boardYPercent = .3;
+    public double boardXPercent = .3;
+    public double triangleYPercent = .35;
+    public double triangleXPercent = .15;
 
- public final int LANE_WIDTH = 500;
- public double boardYPercent = .3; 
- public double boardXPercent = .3;
-
-
- ///////////////////////
- public double triangleYPercent = .35;
- public double triangleXPercent = .15;
     @Override
     public void run() {
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        JFrame frame = new JFrame("Cup Pong!!!");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(600, 600));
-        mainPanel = new JPanel(new BorderLayout()){
+        gamePanel = new Map(new BorderLayout()) {
+
             @Override
-            public void paintComponent(Graphics g){
-                //g.fillRect(x, y, width, height);
+            public void paintBackground(Graphics2D g) {
                 drawBoard(g);
             }
+
         };
-        frame.setResizable(false);
-
-        //Makes scoreboard that tracks gameProgress and adds it to main panel
-        //mainPanel.add(createScoreboard(), BorderLayout.EAST);
-
-        //Makes gamePanel and adds it to main panel
-        //gamePanel = new SkiPanel();
-        // gamePanel.setPreferredSize(new Dimension(LANE_WIDTH, LANE_HEIGHT));
-        // mainPanel.add(gamePanel, BorderLayout.CENTER);
-        // gamePanel.addMouseListener(this);
-        // gamePanel.addMouseMotionListener(this);
-
-        //Display the window we've created
-        frame.add(mainPanel);
-        frame.pack();
-        frame.setVisible(true);
-        
+        gamePanel.setPreferredSize(new Dimension(LANE_WIDTH, LANE_WIDTH));
     }
 
-    public void drawBoard(Graphics g){
+    public void drawBoard(Graphics g) {
         // g.fillPolygon();
-        int endX = mainPanel.getWidth();
-        int height = mainPanel.getHeight();
+        int endX = gamePanel.getWidth();
+        int height = gamePanel.getHeight();
 
-        int topY = (int)(height * boardYPercent);
+        int topY = (int) (height * boardYPercent);
 
-        int xOffset = (int)( endX * boardXPercent);
+        int xOffset = (int) (endX * boardXPercent);
         int leftX = xOffset;
         int rightX = endX - xOffset;
 
-        int[] boardXS = {0, endX, rightX, leftX};
-        int[] boardYS = {height, height, topY, topY};
-
+        int[] boardXS = { 0, endX, rightX, leftX };
+        int[] boardYS = { height, height, topY, topY };
 
         Polygon board = new Polygon(boardXS, boardYS, boardXS.length);
         g.setColor(Color.green);
@@ -91,58 +68,16 @@ JPanel mainPanel;
         int outlineRightX = (int) rightX - triangleOffset;
 
         int cupTip = (int) (boardHeight * triangleYPercent) + topY;
-        int[] outlineXS = {outlineLeftX, outlineRightX, endX / 2};
-        int[] outlineYS = {topY, topY, cupTip};
+        int[] outlineXS = { outlineLeftX, outlineRightX, endX / 2 };
+        int[] outlineYS = { topY, topY, cupTip };
 
         Polygon cupOutline = new Polygon(outlineXS, outlineYS, outlineXS.length);
         g.setColor(Color.BLACK);
         ((Graphics2D) g).setStroke(new BasicStroke(8));
         g.drawPolygon(cupOutline);
-
     }
+
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new CupPong(new FlowLayout()));
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
     }
 }

@@ -35,12 +35,13 @@ public class App implements Runnable {
     @Override
     public void run() {
         createFrame();
-        Game testGame = new Connect4();
-        Thread gameThread = new Thread(testGame);; 
+        Game testGame = new CupPong();
+        // new Connect4();
+        // Thread gameThread = new Thread(testGame);
         // gameThread.start();
 
         //ASK TERESCO QUESTIONS ABOUT RUNNABLE AND NOT USING INVOKE LATER ETC.....
-        // testGame.gamePanel.addEntity(new Entity(testGame, new Point(1, 1), "competitioneagle/src/main/java/csis/dptw/CUP.png"));
+        // testGame.gamePanel.addEntity(new Entity(testGame, new Point(1, 1), "competitioneagle/src/main/java/csis/dptw/TCUP.png"));
         displayFrame(testGame);
     }
 

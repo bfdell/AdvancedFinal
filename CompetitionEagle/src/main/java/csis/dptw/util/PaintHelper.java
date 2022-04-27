@@ -57,4 +57,24 @@ public class PaintHelper {
         g.drawOval(upperLeftX, upperLeftY, widthRadius * 2, heightRadius * 2);
         g.setStroke(new BasicStroke(1));
     }
+
+    public static Arc2D.Double makeArcFromMiddle(Point middle, int radius, double start, double extent, int type) {
+        int upperLeftX = middle.x - radius;
+        int upperLeftY = middle.y - radius;
+        
+        return new Arc2D.Double(upperLeftX + 0.0, upperLeftY + 0.0, radius * 2.0, radius * 2.0,start, extent, type);
+    }
+    public static Arc2D.Double makeArcOvalFromMiddle(Point middle, int widthRadius, int heightRadius, double start, double extent, int type) {
+        int upperLeftX = middle.x - widthRadius;
+        int upperLeftY = middle.y -heightRadius;
+        
+        return new Arc2D.Double(upperLeftX, upperLeftY, heightRadius * 2.0, widthRadius * 2.0, start, extent, type);
+    }
+
+    public static void changeArcLocation(Arc2D.Double arc, Point newLocation) {
+        arc.x = newLocation.x;
+        arc.y = newLocation.y;
+    }
+
+    
 }

@@ -62,7 +62,7 @@ public class PaintHelper {
         int upperLeftX = middle.x - radius;
         int upperLeftY = middle.y - radius;
         
-        return new Arc2D.Double(upperLeftX + 0.0, upperLeftY + 0.0, radius * 2.0, radius * 2.0,start, extent, type);
+        return new Arc2D.Double(upperLeftX, upperLeftY, radius * 2.0, radius * 2.0,start, extent, type);
     }
     public static Arc2D.Double makeArcOvalFromMiddle(Point middle, int widthRadius, int heightRadius, double start, double extent, int type) {
         int upperLeftX = middle.x - widthRadius;
@@ -71,10 +71,10 @@ public class PaintHelper {
         return new Arc2D.Double(upperLeftX, upperLeftY, heightRadius * 2.0, widthRadius * 2.0, start, extent, type);
     }
 
-    public static void changeArcLocation(Arc2D.Double arc, Point newLocation) {
-        arc.x = newLocation.x;
-        arc.y = newLocation.y;
+    public static void changeArcMiddleLocation(Arc2D.Double arc, Point newLocation) {
+        double widthRadius = arc.getWidth() / 2.0;
+        double heightRadius = arc.getHeight() / 2.0;
+        arc.x = newLocation.x - widthRadius;
+        arc.y = newLocation.y - heightRadius;
     }
-
-    
 }

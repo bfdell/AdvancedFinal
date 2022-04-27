@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 import java.awt.*;
 
 public class Map extends JPanel {
-    private Object Background;
+   // private Object Background;
     private java.util.List<Entity> entities = new java.util.ArrayList<Entity>();
     public Map(LayoutManager layout) {
         super();

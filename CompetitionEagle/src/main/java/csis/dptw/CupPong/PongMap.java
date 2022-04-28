@@ -2,7 +2,7 @@ package csis.dptw.CupPong;
 
 import java.awt.*;
 
-import csis.dptw.Map;
+import csis.dptw.engine.Map;
 
 public class PongMap extends Map{
     public final int LANE_WIDTH = 500;

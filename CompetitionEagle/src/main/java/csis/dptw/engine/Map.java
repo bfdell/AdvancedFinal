@@ -1,6 +1,7 @@
-package csis.dptw;
+package csis.dptw.engine;
 
 import javax.swing.JPanel;
+
 import java.awt.*;
 
 public class Map extends JPanel {

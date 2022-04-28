@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.Arrays;
 
-import csis.dptw.Map;
+import csis.dptw.engine.Map;
 import csis.dptw.util.*;
 
 /**

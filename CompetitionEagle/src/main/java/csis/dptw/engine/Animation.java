@@ -1,4 +1,4 @@
-package csis.dptw;
+package csis.dptw.engine;
 
 public class Animation extends Thread{
     public final int REFRESH_RATE = 30;

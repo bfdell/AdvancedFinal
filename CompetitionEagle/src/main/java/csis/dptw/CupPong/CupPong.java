@@ -3,6 +3,7 @@ package csis.dptw.CupPong;
 import javax.swing.*;
 
 import csis.dptw.*;
+import csis.dptw.engine.Game;
 
 import java.awt.event.*;
 

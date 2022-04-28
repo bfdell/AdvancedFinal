@@ -2,6 +2,7 @@ package csis.dptw;
 import javax.swing.JFrame;
 
 import csis.dptw.CupPong.*;
+import csis.dptw.engine.Game;
 import csis.dptw.Connect4.*;
 
 import java.awt.*;
@@ -35,7 +36,7 @@ public class App implements Runnable {
     @Override
     public void run() {
         createFrame();
-        Game testGame = new CupPong();
+        Game testGame = new Connect4();
         // new Connect4();
         // Thread gameThread = new Thread(testGame);
         // gameThread.start();

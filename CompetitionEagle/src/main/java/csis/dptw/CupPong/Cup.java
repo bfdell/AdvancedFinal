@@ -2,8 +2,8 @@ package csis.dptw.CupPong;
 
 import java.awt.*;
 
-import csis.dptw.Entity;
-import csis.dptw.Game;
+import csis.dptw.engine.Entity;
+import csis.dptw.engine.Game;
 
 public class Cup extends Entity {
     public Cup(Game game, Point position, String imagePath) {

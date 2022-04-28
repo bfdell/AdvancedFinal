@@ -1,8 +1,8 @@
 package csis.dptw.CupPong;
 
-import csis.dptw.Animation;
-import csis.dptw.Entity;
-import csis.dptw.Game;
+import csis.dptw.engine.Animation;
+import csis.dptw.engine.Entity;
+import csis.dptw.engine.Game;
 
 public class CupAnimation extends Animation{
 

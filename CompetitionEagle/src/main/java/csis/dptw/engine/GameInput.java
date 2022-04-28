@@ -1,4 +1,4 @@
-package csis.dptw;
+package csis.dptw.engine;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -13,6 +13,24 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
     //USE FUNCTIONS FOR ALREADY MADE INTERFACES
     //USE HASHATABLE WITH SPECIALIZED KEYS FOR SPECIFIC EVENTS
     ArrayList<Integer> specialKeys = new ArrayList<Integer>();
+
+    public void addMouseEvent(String type, Object function) {
+        switch (type) {
+            case "pressed":
+                break;
+            case "dragged":
+                break;
+            case "moved":
+                break;
+            case "released":
+                break;
+            case "entered":
+                break;
+            case "exited":
+                break;
+        }
+    }
+
     @Override
     public void mouseDragged(MouseEvent e) {
     }

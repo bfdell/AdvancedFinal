@@ -2,8 +2,8 @@ package csis.dptw.Connect4;
 
 import java.awt.*;
 
-import csis.dptw.Entity;
-import csis.dptw.Game;
+import csis.dptw.engine.Entity;
+import csis.dptw.engine.Game;
 import csis.dptw.util.*;
 /**
  *

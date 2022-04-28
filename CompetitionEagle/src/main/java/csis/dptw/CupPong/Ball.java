@@ -2,8 +2,8 @@ package csis.dptw.CupPong;
 
 import java.awt.Point;
 
-import csis.dptw.Entity;
-import csis.dptw.Game;
+import csis.dptw.engine.Entity;
+import csis.dptw.engine.Game;
 
 public class Ball extends Entity{
 

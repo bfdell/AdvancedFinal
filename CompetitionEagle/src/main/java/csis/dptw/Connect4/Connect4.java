@@ -6,8 +6,8 @@
 package csis.dptw.Connect4;
 
 
-import csis.dptw.Game;
-import csis.dptw.Map;
+import csis.dptw.engine.Game;
+import csis.dptw.engine.Map;
 
 import java.awt.*;
 
@@ -30,5 +30,9 @@ public class Connect4 extends Game {
         // gamePanel.addEntity(new ConnectChip(this, new Point(120, 51), Color.ORANGE));
         // gamePanel.addEntity(new ConnectChip(this, new Point(51, 120), Color.ORANGE));
         gamePanel.repaint();
+    }
+
+    public void startGame() {
+
     }
 }

@@ -5,15 +5,20 @@ import javax.swing.JPanel;
 import java.awt.*;
 
 public class Map extends JPanel {
-   // private Object Background;
+    
     private java.util.List<Entity> entities = new java.util.ArrayList<Entity>();
+
     public Map(LayoutManager layout) {
         super();
         this.setLayout(layout);
     }
 
     public void addEntity(Entity entity) {
-       entities.add(entity);
+        entities.add(entity);
+    }
+
+    public boolean removeEntity(Entity entity) {
+        return entities.remove(entity);
     }
 
     @Override
@@ -23,14 +28,13 @@ public class Map extends JPanel {
 
     }
 
-    public void paintEntities(Graphics2D g) {
-
-        for(Entity entity : entities) {
-            entity.paint(g);
-        }
-    }
-
     public void paintBackground(Graphics2D g) {
 
+    }
+
+    public void paintEntities(Graphics2D g) {
+        for (Entity entity : entities) {
+            entity.paint(g);
+        }
     }
 }

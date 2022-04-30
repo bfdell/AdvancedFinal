@@ -25,6 +25,7 @@ public class Connect4 extends Game {
     public void run() {
         gamePanel = new ConnectBoard(new FlowLayout());
         gamePanel.setPreferredSize(new Dimension(800, 800));
+        super.run();
 
         gamePanel.addEntity(new ConnectChip(this, new Point(75, 75), Color.YELLOW));
         // gamePanel.addEntity(new ConnectChip(this, new Point(120, 51), Color.ORANGE));

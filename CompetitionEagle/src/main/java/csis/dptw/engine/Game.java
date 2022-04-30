@@ -6,11 +6,13 @@ import csis.dptw.engine.Event.EventType;
 import java.awt.*;
 
 //MAYBE CHANGE TO ABSTRACT CLASS OR INTERFACE
+
+
+//TO SAVE DATA: MAKE A GAME DATA CLASS THAT IS SERIALIZABLE AND SAVE DATA BEFORE GAME HAS ENDED
 public class Game extends GameInput implements Runnable {
     public Map gamePanel;
     public Repainter refresher = new Repainter();
-
-    public java.util.List<Object> events = new java.util.ArrayList<Object>();
+    
 ////////////////////////////////////////////////////////////////
       String test = "STRING";
      int i;
@@ -47,7 +49,7 @@ public class Game extends GameInput implements Runnable {
         System.out.println(game.i * 50 + "------------");
     }
 
-    public void addInputListeners() {
+    private void addInputListeners() {
         gamePanel.addMouseListener(this);
         gamePanel.addMouseMotionListener(this);
         gamePanel.addKeyListener(this);

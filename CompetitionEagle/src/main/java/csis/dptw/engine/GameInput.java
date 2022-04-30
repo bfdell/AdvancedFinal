@@ -7,76 +7,78 @@ import java.util.*;
 import csis.dptw.engine.Event.EventType;
 
 /**
- *
+ * This class represents input sources for a Game, which includes MouseEvents and KeyEvents.
+ * It also implements many functionality for passing in lambda funcions to be executed by events.
+ * It organizes events into different PriorityQueues for each type of event, 
+ * So the order that the lambda functions get executed in can be assigned. 
+ * 
  * @author Brian Dell
  * @version Spring 2022
  */
-//LIST OF LAMBDAS FOR EACH EVENT IN A LIST AND THEY ARE ALL ORDERED IN TERMS OF HOW THEY SHOULD BE EXECUTED
 public abstract class GameInput implements MouseMotionListener, MouseListener, KeyListener {
-    //USE FUNCTIONS FOR ALREADY MADE INTERFACES 
-    //USE HASHATABLE WITH SPECIALIZED KEYS FOR SPECIFIC EVENTS
-    ArrayList<Integer> specialKeys = new ArrayList<Integer>();
-    private HashMap<EventType, PriorityQueue<EventFunction>> events;
     //MAKE anonymous threads that carry out every event type at the same time?
+    //^^^ Probably not because only one input event can be done at a time mostly.
 
-    //PriorityQueues for events
-    PriorityQueue<Event> mPressedQueue = new PriorityQueue<Event>();
-    PriorityQueue<Event> mDraggedQueue = new PriorityQueue<Event>();
-    PriorityQueue<Event> mMovedQueue = new PriorityQueue<Event>();
-    PriorityQueue<Event> mReleasedQueue = new PriorityQueue<Event>();
-    PriorityQueue<Event> mClickedQueue = new PriorityQueue<Event>();
-    PriorityQueue<Event> mEnteredQueue = new PriorityQueue<Event>();
-    PriorityQueue<Event> mExitedQueue = new PriorityQueue<Event>();
-    PriorityQueue<Event> kPressedQueue = new PriorityQueue<Event>();
-    PriorityQueue<Event> kReleasedQueue = new PriorityQueue<Event>();
-    PriorityQueue<Event> kTypedQueue = new PriorityQueue<Event>();
+    //PriorityQueues for event types
+    private PriorityQueue<Event> mPressedQueue = new PriorityQueue<Event>();
+    private PriorityQueue<Event> mDraggedQueue = new PriorityQueue<Event>();
+    private PriorityQueue<Event> mMovedQueue = new PriorityQueue<Event>();
+    private PriorityQueue<Event> mReleasedQueue = new PriorityQueue<Event>();
+    private PriorityQueue<Event> mClickedQueue = new PriorityQueue<Event>();
+    private PriorityQueue<Event> mEnteredQueue = new PriorityQueue<Event>();
+    private PriorityQueue<Event> mExitedQueue = new PriorityQueue<Event>();
+    private PriorityQueue<Event> kPressedQueue = new PriorityQueue<Event>();
+    private PriorityQueue<Event> kReleasedQueue = new PriorityQueue<Event>();
+    private PriorityQueue<Event> kTypedQueue = new PriorityQueue<Event>();
 
     public GameInput() {
-        // EnumSet.allOf(EventType.class).forEach(eventType -> events.put(eventType, new PriorityQueue<EventFunction>()));
     }
 
     public void addMouseEvent(EventType eventType, EventFunction function, int priorityNum) {
-        String eventName = eventType.NAME;
         Event eventToAdd = new Event(function, eventType, priorityNum);
 
-        switch (eventName) {
-            case "MPRESSED":
+        switch (eventType) {
+            case MPRESSED:
                 mPressedQueue.add(eventToAdd);
                 break;
-            case "MRELEASED":
+            case MRELEASED:
                 mReleasedQueue.add(eventToAdd);
                 break;
-            case "MDRAGGED":
+            case MDRAGGED:
                 mDraggedQueue.add(eventToAdd);
                 break;
-            case "MCLICKED":
+            case MCLICKED:
                 mClickedQueue.add(eventToAdd);
                 break;
-            case "MMOVED":
+            case MMOVED:
                 mMovedQueue.add(eventToAdd);
                 break;
-            case "MENTERED":
+            case MENTERED:
                 mEnteredQueue.add(eventToAdd);
                 break;
-            case "MEXITED":
+            case MEXITED:
                 mExitedQueue.add(eventToAdd);
+                break;
+            default:
                 break;
         }
     }
 
-    public void addKeyEvent(EventType eventType, EventFunction function, int priorityNum) {
-        String eventName = eventType.NAME;
+    public void addKeyEvent(EventType eventType, EventFunction function, int priorityNum,
+            EventRestriction keyRestriction) {
         Event eventToAdd = new Event(function, eventType, priorityNum);
 
-        switch (eventName) {
-            case "MPRESSED":
+        switch (eventType) {
+            case MPRESSED:
                 kPressedQueue.add(eventToAdd);
                 break;
-            case "MRELEASED":
+            case MRELEASED:
                 kReleasedQueue.add(eventToAdd);
                 break;
-            case "MDRAGGED":
+            case MDRAGGED:
                 kTypedQueue.add(eventToAdd);
+                break;
+            default:
                 break;
         }
     }
@@ -119,14 +121,19 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
 
     @Override
     public void keyPressed(KeyEvent e) {
+        kPressedQueue.stream().filter(event -> event.restriction.isValid(e.getKeyCode()))
+                .forEach(event -> event.function.execute((Game) this));
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        kReleasedQueue.stream().filter(event -> event.restriction.isValid(e.getKeyCode()))
+                .forEach(event -> event.function.execute((Game) this));
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
+        kTypedQueue.stream().filter(event -> event.restriction.isValid(e.getKeyCode()))
+                .forEach(event -> event.function.execute((Game) this));
     }
-
 }

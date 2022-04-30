@@ -1,6 +1,9 @@
 package csis.dptw.engine;
 
 import java.util.*;
+import java.util.function.Predicate;
+import java.awt.*;
+import java.awt.event.*;
 
 /**
  *
@@ -8,17 +11,18 @@ import java.util.*;
  * @version Spring 2022
  */
 public class Event implements Comparable<Event> {
-    public EventFunction function;
+    EventFunction function;
+    EventRestriction restriction;
+
     public EventType eventType;
-    public int priorityNum;
-    public Integer keyStroke = null;
+    public int priorityNum; //GETTERS AND SETTERS FOR PRIORITY NUM
 
     public enum EventType {
         MPRESSED,
         MDRAGGED,
         MMOVED,
         MRELEASED,
-        MCLICKED,
+        MCLICKED, //CLICKED MEANS IT WASN'T MOVED BETWEEN BEING PRESSED AND REMOVED
         MENTERED,
         MEXITED,
         KPRESSED,
@@ -26,7 +30,7 @@ public class Event implements Comparable<Event> {
         KTYPED;
 
         public final String NAME;
-        
+
         private EventType() {
             NAME = toString();
         }
@@ -37,22 +41,16 @@ public class Event implements Comparable<Event> {
         this.eventType = eventType;
         this.priorityNum = priorityNum;
     }
-    public Event(EventFunction function, EventType eventType, int keyStroke, int priorityNum) {
+
+    public Event(EventFunction function, EventType eventType, int priorityNum, EventRestriction restriction) {
         this.function = function;
         this.eventType = eventType;
-        this.keyStroke = keyStroke;
         this.priorityNum = priorityNum;
+        this.restriction = restriction;
     }
-
 
     @Override
     public int compareTo(Event event) {
-        int nameComparason = eventType.NAME.compareTo(event.eventType.NAME);
-
-        if(nameComparason != 0) {
-            return nameComparason;
-        } else {
-            return priorityNum - event.priorityNum;
-        }
+        return priorityNum - event.priorityNum;
     }
 }

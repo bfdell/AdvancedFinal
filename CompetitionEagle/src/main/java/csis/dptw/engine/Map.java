@@ -8,10 +8,10 @@ public class Map extends JPanel {
     
     private java.util.List<Entity> entities = new java.util.ArrayList<Entity>();
 
-    public Map(LayoutManager layout, int width, int height) {
+    public Map(LayoutManager layout, Dimension gameDimension) {
         super();
         this.setLayout(layout);
-        this.setPreferredSize(new Dimension(width, height));
+        this.setPreferredSize(gameDimension);
         setFocusable(true);
     }
 

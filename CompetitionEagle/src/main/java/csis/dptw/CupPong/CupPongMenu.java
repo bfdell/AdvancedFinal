@@ -2,6 +2,8 @@ package csis.dptw.CupPong;
 import java.awt.Color;
 import java.awt.*;
 import javax.swing.*;
+
+import csis.dptw.App;
 import csis.dptw.engine.Map;
 import java.awt.event.*;
 
@@ -13,7 +15,7 @@ public class CupPongMenu extends Map implements ActionListener, Runnable{
     private JButton mainMenu;
 
     public CupPongMenu(LayoutManager layout, int width, int height) {
-        super(new FlowLayout(), width, height);
+        super(new FlowLayout(), App.gameDimension);
     }
 
     @Override

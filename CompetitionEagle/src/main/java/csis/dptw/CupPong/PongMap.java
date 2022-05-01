@@ -2,6 +2,7 @@ package csis.dptw.CupPong;
 
 import java.awt.*;
 
+import csis.dptw.App;
 import csis.dptw.engine.Map;
 
 public class PongMap extends Map{
@@ -13,7 +14,7 @@ public class PongMap extends Map{
     public double triangleXPercent = .15;
 
     public PongMap(LayoutManager layout, int width, int height) {
-        super(layout, width, height);
+        super(layout, App.gameDimension);
         //TODO Auto-generated constructor stub
     }
 

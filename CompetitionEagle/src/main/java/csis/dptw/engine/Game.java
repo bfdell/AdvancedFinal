@@ -21,6 +21,7 @@ public abstract class Game extends GameInput implements Runnable {
     ////////////////////////////////
 
     public final LayoutManager MAP_LAYOUT;
+    //NO NEED FOR MAP LAYOUT
 
     public Game() {
         MAP_LAYOUT = new FlowLayout();

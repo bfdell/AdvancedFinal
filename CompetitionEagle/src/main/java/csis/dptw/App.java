@@ -1,5 +1,6 @@
 package csis.dptw;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import csis.dptw.CupPong.*;
 import csis.dptw.engine.Game;
@@ -17,6 +18,7 @@ import java.util.*;
  *
  */
 public class App implements Runnable {
+    public static Dimension gameDimension;
     JFrame frame;
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new App());     
@@ -35,29 +37,30 @@ public class App implements Runnable {
 
     @Override
     public void run() {
-        createFrame();
-        // Game testGame = new Connect4();
-        Game testGame = new CupPong();
-        // new Connect4();
+        initFrame();
+        Game testGame = new Connect4();
+        // Game testGame = new CupPong();
         // Thread gameThread = new Thread(testGame);
         // gameThread.start();
 
         //ASK TERESCO QUESTIONS ABOUT RUNNABLE AND NOT USING INVOKE LATER ETC.....
         // testGame.gamePanel.addEntity(new Entity(testGame, new Point(1, 1), "competitioneagle/src/main/java/csis/dptw/TCUP.png"));
-        displayFrame(testGame);
+        displayGame(testGame);
     }
 
-    private void displayFrame(Game testGame) {
+    private void displayGame(Game testGame) {
         frame.add(testGame.gamePanel);
-        frame.pack();
         frame.setVisible( true );
     }
 
 
-    private void createFrame() {
+    private void initFrame() {
         JFrame.setDefaultLookAndFeelDecorated(true);
         frame = new JFrame("Competition Eagle ");
-        frame.setPreferredSize(new Dimension(500, 500));
+        frame.setPreferredSize(new Dimension(850, 850));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.pack();
+        gameDimension = new Dimension(850, 850 - frame.getInsets().top);
     }
 }

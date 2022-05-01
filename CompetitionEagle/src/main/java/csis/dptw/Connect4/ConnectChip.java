@@ -6,22 +6,22 @@ import csis.dptw.engine.Entity;
 import csis.dptw.engine.Game;
 import csis.dptw.engine.Player;
 import csis.dptw.util.*;
+
 /**
  *
  * @author Brian Dell
  * @version Spring 2022
  */
-
-public class ConnectChip extends Entity{
+public class ConnectChip extends Entity {
+    public static final int RING_WIDTH = 8;
+    ConnectPlayer player;
     public final static int radius = 41;
-    public static final Color DARK_YELLOW = new Color(200, 200, 0);
-    // public static final Color; //DARK COLOR FOR SECOND CHIP GOES HERE
     Color color;
     Color ringColor;
     // final int PLAYER_NUM;
-    public final Player PLAYER;
+    public final ConnectPlayer PLAYER;
 
-    public ConnectChip(Game game, Point position, Color color, Player player) {
+    public ConnectChip(Game game, Point position, Color color, ConnectPlayer player) {
         super(game, position);
         this.color = color;
         PLAYER = player;
@@ -29,11 +29,10 @@ public class ConnectChip extends Entity{
 
     @Override
     public void paint(Graphics2D g) {
-        g.setColor(color);
+        g.setColor(PLAYER.COLOR);
         PaintHelper.fillCircleFromMiddle(position, radius, g);
-        g.setColor(new Color(200, 200, 0));
-        // g.setColor(ringColor);
-        g.setStroke(new BasicStroke(8));
+        g.setColor(PLAYER.DARKER_COLOR);
+        g.setStroke(new BasicStroke(RING_WIDTH));
         PaintHelper.drawCircleFromMiddle(position, radius, g);
     }
 }

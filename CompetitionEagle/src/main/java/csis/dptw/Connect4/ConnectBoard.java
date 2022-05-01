@@ -13,15 +13,15 @@ import csis.dptw.util.*;
  * @author Brian Dell
  * @version Spring 2022
  */
-
-//HAVE BOARD SIZE PERCENT CONSTANT THAT COMPARES TO ALL GAME PANEL SIZE
 public class ConnectBoard extends Map {
+    public final static Color LIGHT_BLUE = new Color(43, 132, 255);
+    public final static Color DARK_BLUE = new Color(0, 0, 145);
     public final int MARGIN_X;
     public final int MARGIN_Y;
     public final int NUM_ROWS;
     public final int NUM_COLS;
     public final int RING_WIDTH = 8;
-    public final int CHIP_RADIUS = 41;
+    public final int CHIP_RADIUS = 40;
     public final int CHIP_DIAMETER = CHIP_RADIUS * 2;
     public final int CHIP_PADDING = 10;
     public final int BOARD_WIDTH;
@@ -35,8 +35,8 @@ public class ConnectBoard extends Map {
         this.circlePoints = circlePoints;
         NUM_ROWS = boardRows;
         NUM_COLS = boardCols;
-        BOARD_WIDTH = CHIP_PADDING + (CHIP_DIAMETER + CHIP_PADDING) * NUM_COLS; //Roughly 660
-        BOARD_HEIGHT = CHIP_PADDING + (CHIP_DIAMETER + CHIP_PADDING) * NUM_ROWS; //Roughly 568
+        BOARD_WIDTH = CHIP_PADDING + (CHIP_DIAMETER + CHIP_PADDING) * NUM_COLS;
+        BOARD_HEIGHT = CHIP_PADDING + (CHIP_DIAMETER + CHIP_PADDING) * NUM_ROWS; 
         MARGIN_X = ((int) App.gameDimension.getWidth() - BOARD_WIDTH) / 2;
         MARGIN_Y = (int) App.gameDimension.getHeight() - BOARD_HEIGHT;
 
@@ -47,29 +47,16 @@ public class ConnectBoard extends Map {
 
     @Override
     public void paintComponent(Graphics g) {
-        // g.setColor(Color.ORANGE);
-        // g.fillRect(5, 700, 600, 10);
-
-        ////////////////////////////////
-        g.setColor(new Color(43, 132, 255));
+        g.setColor(LIGHT_BLUE);
         paintBackground((Graphics2D) g);
 
         g.setClip(BOARD_AREA);
-        // g.setColor(Color.BLUE);
-        g.setColor(new Color(0, 0, 145));
+        g.setColor(DARK_BLUE);
         paintBackground((Graphics2D) g);
 
         paintEmptySpots((Graphics2D) g);
         paintEntities((Graphics2D) g);
-        paintBoard((Graphics2D) g);
-
-        ////////////////////////////////////////////////////////////////
-        // g.setColor(Color.ORANGE);
-        // g.drawLine(5, 0, 5, getHeight());
-        // g.setColor(Color.RED);
-        // g.fillRect(0, 650, 660, 10);
-        // g.drawLine(660, 0, 660, 568);
-
+        paintRings((Graphics2D) g);
     }
 
     private void paintEmptySpots(Graphics2D g) {
@@ -78,8 +65,8 @@ public class ConnectBoard extends Map {
                 .forEach(pa -> Arrays.stream(pa).forEach(p -> PaintHelper.fillCircleFromMiddle(p, CHIP_RADIUS, g)));
     }
 
-    private void paintBoard(Graphics2D g) {
-        g.setColor(new Color(0, 0, 145));
+    private void paintRings(Graphics2D g) {
+        g.setColor(DARK_BLUE);
         //DARK BLUE^^^
         // g.setColor(Color.BLACK);
         g.setStroke(new BasicStroke(RING_WIDTH));
@@ -122,6 +109,14 @@ public class ConnectBoard extends Map {
 
         //ExclusiveOr changes area to only the individual chip spaces on the board
         boardArea.exclusiveOr(baseArea);
+        //Adds all outside area thats not the board to the boardArea
+        int[] boardXS = {MARGIN_X, MARGIN_X, MARGIN_X + BOARD_WIDTH, MARGIN_X + BOARD_WIDTH};
+        int[] boardYS = {MARGIN_Y, MARGIN_Y + BOARD_HEIGHT, MARGIN_Y + BOARD_HEIGHT, MARGIN_Y};
+        Polygon Box = new Polygon(boardXS, boardYS, 4);
+        Area nonBoardArea = new Area(Box);
+        nonBoardArea.exclusiveOr(baseArea);
+        boardArea.add(nonBoardArea);
+
         return boardArea;
     }
 

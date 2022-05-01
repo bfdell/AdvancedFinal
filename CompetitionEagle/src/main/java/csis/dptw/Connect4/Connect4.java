@@ -51,19 +51,40 @@ public class Connect4 extends Game {
     public void initializeMap() {
         gamePanel = new ConnectBoard(new BorderLayout(), circlePoints, NUM_ROWS, NUM_COLS);
 
-        JPanel top = new JPanel();
-        top.setLayout(new GridBagLayout());
         // top.setLayout(new BoxLayout(top, BoxLayout.X_AXIS));
+        JPanel top = new JPanel();
+        GridBagLayout layout = new GridBagLayout();
+        top.setLayout(layout);
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        // gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.ipadx = 20;
+        gbc.anchor = GridBagConstraints.LINE_START;
         JLabel one = new JLabel("sifhadsiojhfdoisajha");
-        one.setAlignmentX(.0f);
+        top.add(one, gbc);
+        layout.addLayoutComponent(one, gbc);
+        // one.setAlignmentX(.0f);
         JLabel two = new JLabel("sifhadsiojhfdoisajha");
+        // gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+        top.add(two, gbc);
+
         // two.setAlignmentX(0.5f);
         JLabel three = new JLabel("sifhadsiojhfdoisajha");
+        // gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        top.add(three, gbc);
         // three.setAlignmentX(1.0f);
-        three.setHorizontalTextPosition( SwingConstants.LEFT);
-        top.add(one);
-        top.add(two);
-        top.add(three);
+        // three.setHorizontalTextPosition( SwingConstants.LEFT);
+        
+        
+        // top.add(three);
 
         gamePanel.add(top, BorderLayout.NORTH);
     }

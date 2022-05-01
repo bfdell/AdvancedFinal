@@ -26,9 +26,8 @@ public class CupPong extends Game {
 
     @Override
     public void run() {
-        gamePanel = new PongMap(new FlowLayout());
+        super.run();
         
-        gamePanel.setPreferredSize(new Dimension(LANE_WIDTH, LANE_WIDTH));
         addCups();
     }
 
@@ -53,9 +52,9 @@ public class CupPong extends Game {
         }
     }
 
-   
-
-    public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new CupPong());
+    @Override
+    public void initializeMap() {
+        gamePanel = new PongMap(new FlowLayout(), LANE_WIDTH, LANE_WIDTH);
+        
     }
 }

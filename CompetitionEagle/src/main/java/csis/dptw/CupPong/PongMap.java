@@ -12,8 +12,8 @@ public class PongMap extends Map{
     public double triangleYPercent = .35;
     public double triangleXPercent = .15;
 
-    public PongMap(LayoutManager layout) {
-        super(layout);
+    public PongMap(LayoutManager layout, int width, int height) {
+        super(layout, width, height);
         //TODO Auto-generated constructor stub
     }
 

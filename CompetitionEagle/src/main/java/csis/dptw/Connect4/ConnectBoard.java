@@ -19,8 +19,8 @@ public class ConnectBoard extends Map {
     Point[][] circlePoints;
     int radius;
     Shape s;
-    public ConnectBoard(LayoutManager layout) {
-        super(layout);
+    public ConnectBoard(LayoutManager layout, int width, int height) {
+        super(layout, width, height);
         initializeGrid();
        
     }

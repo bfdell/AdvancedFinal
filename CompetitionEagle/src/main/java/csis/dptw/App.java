@@ -36,7 +36,8 @@ public class App implements Runnable {
     @Override
     public void run() {
         createFrame();
-        Game testGame = new Connect4();
+        // Game testGame = new Connect4();
+        Game testGame = new CupPong();
         // new Connect4();
         // Thread gameThread = new Thread(testGame);
         // gameThread.start();

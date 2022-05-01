@@ -28,14 +28,15 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
     private PriorityQueue<Event> mEnteredQueue = new PriorityQueue<Event>();
     private PriorityQueue<Event> mExitedQueue = new PriorityQueue<Event>();
     private PriorityQueue<Event> kPressedQueue = new PriorityQueue<Event>();
-    private PriorityQueue<Event> kReleasedQueue = new PriorityQueue<Event>();
     private PriorityQueue<Event> kTypedQueue = new PriorityQueue<Event>();
+    private PriorityQueue<Event> kReleasedQueue = new PriorityQueue<Event>();
 
     public GameInput() {
     }
 
+    //Different methods for different restrictions or no restrictions
     public void addMouseEvent(EventType eventType, EventFunction function, int priorityNum) {
-        Event eventToAdd = new Event(function, eventType, priorityNum);
+        Event eventToAdd = new Event(eventType, function, priorityNum);
 
         switch (eventType) {
             case MPRESSED:
@@ -65,75 +66,86 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
     }
 
     public void addKeyEvent(EventType eventType, EventFunction function, int priorityNum,
-            EventRestriction keyRestriction) {
-        Event eventToAdd = new Event(function, eventType, priorityNum);
+            int keyRestriction) {
+
+        Event eventToAdd = new Event(eventType, function, priorityNum,
+                i -> ((KeyEvent) i).getKeyCode() == keyRestriction);
 
         switch (eventType) {
-            case MPRESSED:
+            case KPRESSED:
                 kPressedQueue.add(eventToAdd);
                 break;
-            case MRELEASED:
-                kReleasedQueue.add(eventToAdd);
+            case KTYPED:
+                //IF OUR EVENT IS A KEY_TYPE, ALLOW METHOD TO EXECUTE IF THE CHAR CODE
+                //MATCHES THE UPPER OR LOWERCASE LETTER
+                char charRestriction = (char) keyRestriction;
+                EventRestriction keyTypeRestriction = i -> ((KeyEvent) i).getKeyChar() == charRestriction
+                        || ((KeyEvent) i).getKeyChar() == (charRestriction | 0x20);
+                Event keyTypeEvent = new Event(eventType, function, priorityNum,
+                        keyTypeRestriction);
+                kTypedQueue.add(keyTypeEvent);
                 break;
-            case MDRAGGED:
-                kTypedQueue.add(eventToAdd);
+            case KRELEASED:
+                kReleasedQueue.add(eventToAdd);
                 break;
             default:
                 break;
         }
     }
 
+
+    //MAYBE CHANGE MOUSE EVENT PARAMETER TO THE POINT OF THE MOUSE EVENT
     @Override
     public void mouseDragged(MouseEvent e) {
-        mDraggedQueue.forEach(event -> event.function.execute((Game) this));
+        mDraggedQueue.forEach(event -> event.execute(e));
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        mMovedQueue.forEach(event -> event.function.execute((Game) this));
+        mMovedQueue.forEach(event -> event.execute(e));
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("CLICK");
-        mClickedQueue.forEach(event -> event.function.execute((Game) this));
+        mClickedQueue.forEach(event -> event.execute(e));
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        mEnteredQueue.forEach(event -> event.function.execute((Game) this));
+        mEnteredQueue.forEach(event -> event.execute(e));
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        mExitedQueue.forEach(event -> event.function.execute((Game) this));
+        mExitedQueue.forEach(event -> event.execute(e));
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        mPressedQueue.forEach(event -> event.function.execute((Game) this));
+        mPressedQueue.forEach(event -> event.execute(e));
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        mReleasedQueue.forEach(event -> event.function.execute((Game) this));
+        mReleasedQueue.forEach(event -> event.execute(e));
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        kPressedQueue.stream().filter(event -> event.restriction.isValid(e.getKeyCode()))
-                .forEach(event -> event.function.execute((Game) this));
+        kPressedQueue.stream().filter(event -> event.restriction.isValid(e))
+                .forEach(event -> event.execute(e));
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        kReleasedQueue.stream().filter(event -> event.restriction.isValid(e.getKeyCode()))
-                .forEach(event -> event.function.execute((Game) this));
+        kReleasedQueue.stream().filter(event -> event.restriction.isValid(e))
+                .forEach(event -> event.execute(e));
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        kTypedQueue.stream().filter(event -> event.restriction.isValid(e.getKeyCode()))
-                .forEach(event -> event.function.execute((Game) this));
+        kTypedQueue.stream().filter(event -> event.restriction.isValid(e))
+                .forEach(event -> event.execute(e));
     }
 }

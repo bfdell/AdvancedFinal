@@ -13,7 +13,10 @@ import csis.dptw.util.*;
 
 public class ConnectChip extends Entity{
     public final static int radius = 41;
+    public static final Color DARK_YELLOW = new Color(200, 200, 0);
+    // public static final Color; //DARK COLOR FOR SECOND CHIP GOES HERE
     Color color;
+    Color ringColor;
 
     public ConnectChip(Game game, Point position, Color color) {
         super(game, position);
@@ -25,6 +28,7 @@ public class ConnectChip extends Entity{
         g.setColor(color);
         PaintHelper.fillCircleFromMiddle(position, radius, g);
         g.setColor(new Color(200, 200, 0));
+        // g.setColor(ringColor);
         g.setStroke(new BasicStroke(8));
         PaintHelper.drawCircleFromMiddle(position, radius, g);
     }

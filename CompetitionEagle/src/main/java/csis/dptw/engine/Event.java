@@ -25,9 +25,10 @@ public class Event implements Comparable<Event> {
         MCLICKED, //CLICKED MEANS IT WASN'T MOVED BETWEEN BEING PRESSED AND REMOVED
         MENTERED,
         MEXITED,
+        //KEY EVENTS EXECUTE IN ORDER: PRESSED, TYPED, RELEASED
         KPRESSED,
-        KRELEASED,
-        KTYPED;
+        KTYPED,  //getKeyCode doesnty workd for type, must use getKeyChar
+        KRELEASED;
 
         public final String NAME;
 
@@ -36,18 +37,27 @@ public class Event implements Comparable<Event> {
         }
     }
 
-    public Event(EventFunction function, EventType eventType, int priorityNum) {
+    //WHEN USING EVENTS CAST AT THE LOWEST LEVEL
+    public Event(EventType eventType, EventFunction function, int priorityNum) {
         this.function = function;
         this.eventType = eventType;
         this.priorityNum = priorityNum;
     }
 
-    public Event(EventFunction function, EventType eventType, int priorityNum, EventRestriction restriction) {
+    public Event(EventType eventType, EventFunction function, int priorityNum, EventRestriction restriction) {
         this.function = function;
         this.eventType = eventType;
         this.priorityNum = priorityNum;
         this.restriction = restriction;
     }
+
+    public void execute(InputEvent e) {
+        function.call(e);
+    }
+
+    // public boolean validate(Object t) {
+    //    return function.isValid(t);
+    // }
 
     @Override
     public int compareTo(Event event) {

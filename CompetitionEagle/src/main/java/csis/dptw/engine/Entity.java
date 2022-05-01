@@ -38,15 +38,15 @@ public class Entity implements Serializable {
         this.position = position;
     }
     public Entity(Game game, Point position, String imagePath) {
-        System.out.println("SKLFSLDFj");
-        try {
-            String currentPath;
-            currentPath = new java.io.File(".").getCanonicalPath();
-            System.out.println("Current dir:" + currentPath);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // System.out.println("SKLFSLDFj");
+        // try {
+        //     String currentPath;
+        //     currentPath = new java.io.File(".").getCanonicalPath();
+        //     System.out.println("Current dir:" + currentPath);
+        // } catch (IOException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
         entityImage = toolkit.getImage(imagePath);
         // try {
         //     entityImage = ImageIO.read(new File(imagePath));

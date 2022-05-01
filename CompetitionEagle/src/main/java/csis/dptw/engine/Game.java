@@ -20,8 +20,9 @@ public abstract class Game extends GameInput implements Runnable {
     String k = "SMH,";
 
     ////////////////////////////////
-    
+
     public final LayoutManager MAP_LAYOUT;
+
     public Game() {
         MAP_LAYOUT = new FlowLayout();
     }
@@ -35,10 +36,9 @@ public abstract class Game extends GameInput implements Runnable {
         initializeMap();
         addInputListeners();
 
-        
-        addMouseEvent(EventType.MRELEASED, e -> testEvent(this, (MouseEvent)e), 2);
-        addMouseEvent(EventType.MPRESSED, e -> testEvent2(this, (MouseEvent)e), 1);
-        addMouseEvent(EventType.MCLICKED, e -> testEvent2(this, (MouseEvent)e), 1);
+        addMouseEvent(EventType.MRELEASED, e -> testEvent(this, (MouseEvent) e), 2);
+        addMouseEvent(EventType.MPRESSED, e -> testEvent2(this, (MouseEvent) e), 1);
+        addMouseEvent(EventType.MCLICKED, e -> testEvent2(this, (MouseEvent) e), 1);
         addKeyEvent(EventType.KTYPED, e -> keyTest(this, (KeyEvent) e), 1, KeyEvent.VK_C);
         addKeyEvent(EventType.KPRESSED, e -> keyTest2(this, (KeyEvent) e), 1, KeyEvent.VK_C);
         addKeyEvent(EventType.KRELEASED, e -> keyTest3(this, (KeyEvent) e), 1, KeyEvent.VK_C);
@@ -46,6 +46,8 @@ public abstract class Game extends GameInput implements Runnable {
 
     public abstract void initializeMap();
 
+    // public abstract void addAllMouseEvents();
+    // public abstract void addAllKeyEvents();
     //TESTING PURPOSES
     public static void testEvent(Game game, MouseEvent e) {
         System.out.println(game.test);
@@ -62,7 +64,7 @@ public abstract class Game extends GameInput implements Runnable {
         System.out.println("KEY TYPE ACTIVATED");
     }
 
-    public void keyTest2(Game game,KeyEvent e) {
+    public void keyTest2(Game game, KeyEvent e) {
         System.out.println("KEY PRESS ACTIVATED");
     }
 

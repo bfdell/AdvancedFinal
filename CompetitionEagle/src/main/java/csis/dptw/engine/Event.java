@@ -37,7 +37,6 @@ public class Event implements Comparable<Event> {
         }
     }
 
-    //WHEN USING EVENTS CAST AT THE LOWEST LEVEL
     public Event(EventType eventType, EventFunction function, int priorityNum) {
         this.function = function;
         this.eventType = eventType;

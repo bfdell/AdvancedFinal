@@ -27,11 +27,9 @@ public class Map extends JPanel {
     public void paintComponent(Graphics g) {
         paintBackground((Graphics2D) g);
         paintEntities((Graphics2D) g);
-
     }
 
     public void paintBackground(Graphics2D g) {
-
     }
 
     public void paintEntities(Graphics2D g) {

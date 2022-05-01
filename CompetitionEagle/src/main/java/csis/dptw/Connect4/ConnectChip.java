@@ -4,6 +4,7 @@ import java.awt.*;
 
 import csis.dptw.engine.Entity;
 import csis.dptw.engine.Game;
+import csis.dptw.engine.Player;
 import csis.dptw.util.*;
 /**
  *
@@ -17,10 +18,13 @@ public class ConnectChip extends Entity{
     // public static final Color; //DARK COLOR FOR SECOND CHIP GOES HERE
     Color color;
     Color ringColor;
+    // final int PLAYER_NUM;
+    public final Player PLAYER;
 
-    public ConnectChip(Game game, Point position, Color color) {
+    public ConnectChip(Game game, Point position, Color color, Player player) {
         super(game, position);
         this.color = color;
+        PLAYER = player;
     }
 
     @Override

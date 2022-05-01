@@ -15,11 +15,11 @@ import csis.dptw.util.*;
 
 //HAVE BOARD SIZE PERCENT CONSTANT THAT COMPARES TO ALL GAME PANEL SIZE
 public class ConnectBoard extends Map {
-
     Point[][] circlePoints;
     int radius;
     Shape s;
-    public ConnectBoard(LayoutManager layout, int width, int height) {
+
+    public ConnectBoard(LayoutManager layout, int width, int height, Point[][] circlePoints) {
         super(layout, width, height);
         initializeGrid();
        

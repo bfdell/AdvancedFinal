@@ -12,13 +12,12 @@ import java.awt.event.*;
 //TO SAVE DATA: MAKE A GAME DATA CLASS THAT IS SERIALIZABLE AND SAVE DATA BEFORE GAME HAS ENDED
 public abstract class Game extends GameInput implements Runnable {
     public Map gamePanel;
-    public Repainter refresher = new Repainter();
+    // public Repainter refresher = new Repainter();
 
     ////////////////////////////////////////////////////////////////
     String test = "STRING";
     int i;
     String k = "SMH,";
-
     ////////////////////////////////
 
     public final LayoutManager MAP_LAYOUT;

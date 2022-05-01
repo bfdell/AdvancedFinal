@@ -2,11 +2,11 @@ package csis.dptw.engine;
 
 public class Animation extends Thread{
     public final int REFRESH_RATE = 30;
-    private Entity entity;
-    private Game game;
+    protected Entity entity;
+    protected Game game;
 
 
-    private boolean done = false;
+    protected boolean done = false;
 
     public Animation(Entity entity, Game game) {
         this.entity = entity;
@@ -17,12 +17,16 @@ public class Animation extends Thread{
 
     @Override
     public void run() {
-        while(!done) {
-
+        while(!done()) {
+            animation();
         }
     }
 
     public void animation(){
         
+    }
+
+    public boolean done() {
+        return true;
     }
 }

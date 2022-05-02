@@ -4,8 +4,10 @@ import csis.dptw.engine.*;
 import csis.dptw.engine.Event.EventType;
 
 import java.awt.*;
+import java.awt.event.*;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -25,8 +27,10 @@ public class Connect4 extends Game {
     // final Player PLAYER1;
     // final Player PLAYER2;
 
-    int turnCounter = 1;
+    private boolean gameStarted = false;
+    int round = 1;
 
+JButton start;
     final ConnectPlayer[] PLAYERS = new ConnectPlayer[2];
 
     public Connect4() {
@@ -41,9 +45,12 @@ public class Connect4 extends Game {
         super.run();
 
         addMouseEvent(EventType.MRELEASED, (e) -> myFirst(this), 2);
-        gamePanel.addEntity(new ConnectChip(this, new Point(175, 275), Color.RED, PLAYERS[turnCounter % 2]));
+        gamePanel.addEntity(new ConnectChip(this, new Point(175, 275), Color.RED, PLAYERS[round % 2]));
         // gamePanel.addEntity(new ConnectChip(this, new Point(120, 51), Color.ORANGE));
         // gamePanel.addEntity(new ConnectChip(this, new Point(51, 120), Color.ORANGE));
+        addKeyEvent(EventType.KPRESSED, e -> nextTurn(this, (KeyEvent) e), 1, KeyEvent.VK_ENTER);
+        addActionEvent(e -> startGame(this, (ActionEvent) e), 1, start);
+
         gamePanel.repaint();
     }
 
@@ -93,7 +100,13 @@ public class Connect4 extends Game {
         System.out.println(game.first++ + ",");
     }
 
-    public void startGame() {
+    public void startGame(Connect4 game, ActionEvent e) {
+       gameStarted = true;
+    }
 
+    public void nextTurn(Connect4 game, KeyEvent e) {
+        System.out.println(e.getKeyCode());
+        game.round++;
+        System.out.println("ACtivated");
     }
 }

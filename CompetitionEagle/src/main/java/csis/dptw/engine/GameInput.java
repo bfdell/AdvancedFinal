@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
+import javax.swing.AbstractButton;
+
 import csis.dptw.engine.Event.EventType;
 
 /**
@@ -15,7 +17,7 @@ import csis.dptw.engine.Event.EventType;
  * @author Brian Dell
  * @version Spring 2022
  */
-public abstract class GameInput implements MouseMotionListener, MouseListener, KeyListener {
+public abstract class GameInput implements MouseMotionListener, MouseListener, KeyListener, ActionListener {
     //MAKE anonymous threads that carry out every event type at the same time?
     //^^^ Probably not because only one input event can be done at a time mostly.
 
@@ -30,6 +32,7 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
     private PriorityQueue<Event> kPressedQueue = new PriorityQueue<Event>();
     private PriorityQueue<Event> kTypedQueue = new PriorityQueue<Event>();
     private PriorityQueue<Event> kReleasedQueue = new PriorityQueue<Event>();
+    private PriorityQueue<Event> actionEventQueue = new PriorityQueue<Event>();
 
     public GameInput() {
     }
@@ -93,6 +96,23 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
         }
     }
 
+    public void addActionEvent(EventFunction function, int priorityNum, AbstractButton button) {
+        button.addActionListener(this);
+        Event actionEvent = new Event(EventType.Action, function, priorityNum);
+        actionEventQueue.add(actionEvent);
+
+    }
+    public void addActionEvent(EventFunction function, int priorityNum, AbstractButton button, EventRestriction restriction) {
+        button.addActionListener(this);
+        Event actionEvent = new Event(EventType.Action, function, priorityNum, restriction);
+        actionEventQueue.add(actionEvent);
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        actionEventQueue.forEach(event -> event.execute(e));
+    }
 
     //MAYBE CHANGE MOUSE EVENT PARAMETER TO THE POINT OF THE MOUSE EVENT
     @Override

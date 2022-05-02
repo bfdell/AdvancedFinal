@@ -53,10 +53,10 @@ public class PongMap extends Map{
         int[] outlineXS = { outlineLeftX, outlineRightX, endX / 2 };
         int[] outlineYS = { topY, topY, cupTip };
 
-        Polygon cupOutline = new Polygon(outlineXS, outlineYS, outlineXS.length);
-        g.setColor(Color.BLACK);
-        ((Graphics2D) g).setStroke(new BasicStroke(8));
-        g.drawPolygon(cupOutline);
+        // Polygon cupOutline = new Polygon(outlineXS, outlineYS, outlineXS.length);
+        // g.setColor(Color.BLACK);
+        // ((Graphics2D) g).setStroke(new BasicStroke(8));
+        // g.drawPolygon(cupOutline);
     }
     
 }

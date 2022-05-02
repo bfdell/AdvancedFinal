@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class Map extends JPanel {
     
-    private java.util.List<Entity> entities = new java.util.ArrayList<Entity>();
+    public java.util.List<Entity> entities = new java.util.ArrayList<Entity>();
 
     public Map(LayoutManager layout, Dimension gameDimension) {
         super();

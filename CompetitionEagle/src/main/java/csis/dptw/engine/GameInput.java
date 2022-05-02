@@ -96,6 +96,11 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
         }
     }
 
+    //ALL ACTION EVENTS
+    public void addActionEvent(EventFunction function, int priorityNum) {
+        Event actionEvent = new Event(EventType.Action, function, priorityNum);
+        actionEventQueue.add(actionEvent);
+    }
     public void addActionEvent(EventFunction function, int priorityNum, AbstractButton button) {
         button.addActionListener(this);
         Event actionEvent = new Event(EventType.Action, function, priorityNum);

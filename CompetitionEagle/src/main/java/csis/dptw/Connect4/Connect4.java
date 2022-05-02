@@ -50,6 +50,7 @@ JButton start;
         // gamePanel.addEntity(new ConnectChip(this, new Point(51, 120), Color.ORANGE));
         addKeyEvent(EventType.KPRESSED, e -> nextTurn(this, (KeyEvent) e), 1, KeyEvent.VK_ENTER);
         addActionEvent(e -> startGame(this, (ActionEvent) e), 1, start);
+        addActionEvent(e -> requestFocus(this, (ActionEvent) e), 2, start);
 
         gamePanel.repaint();
     }
@@ -105,6 +106,8 @@ JButton start;
         // three.setHorizontalTextPosition( SwingConstants.LEFT);
         
         
+        start = new JButton("START");
+        top.add(start);
         // top.add(three);
 
         gamePanel.add(top, BorderLayout.NORTH);
@@ -116,11 +119,16 @@ JButton start;
 
     public void startGame(Connect4 game, ActionEvent e) {
        gameStarted = true;
+       System.out.println("GAME STARTED");
+    }
+
+    public void requestFocus(Connect4 game, ActionEvent e) {
+        gamePanel.requestFocus();
     }
 
     public void nextTurn(Connect4 game, KeyEvent e) {
         System.out.println(e.getKeyCode());
-        game.round++;
+        round++;
         System.out.println("ACtivated");
     }
 }

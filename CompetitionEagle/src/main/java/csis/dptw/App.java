@@ -61,6 +61,6 @@ public class App implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.pack();
-        gameDimension = new Dimension(850, 850 - frame.getInsets().top);
+        gameDimension = new Dimension(850, 850 - frame.getInsets().top - frame.getInsets().bottom);
     }
 }

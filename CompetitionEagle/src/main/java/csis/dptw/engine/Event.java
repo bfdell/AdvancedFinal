@@ -18,6 +18,7 @@ public class Event implements Comparable<Event> {
     public int priorityNum; //GETTERS AND SETTERS FOR PRIORITY NUM
 
     public enum EventType {
+        Action,
         MPRESSED,
         MDRAGGED,
         MMOVED,
@@ -50,7 +51,7 @@ public class Event implements Comparable<Event> {
         this.restriction = restriction;
     }
 
-    public void execute(InputEvent e) {
+    public void execute(AWTEvent e) {
         function.call(e);
     }
 

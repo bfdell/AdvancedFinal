@@ -20,6 +20,7 @@ public class ChipFalling extends Animation{
             entity.position.y++;
     }
 
+    @Override
     public boolean done(){
         // checking if the next spot in matrix is false or true
         if(entity.position.y == destination.y){

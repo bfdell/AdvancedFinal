@@ -10,6 +10,7 @@ import java.awt.event.*;
 import java.awt.*;
 import java.awt.geom.*;
 
+
 public class CupPong extends Game {
 
     public CupPong() {
@@ -29,32 +30,36 @@ public class CupPong extends Game {
         super.run();
         
         addCups();
+        gamePanel.addEntity(new Ball(this, new Point(420,700)));
     }
 
     public void addCups(){
-        int x = 155;
-        int y = 100;
+        int x = 318;
+        int y = 200;
         for(int i = 0; i < 10; i++){
            if(i == 4){
                y += 35;
-               x = 175;
-           }else if(i == 7){
-            y += 35;
-            x = 195;
-           }else if(i == 9){
+               x = 342;
+            }
+        else if(i == 7){
                y += 35;
-               x = 215;
+               x = 365;
+            }
+        else if(i == 9){
+               y += 35;
+               x = 389;
            }
 
             gamePanel.addEntity(new Cup(this, new Point(x, y), "CompetitionEagle/src/main/java/csis/dptw/BeFunky-photo.png"));
         
-            x += 43;
+            x += 48;
         }
     }
 
     @Override
     public void initializeMap() {
         gamePanel = new PongMap(new FlowLayout(), LANE_WIDTH, LANE_WIDTH);
+       //gamePanel = new cupPongM(new FlowLayout(), LANE_WIDTH, LANE_WIDTH);
         
     }
 }

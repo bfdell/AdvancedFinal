@@ -15,15 +15,13 @@ import csis.dptw.util.*;
 public class ConnectChip extends Entity {
     public static final int RING_WIDTH = 8;
     ConnectPlayer player;
-    public final static int radius = 41;
-    Color color;
+    public final static int radius = 40;
     Color ringColor;
     // final int PLAYER_NUM;
     public final ConnectPlayer PLAYER;
 
-    public ConnectChip(Game game, Point position, Color color, ConnectPlayer player) {
+    public ConnectChip(Game game, Point position, ConnectPlayer player) {
         super(game, position);
-        this.color = color;
         PLAYER = player;
     }
 

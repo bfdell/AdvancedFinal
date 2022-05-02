@@ -6,11 +6,9 @@ import csis.dptw.engine.Event.EventType;
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 /**
  *
@@ -18,28 +16,36 @@ import javax.swing.SwingConstants;
  * @version Spring 2022
  */
 public class Connect4 extends Game {
+    int first = 0;
+    ////////////////////////////////////////////////////////////////
+    public static final Font TITLE_FONT = new Font("Phosphate", Font.BOLD, 50);
+    // public static final Color TITLE_COLOR;
     public static final String CONNECT4 = "Connect 4!!";
+    public static final String PLAYER1 = "Player One";
+    public static final String PLAYER2 = "Player Two";
+    public static final String TURN = "'s Turn";
+    public static final String WINS = "Wins!";
     public static final int NUM_ROWS = 6;
     public static final int NUM_COLS = 7;
     boolean[][] spaces = new boolean[6][7];
     Point[][] circlePoints = new Point[6][7];
-    int first = 1;
-    // final Player PLAYER1;
-    // final Player PLAYER2;
+
+    private JLabel turnLabel;
 
     private boolean gameStarted = false;
-    int round = 1;
+    int round;
     JPanel top;
 
     JButton restart = new JButton("Restart Game");
 
-JButton start;
+    JButton start;
     final ConnectPlayer[] PLAYERS = new ConnectPlayer[2];
+    ConnectPlayer currentPlayer;
 
     public Connect4() {
         super();
-        PLAYERS[0] = new ConnectPlayer(1, Color.RED);
-        PLAYERS[1] = new ConnectPlayer(2, Color.YELLOW);
+        PLAYERS[0] = new ConnectPlayer(1, Color.RED, PLAYER1);
+        PLAYERS[1] = new ConnectPlayer(2, Color.YELLOW, PLAYER1);
         run();
     }
 
@@ -63,7 +69,7 @@ JButton start;
     public void initializeMap() {
         gamePanel = new ConnectBoard(new BorderLayout(), circlePoints, NUM_ROWS, NUM_COLS);
 
-         top = new JPanel();
+        top = new JPanel();
         GridBagLayout layout = new GridBagLayout();
         top.setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -75,12 +81,11 @@ JButton start;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 
-        JLabel one = new JLabel("Player1");
+        JLabel one = new JLabel(PLAYER1);
         Font playerOneFont = new Font("Arial", Font.BOLD, 30);
         one.setFont(playerOneFont);
         one.setForeground(Color.YELLOW);
         top.add(one, gbc);
-     
 
         // gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;
@@ -88,9 +93,8 @@ JButton start;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.NORTH;
 
-        String titleLabel = "Connect4!!";
-        Font titleFont = new Font("Arial", Font.BOLD, 50);
-        JLabel two = new JLabel(titleLabel);
+        Font titleFont = TITLE_FONT;
+        JLabel two = new JLabel(CONNECT4);
         two.setFont(titleFont);
         two.setForeground(Color.RED);
         top.add(two, gbc);
@@ -102,11 +106,11 @@ JButton start;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         Font playerTwoFont = new Font("Arial", Font.BOLD, 30);
-        JLabel three = new JLabel("Player2");
+        JLabel three = new JLabel(PLAYER2);
         three.setFont(playerTwoFont);
         three.setForeground(Color.BLUE);
         top.add(three, gbc);
-    
+
         gbc.weightx = 0.5;
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -116,8 +120,13 @@ JButton start;
 
         gamePanel.add(top, BorderLayout.NORTH);
         gbc.gridy = 2;
-       top.add(restart, gbc);
-       restart.setVisible(false);
+        top.add(restart, gbc);
+        restart.setVisible(false);
+
+
+        ////////////////////////////////////////////////////////////////
+        // JLabel winLabel = new JLabel();
+        turnLabel = new JLabel();
     }
 
     public void myFirst(Connect4 game) {
@@ -125,32 +134,39 @@ JButton start;
     }
 
     public void startGame(Connect4 game, ActionEvent e) {
-       gameStarted = true;
-       System.out.println("GAME STARTED");
-       
-       GridBagLayout layout  = (GridBagLayout) top.getLayout();
-       GridBagConstraints gbc = layout.getConstraints(start);
+        game.gameStarted = true;
+        System.out.println("GAME STARTED");
 
-    
-       top.remove(start);
-       top.add(new JLabel("I WANNA DIE"), gbc);
-       top.revalidate();
-       top.validate();
-       restart.setVisible(true);
+        GridBagLayout layout = (GridBagLayout) top.getLayout();
+        GridBagConstraints gbc = layout.getConstraints(start);
+
+        top.remove(start);
+        top.add(new JLabel("I WANNA DIE"), gbc);
+        top.revalidate();
+        top.validate();
+        restart.setVisible(true);
     }
-
 
     public void restartGame(Connect4 game, ActionEvent e) {
         game.round = 1;
         game.gamePanel.entities.clear();
+        //REPAINT ONLY HERE BECAUSE REPAINTER IS NOT ACTIVE YET
+        game.gamePanel.repaint();
     }
+
+    public void determineWin(Connect4 game, KeyEvent e) {
+
+    }
+
     public void requestFocus(Connect4 game, ActionEvent e) {
         game.gamePanel.requestFocus();
     }
 
     public void nextTurn(Connect4 game, KeyEvent e) {
-        System.out.println(e.getKeyCode());
+        // System.out.println(e.getKeyCode());
         round++;
-        System.out.println("Activated");
+        currentPlayer = PLAYERS[round % 2];
+        
+        // System.out.println("Activated");
     }
 }

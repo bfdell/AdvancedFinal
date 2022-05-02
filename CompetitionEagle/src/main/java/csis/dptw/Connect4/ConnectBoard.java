@@ -21,9 +21,9 @@ public class ConnectBoard extends Map {
     public final int NUM_ROWS;
     public final int NUM_COLS;
     public final int RING_WIDTH = 8;
-    public final int CHIP_RADIUS = 40;
+    public final int CHIP_RADIUS = 47;
     public final int CHIP_DIAMETER = CHIP_RADIUS * 2;
-    public final int CHIP_PADDING = 10;
+    public final int CHIP_PADDING = 12;
     public final int BOARD_WIDTH;
     public final int BOARD_HEIGHT;
     public final Area BOARD_AREA;

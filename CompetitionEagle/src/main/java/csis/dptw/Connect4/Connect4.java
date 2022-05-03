@@ -81,11 +81,17 @@ public class Connect4 extends Game {
     public static void keyTest(Connect4 game, KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 System.out.println("RIGHT");
-                if(game.currentChip.position.x > -1 && game.currentChip.position.x < 7) {
+                // game.gamePanel.removeEntity(game.currentChip);
+                if(game.currentChipX > -1 && game.currentChipX < 7) {
+                    System.out.println("ACTIVE");
                     game.currentChip.position.x = game.circlePoints[0][game.currentChipX++].x;
                 }
         } else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
             System.out.println("LEFT");
+            if(game.currentChipX > -1 && game.currentChipX < 7) {
+                System.out.println("ACTIVE");
+                game.currentChip.position.x = game.circlePoints[0][game.currentChipX--].x;
+            }
         }
     }
 

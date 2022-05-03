@@ -49,9 +49,9 @@ public class BallAnimation extends Animation {
                 descending = true;
             }
         } else {
-            if() {
+            // if() {
             
-            }
+            // }
         }
 
         currentFrame++;

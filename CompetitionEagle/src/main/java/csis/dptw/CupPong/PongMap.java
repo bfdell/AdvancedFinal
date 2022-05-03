@@ -6,6 +6,7 @@ import csis.dptw.App;
 import csis.dptw.engine.Map;
 
 public class PongMap extends Map{
+    public final Color DARK_GREEN = new Color(30, 112, 52);
     public final int LANE_WIDTH = 500;
     ///////////////////////
     public double boardYPercent = .3;
@@ -33,7 +34,7 @@ public class PongMap extends Map{
         int[] boardYS = { height, height, topY, topY };
 
         Polygon board = new Polygon(boardXS, boardYS, boardXS.length);
-        g.setColor(Color.green);
+        g.setColor(DARK_GREEN);
         g.fillPolygon(board);
         g.setColor(Color.WHITE);
         ((Graphics2D) g).setStroke(new BasicStroke(10));

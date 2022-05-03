@@ -12,6 +12,9 @@ public class CupAnimation extends Animation{
     private boolean wentUp = false;
     public static int UP_SPEED = 10;
     public static int SIDE_SPEED = 25;
+
+    boolean waited = false;
+    public static int STAY_AT_TOP = 150;
     
     public CupAnimation(Entity entity, Game game) {
         super(entity, game);  
@@ -35,6 +38,15 @@ public class CupAnimation extends Animation{
             wentUp = true;
         }
 
+        if(!waited) {
+            try {
+                sleep(STAY_AT_TOP);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            waited = true;
+        }
         entity.position.x += SIDE_SPEED;
     }
  

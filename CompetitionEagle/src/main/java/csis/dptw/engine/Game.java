@@ -12,7 +12,7 @@ import java.awt.event.*;
 //TO SAVE DATA: MAKE A GAME DATA CLASS THAT IS SERIALIZABLE AND SAVE DATA BEFORE GAME HAS ENDED
 public abstract class Game extends GameInput implements Runnable {
     public Map gamePanel;
-    // public Repainter refresher = new Repainter();
+    public Repainter refresher;
 
     ////////////////////////////////////////////////////////////////
     String test = "STRING";
@@ -34,6 +34,8 @@ public abstract class Game extends GameInput implements Runnable {
     @Override
     public void run() {
         initializeMap();
+        refresher = new Repainter(gamePanel);
+        refresher.start();
         addInputListeners();
 
         addMouseEvent(EventType.MRELEASED, e -> testEvent(this, (MouseEvent) e), 2);

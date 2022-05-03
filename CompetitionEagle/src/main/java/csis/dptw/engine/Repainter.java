@@ -5,7 +5,7 @@ import javax.swing.JComponent;
 public class Repainter extends Thread {
     
 
-    final int DELAY_TIME = 33 ;
+    public final static int DELAY_TIME = 33 ;
 
     JComponent container;
 

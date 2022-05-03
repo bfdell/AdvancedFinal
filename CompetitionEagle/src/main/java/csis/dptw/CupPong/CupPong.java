@@ -3,7 +3,10 @@ package csis.dptw.CupPong;
 import javax.swing.*;
 
 import csis.dptw.*;
+import csis.dptw.engine.Entity;
 import csis.dptw.engine.Game;
+import csis.dptw.engine.Repainter;
+import csis.dptw.engine.Event.EventType;
 
 import java.awt.event.*;
 
@@ -13,6 +16,8 @@ import java.awt.geom.*;
 
 public class CupPong extends Game {
 
+    public static final Point BALL_START = new Point(420, 700);
+    public Ball ball = new Ball(this, BALL_START);
     public CupPong() {
         super();//FIX TIHIS LINE BECCUSE GAMAE PANEL IS BEING INITIOALIZED IN ANONYMOUS INNER CLASS
         run();
@@ -30,7 +35,13 @@ public class CupPong extends Game {
         super.run();
         
         addCups();
-        gamePanel.addEntity(new Ball(this, new Point(420,700)));
+        gamePanel.addEntity(ball);
+        //outlineCups();
+        addMouseEvent(EventType.MPRESSED, e -> clickInCup(this, (MouseEvent) e), 1);
+    }
+
+    public void outlineCups(int x, int y){
+        // gamePanel.addEntity(new OutlineOfCups(this, new Point(x, y)));
     }
 
     public void addCups(){
@@ -51,7 +62,7 @@ public class CupPong extends Game {
            }
 
             gamePanel.addEntity(new Cup(this, new Point(x, y), "CompetitionEagle/src/main/java/csis/dptw/BeFunky-photo.png"));
-        
+            outlineCups(x, y);
             x += 48;
         }
     }
@@ -61,5 +72,20 @@ public class CupPong extends Game {
         gamePanel = new PongMap(new FlowLayout(), LANE_WIDTH, LANE_WIDTH);
        //gamePanel = new cupPongM(new FlowLayout(), LANE_WIDTH, LANE_WIDTH);
         
+    }
+
+    public static void clickInCup(CupPong game, MouseEvent e) {
+        Point cur = e.getPoint();
+        for(Entity cup : game.gamePanel.entities) {
+            if(cup != game.ball && ((Cup)cup).colidesWith(cur)) {
+                System.out.println("col·li·sion");
+                game.moveCup((Cup) cup,(CupPong)game);
+            }
+        }
+    }
+
+    public void moveCup(Cup cup, CupPong game) {
+        CupAnimation animation = new CupAnimation(cup, game);
+        animation.start();
     }
 }

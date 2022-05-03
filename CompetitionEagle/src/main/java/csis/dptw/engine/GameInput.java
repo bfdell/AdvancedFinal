@@ -96,9 +96,14 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
         }
     }
 
+    //ALL ACTION EVENTS
+    public void addActionEvent(EventFunction function, int priorityNum) {
+        Event actionEvent = new Event(EventType.Action, function, priorityNum, i -> true);
+        actionEventQueue.add(actionEvent);
+    }
     public void addActionEvent(EventFunction function, int priorityNum, AbstractButton button) {
         button.addActionListener(this);
-        Event actionEvent = new Event(EventType.Action, function, priorityNum);
+        Event actionEvent = new Event(EventType.Action, function, priorityNum, e -> ((ActionEvent) e).getSource() == button);
         actionEventQueue.add(actionEvent);
 
     }
@@ -111,7 +116,8 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        actionEventQueue.forEach(event -> event.execute(e));
+        actionEventQueue.stream().filter(event -> event.restriction.isValid(e))
+        .forEach(event -> event.execute(e));
     }
 
     //MAYBE CHANGE MOUSE EVENT PARAMETER TO THE POINT OF THE MOUSE EVENT

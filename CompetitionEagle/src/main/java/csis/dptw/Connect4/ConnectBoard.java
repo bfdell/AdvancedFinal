@@ -16,25 +16,26 @@ import csis.dptw.util.*;
 public class ConnectBoard extends Map {
     public final static Color LIGHT_BLUE = new Color(43, 132, 255);
     public final static Color DARK_BLUE = new Color(0, 0, 145);
+    public static final int NUM_ROWS = 6;
+    public static final int NUM_COLS = 7;
     public final int MARGIN_X;
     public final int MARGIN_Y;
-    public final int NUM_ROWS;
-    public final int NUM_COLS;
-    public final int RING_WIDTH = 8;
-    public final int CHIP_RADIUS = 40;
-    public final int CHIP_DIAMETER = CHIP_RADIUS * 2;
-    public final int CHIP_PADDING = 10;
+    public final int RING_WIDTH;
+    public final int CHIP_RADIUS;
+    public final int CHIP_PADDING;
+    public final int CHIP_DIAMETER;
     public final int BOARD_WIDTH;
     public final int BOARD_HEIGHT;
     public final Area BOARD_AREA;
     public Point[][] circlePoints;
 
-    public ConnectBoard(LayoutManager layout, Point[][] circlePoints, int boardRows,
-            int boardCols) {
+    public ConnectBoard(LayoutManager layout, Point[][] circlePoints, int chipRadius, int chipPadding, int ringWidth) {
         super(layout, App.gameDimension);
         this.circlePoints = circlePoints;
-        NUM_ROWS = boardRows;
-        NUM_COLS = boardCols;
+        RING_WIDTH = ringWidth;
+        CHIP_RADIUS = chipRadius;
+        CHIP_PADDING = chipPadding;
+        CHIP_DIAMETER = CHIP_RADIUS * 2;
         BOARD_WIDTH = CHIP_PADDING + (CHIP_DIAMETER + CHIP_PADDING) * NUM_COLS;
         BOARD_HEIGHT = CHIP_PADDING + (CHIP_DIAMETER + CHIP_PADDING) * NUM_ROWS; 
         MARGIN_X = ((int) App.gameDimension.getWidth() - BOARD_WIDTH) / 2;

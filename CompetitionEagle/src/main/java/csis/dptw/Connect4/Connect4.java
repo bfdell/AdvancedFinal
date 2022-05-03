@@ -61,7 +61,8 @@ public class Connect4 extends Game {
     @Override
     public void run() {
         super.run();
-        startingChipLocation = new Point(circlePoints[0][3].x, circlePoints[0][3].y - (RING_WIDTH / 2 + (CHIP_PADDING * 2)+ CHIP_RADIUS * 2));
+        startingChipLocation = new Point(circlePoints[0][3].x,
+                circlePoints[0][3].y - (RING_WIDTH / 2 + (CHIP_PADDING * 2) + CHIP_RADIUS * 2));
         addMouseEvent(EventType.MRELEASED, (e) -> myFirst(this), 2);
         // gamePanel.addEntity(new ConnectChip(this, startingChipLocation,
         //         PLAYERS[round % 2]));
@@ -72,29 +73,31 @@ public class Connect4 extends Game {
         //SEE IF I CAN CALL NOT STATIC METHODS WITH METHOD REFERENCES
         addActionEvent(e -> requestFocus(this, (ActionEvent) e), 3);
         addActionEvent(e -> restartGame(this, (ActionEvent) e), 2, restart);
-        addKeyEvent(EventType.KPRESSED, e -> keyTest(this, (KeyEvent) e), 3, Arrays.asList(KeyEvent.VK_RIGHT,KeyEvent.VK_LEFT));
+        addKeyEvent(EventType.KPRESSED, e -> keyTest(this, (KeyEvent) e), 3,
+                Arrays.asList(KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT));
         // addKeyEvent(EventType.KPRESSED, e -> keyTest(this, (KeyEvent) e), 2, KeyEvent.VK_UP);
 
         gamePanel.repaint();
     }
 
     public static void keyTest(Connect4 game, KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                System.out.println("RIGHT");
-                // game.gamePanel.removeEntity(game.currentChip);
-                if(game.currentChipX > -1 && game.currentChipX < 7) {
-                    System.out.println("ACTIVE");
-                    game.currentChip.position.x = game.circlePoints[0][game.currentChipX++].x;
-                }
-        } else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            System.out.println("RIGHT");
+            // game.gamePanel.removeEntity(game.currentChip);
+            if (game.currentChipX > -1 && game.currentChipX < 6) {
+                game.currentChip.position.x = game.circlePoints[0][++game.currentChipX].x;
+                System.out.println(game.currentChipX);
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             System.out.println("LEFT");
-            if(game.currentChipX > -1 && game.currentChipX < 7) {
-                System.out.println("ACTIVE");
-                game.currentChip.position.x = game.circlePoints[0][game.currentChipX--].x;
+            if (game.currentChipX > 0 && game.currentChipX < 7) {
+                game.currentChip.position.x = game.circlePoints[0][--game.currentChipX].x;
+                System.out.println(game.currentChipX);
             }
         }
     }
 
+    
     @Override
     public void initializeMap() {
         gamePanel = new ConnectBoard(new BorderLayout(), circlePoints, CHIP_RADIUS, CHIP_PADDING, RING_WIDTH);
@@ -158,19 +161,19 @@ public class Connect4 extends Game {
         statusLabel = new JLabel();
         statusLabel.setFont(TEXT_FONT);
     }
-    
+
     public void myFirst(Connect4 game) {
         System.out.println(game.first++ + ",");
     }
-    
+
     public void startGame(Connect4 game, ActionEvent e) {
         game.gameStarted = true;
         nextTurn(this, null);
         System.out.println("GAME STARTED");
-        
+
         GridBagLayout layout = (GridBagLayout) top.getLayout();
         GridBagConstraints gbc = layout.getConstraints(start);
-        
+
         top.remove(start);
         updateStatus();
         top.add(statusLabel, gbc);
@@ -178,11 +181,11 @@ public class Connect4 extends Game {
         top.validate();
         restart.setVisible(true);
         currentChip = new ConnectChip(this, startingChipLocation,
-        PLAYERS[round % 2]);
+                PLAYERS[round % 2]);
         gamePanel.addEntity(currentChip);
         currentChipX = 3;
     }
-    
+
     public void restartGame(Connect4 game, ActionEvent e) {
         game.round = 1;
         currentPlayer = PLAYERS[round % 2];
@@ -191,7 +194,7 @@ public class Connect4 extends Game {
         game.gamePanel.repaint();
         updateStatus();
     }
-       
+
     public void determineWin(Connect4 game, KeyEvent e) {
 
     }
@@ -211,9 +214,9 @@ public class Connect4 extends Game {
     private void updateStatus() {
         statusLabel.setForeground(currentPlayer.DARKER_COLOR);
         statusLabel.setText(currentPlayer.NAME + TURN);
-    }   
+    }
 
     public void moveChip(int key) {
-        
+
     }
 }

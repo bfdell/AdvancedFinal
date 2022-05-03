@@ -3,6 +3,8 @@ package csis.dptw.Connect4;
 import csis.dptw.engine.Animation;
 import csis.dptw.engine.Entity;
 import csis.dptw.engine.Game;
+import csis.dptw.engine.Repainter;
+
 import java.awt.*;
 
 public class ChipFalling extends Animation{
@@ -17,13 +19,18 @@ public class ChipFalling extends Animation{
 
     @Override
     public void animation(){
+            try {
+                sleep(Repainter.DELAY_TIME);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             entity.position.y += CHIP_SPEED;
     }
 
     @Override
     public boolean done(){
         // checking if the next spot in matrix is false or true
-        if(entity.position.y <= destination.y){
+        if(entity.position.y >= destination.y){
             done = true;
         }
         return done;

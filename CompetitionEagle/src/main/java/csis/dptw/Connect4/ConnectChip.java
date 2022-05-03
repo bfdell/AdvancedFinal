@@ -20,6 +20,8 @@ public class ConnectChip extends Entity {
     // final int PLAYER_NUM;
     public final ConnectPlayer PLAYER;
 
+    public boolean landed = false;
+
     public ConnectChip(Game game, Point position, ConnectPlayer player) {
         super(game, position);
         PLAYER = player;

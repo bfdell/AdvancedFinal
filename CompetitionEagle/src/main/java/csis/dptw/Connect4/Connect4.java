@@ -74,14 +74,14 @@ public class Connect4 extends Game {
         //SEE IF I CAN CALL NOT STATIC METHODS WITH METHOD REFERENCES
         addActionEvent(e -> requestFocus(this, (ActionEvent) e), 3);
         addActionEvent(e -> restartGame(this, (ActionEvent) e), 2, restart);
-        addKeyEvent(EventType.KPRESSED, e -> keyTest(this, (KeyEvent) e), 3,
+        addKeyEvent(EventType.KPRESSED, e -> moveChip(this, (KeyEvent) e), 3,
                 Arrays.asList(KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT));
         // addKeyEvent(EventType.KPRESSED, e -> keyTest(this, (KeyEvent) e), 2, KeyEvent.VK_UP);
 
         gamePanel.repaint();
     }
 
-    public static void keyTest(Connect4 game, KeyEvent e) {
+    public static void moveChip(Connect4 game, KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             System.out.println("RIGHT");
             // game.gamePanel.removeEntity(game.currentChip);
@@ -191,17 +191,19 @@ public class Connect4 extends Game {
         int col = game.currentChipX;
         
         int row = 0;
-        while(!game.spaces[row + 1][col]) {
+        while(row < NUM_ROWS - 1 && !game.spaces[row + 1][col]) {
+            System.out.println(row);
             row++;
         }
+        game.spaces[row][col] = true;
         Point dest = game.circlePoints[row][col];
         ChipFalling dropChip = new ChipFalling(game.currentChip, game ,dest); 
         dropChip.start();
-       try {
-        dropChip.join();
-    } catch (InterruptedException e1) {
-        e1.printStackTrace();
-    }
+    //    try {
+    //     dropChip.join();
+    // } catch (InterruptedException e1) {
+    //     e1.printStackTrace();
+    // }
     }
 
     public void restartGame(Connect4 game, ActionEvent e) {

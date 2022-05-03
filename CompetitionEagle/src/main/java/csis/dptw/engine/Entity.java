@@ -8,6 +8,8 @@ import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 
+import csis.dptw.Connect4.Connect4;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -28,10 +30,10 @@ public class Entity implements Serializable {
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener, String propertyName) {
-        this.eventHelper.addPropertyChangeListener(listener);
+        this.eventHelper.addPropertyChangeListener(propertyName, listener);
     }
     public void removePropertyChangeListener(PropertyChangeListener listener, String propertyName) {
-        this.eventHelper.removePropertyChangeListener(listener);
+        this.eventHelper.removePropertyChangeListener(propertyName, listener);
     }
 
 

@@ -5,6 +5,8 @@ import csis.dptw.engine.Event.EventType;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
 import javax.swing.JButton;
@@ -16,7 +18,7 @@ import javax.swing.JPanel;
  * @author Brian Dell
  * @version Spring 2022
  */
-public class Connect4 extends Game {
+public class Connect4 extends Game implements PropertyChangeListener{
     int first = 0;
     ////////////////////////////////////////////////////////////////
     public static final Font TITLE_FONT = new Font("Phosphate", Font.BOLD, 50);
@@ -185,6 +187,7 @@ public class Connect4 extends Game {
                 PLAYERS[round % 2]);
         gamePanel.addEntity(currentChip);
         currentChipX = 3;
+        currentChip.addPropertyChangeListener(game, "landed");
     }
 
     public static void dropChip(Connect4 game, KeyEvent e) {
@@ -237,5 +240,10 @@ public class Connect4 extends Game {
 
     public void moveChip(int key) {
 
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("DONE FALLING");
     }
 }

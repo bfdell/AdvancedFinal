@@ -48,6 +48,8 @@ public class Connect4 extends Game {
     JButton start;
     final ConnectPlayer[] PLAYERS = new ConnectPlayer[2];
     ConnectPlayer currentPlayer;
+    ConnectChip currentChip;
+    int currentChipX;
 
     public Connect4() {
         super();
@@ -61,8 +63,8 @@ public class Connect4 extends Game {
         super.run();
         startingChipLocation = new Point(circlePoints[0][3].x, circlePoints[0][3].y - (RING_WIDTH / 2 + (CHIP_PADDING * 2)+ CHIP_RADIUS * 2));
         addMouseEvent(EventType.MRELEASED, (e) -> myFirst(this), 2);
-        gamePanel.addEntity(new ConnectChip(this, startingChipLocation,
-                PLAYERS[round % 2]));
+        // gamePanel.addEntity(new ConnectChip(this, startingChipLocation,
+        //         PLAYERS[round % 2]));
         // gamePanel.addEntity(new ConnectChip(this, new Point(120, 51), Color.ORANGE));
         // gamePanel.addEntity(new ConnectChip(this, new Point(51, 120), Color.ORANGE));
         addKeyEvent(EventType.KPRESSED, e -> nextTurn(this, (KeyEvent) e), 1, KeyEvent.VK_ENTER);
@@ -70,15 +72,21 @@ public class Connect4 extends Game {
         //SEE IF I CAN CALL NOT STATIC METHODS WITH METHOD REFERENCES
         addActionEvent(e -> requestFocus(this, (ActionEvent) e), 3);
         addActionEvent(e -> restartGame(this, (ActionEvent) e), 2, restart);
-        addKeyEvent(EventType.KTYPED, e -> keyTest(this, (KeyEvent) e), 3, Arrays.asList(KeyEvent.VK_UP,KeyEvent.VK_RIGHT,KeyEvent.VK_LEFT,KeyEvent.VK_DOWN));
+        addKeyEvent(EventType.KPRESSED, e -> keyTest(this, (KeyEvent) e), 3, Arrays.asList(KeyEvent.VK_RIGHT,KeyEvent.VK_LEFT));
         // addKeyEvent(EventType.KPRESSED, e -> keyTest(this, (KeyEvent) e), 2, KeyEvent.VK_UP);
 
         gamePanel.repaint();
     }
 
     public static void keyTest(Connect4 game, KeyEvent e) {
-        System.out.println("SDFSF");
-        System.out.print(e.getKeyChar());
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                System.out.println("RIGHT");
+                if(game.currentChip.position.x > -1 && game.currentChip.position.x < 7) {
+                    game.currentChip.position.x = game.currentChipX++;
+                }
+        } else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+            System.out.println("LEFT");
+        }
     }
 
     @Override
@@ -163,6 +171,10 @@ public class Connect4 extends Game {
         top.revalidate();
         top.validate();
         restart.setVisible(true);
+        currentChip = new ConnectChip(this, startingChipLocation,
+        PLAYERS[round % 2]);
+        gamePanel.addEntity(currentChip);
+        currentChipX = 3;
     }
     
     public void restartGame(Connect4 game, ActionEvent e) {
@@ -195,8 +207,7 @@ public class Connect4 extends Game {
         statusLabel.setText(currentPlayer.NAME + TURN);
     }   
 
-    public void moveChip() {
+    public void moveChip(int key) {
         
     }
-
 }

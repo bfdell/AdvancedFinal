@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class ChipFalling extends Animation{
 
-    public static final int CHIP_SPEED = 10;
+    public static final int CHIP_SPEED = 40;
     Point destination;
     
     public ChipFalling(ConnectChip chip, Connect4 game, Point destination) {
@@ -18,7 +18,7 @@ public class ChipFalling extends Animation{
     }   
 
     @Override
-    public void animation(){
+    public synchronized void animation(){
             try {
                 sleep(Repainter.DELAY_TIME);
             } catch (InterruptedException e) {
@@ -28,13 +28,12 @@ public class ChipFalling extends Animation{
     }
 
     @Override
-    public boolean done(){
+    public synchronized boolean done(){
         // checking if the next spot in matrix is false or true
         if(entity.position.y >= destination.y){
             entity.position.y = destination.y;
             done = true;
             ((ConnectChip)entity).setLanded(true);
-            // notifyAll();
         }
         return done;
     }

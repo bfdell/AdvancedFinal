@@ -18,7 +18,8 @@ public class Event<T> implements Comparable<Event<T>> {
     public int priorityNum; //GETTERS AND SETTERS FOR PRIORITY NUM
 
     public enum EventType {
-        Action,
+        ACTION,
+        PROPERTYCHANGE,
         MPRESSED,
         MDRAGGED,
         MMOVED,
@@ -26,7 +27,6 @@ public class Event<T> implements Comparable<Event<T>> {
         MCLICKED, //CLICKED MEANS IT WASN'T MOVED BETWEEN BEING PRESSED AND REMOVED
         MENTERED,
         MEXITED,
-        //KEY EVENTS EXECUTE IN ORDER: PRESSED, TYPED, RELEASED
         KPRESSED,
         KTYPED,  //getKeyCode doesnty workd for type, must use getKeyChar
         KRELEASED;

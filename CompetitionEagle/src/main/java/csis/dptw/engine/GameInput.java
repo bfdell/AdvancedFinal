@@ -2,6 +2,8 @@ package csis.dptw.engine;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.*;
 
 import javax.swing.AbstractButton;
@@ -19,7 +21,7 @@ import csis.dptw.engine.Event.EventType;
  * @author Brian Dell
  * @version Spring 2022
  */
-public abstract class GameInput implements MouseMotionListener, MouseListener, KeyListener, ActionListener {
+public abstract class GameInput implements MouseMotionListener, MouseListener, KeyListener, ActionListener, PropertyChangeListener {
     // MAKE anonymous threads that carry out every event type at the same time?
     // ^^^ Probably not because only one input event can be done at a time mostly.
 
@@ -35,6 +37,7 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
     private PriorityQueue<Event<KeyEvent>> kTypedQueue = new PriorityQueue<Event<KeyEvent>>();
     private PriorityQueue<Event<KeyEvent>> kReleasedQueue = new PriorityQueue<Event<KeyEvent>>();
     private PriorityQueue<Event<ActionEvent>> actionEventQueue = new PriorityQueue<Event<ActionEvent>>();
+    private volatile PriorityQueue<Event<PropertyChangeEvent>> propertyEventQueue = new PriorityQueue<Event<PropertyChangeEvent>>();
 
     public GameInput() {
     }
@@ -70,6 +73,7 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
         }
     }
 
+    //ADD GENERICS FOR EVENT RESTRICTION
     public void addKeyEvent(EventType eventType, EventFunction<KeyEvent> function, int priorityNum,
             int keyRestriction) {
 
@@ -128,13 +132,13 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
 
     // ALL ACTION EVENTS
     public void addActionEvent(EventFunction<ActionEvent> function, int priorityNum) {
-        Event<ActionEvent> actionEvent = new Event<ActionEvent>(EventType.Action, function, priorityNum, i -> true);
+        Event<ActionEvent> actionEvent = new Event<ActionEvent>(EventType.ACTION, function, priorityNum, i -> true);
         actionEventQueue.add(actionEvent);
     }
 
     public void addActionEvent(EventFunction<ActionEvent> function, int priorityNum, AbstractButton button) {
         button.addActionListener(this);
-        Event<ActionEvent> actionEvent = new Event<ActionEvent>(EventType.Action, function, priorityNum,
+        Event<ActionEvent> actionEvent = new Event<ActionEvent>(EventType.ACTION, function, priorityNum,
                 e -> ((ActionEvent) e).getSource() == button);
         actionEventQueue.add(actionEvent);
 
@@ -143,8 +147,26 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
     public void addActionEvent(EventFunction<ActionEvent> function, int priorityNum, AbstractButton button,
             EventRestriction restriction) {
         button.addActionListener(this);
-        Event<ActionEvent> actionEvent = new Event<ActionEvent>(EventType.Action, function, priorityNum, restriction);
+        Event<ActionEvent> actionEvent = new Event<ActionEvent>(EventType.ACTION, function, priorityNum, restriction);
         actionEventQueue.add(actionEvent);
+    }
+
+    public void addPropertyEvent(EventFunction<PropertyChangeEvent> function, int priorityNum, Entity entity, String propertyName) {
+        entity.addPropertyChangeListener(this, propertyName);
+        Event<PropertyChangeEvent> propertyEvent = new Event<PropertyChangeEvent>(EventType.PROPERTYCHANGE, function, priorityNum);
+        propertyEventQueue.add(propertyEvent);
+    }
+
+    public void removePropertyEvent(Entity entity, String propertyName, int priorityNum) {
+        entity.removePropertyChangeListener(this, propertyName);
+        propertyEventQueue.removeIf(pe -> pe.priorityNum == priorityNum);
+        System.out.println("CLEARED FROM QUEUE");
+    }
+
+    //OVERRIDEN EVENT METHODS THAT EXECUTE ALL LAMBDA METHODS
+    @Override
+    public void propertyChange(PropertyChangeEvent e) {
+        propertyEventQueue.forEach(event -> event.execute(e));
     }
 
     @Override
@@ -153,7 +175,6 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
                 .forEach(event -> event.execute(e));
     }
 
-    // MAYBE CHANGE MOUSE EVENT PARAMETER TO THE POINT OF THE MOUSE EVENT
     @Override
     public void mouseDragged(MouseEvent e) {
         mDraggedQueue.forEach(event -> event.execute(e));

@@ -18,7 +18,7 @@ import javax.swing.JPanel;
  * @author Brian Dell
  * @version Spring 2022
  */
-public class Connect4 extends Game implements PropertyChangeListener {
+public class Connect4 extends Game {
     int first = 0;
     ////////////////////////////////////////////////////////////////
     public static final Font TITLE_FONT = new Font("Phosphate", Font.BOLD, 50);
@@ -36,8 +36,8 @@ public class Connect4 extends Game implements PropertyChangeListener {
     public final int CHIP_RADIUS = 40;
     public final int RING_WIDTH = 8;
     public Point startingChipLocation;
-    boolean[][] spaces = new boolean[6][7];
-    Point[][] circlePoints = new Point[6][7];
+    boolean[][] spaces = new boolean[NUM_ROWS][NUM_COLS];
+    Point[][] circlePoints = new Point[NUM_ROWS][NUM_COLS];
 
     private JLabel statusLabel;
 
@@ -51,8 +51,10 @@ public class Connect4 extends Game implements PropertyChangeListener {
     final ConnectPlayer[] PLAYERS = new ConnectPlayer[2];
     ConnectPlayer currentPlayer;
     ConnectChip currentChip;
+    ConnectChip previousChip;
     int currentChipX;
 
+    private static final int CHIP_LANDED_PRIORITY = 1;
     public Connect4() {
         super();
         PLAYERS[1] = new ConnectPlayer(1, Color.RED, PLAYER1);
@@ -65,17 +67,17 @@ public class Connect4 extends Game implements PropertyChangeListener {
         super.run();
         startingChipLocation = new Point(circlePoints[0][3].x,
                 circlePoints[0][3].y - (RING_WIDTH / 2 + (CHIP_PADDING * 2) + CHIP_RADIUS * 2));
-        addKeyEvent(EventType.KPRESSED, this::dropChip, 1, KeyEvent.VK_ENTER);
+        addKeyEvent(EventType.KPRESSED, this::dropChip, 2, KeyEvent.VK_ENTER);
+
+
         addActionEvent(this::startGame, 1, start);
-        //SEE IF I CAN CALL NOT STATIC METHODS WITH METHOD REFERENCES
         addActionEvent(this::requestFocus, 3);
         addActionEvent(this::restartGame, 2, restart);
-        // addKeyEvent(EventType.KPRESSED, e -> keyTest(this, (KeyEvent) e), 2, KeyEvent.VK_UP);
-        addKeyEvent(EventType.KPRESSED, this::moveChip, 3,
+        addKeyEvent(EventType.KPRESSED, this::shiftChip, 1,
                 Arrays.asList(KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT));
     }
 
-    public void moveChip(KeyEvent e) {
+    public void shiftChip(KeyEvent e) {
         if (!currentChip.moving) {
             System.out.println("MOVED");
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -161,19 +163,18 @@ public class Connect4 extends Game implements PropertyChangeListener {
 
     public void startGame(ActionEvent e) {
         gameStarted = true;
-       nextTurn();
+        nextTurn();
+        addNewChip();
         System.out.println("GAME STARTED");
 
         GridBagLayout layout = (GridBagLayout) top.getLayout();
         GridBagConstraints gbc = layout.getConstraints(start);
 
         top.remove(start);
-        updateStatus();
         top.add(statusLabel, gbc);
         top.revalidate();
         top.validate();
         restart.setVisible(true);
-        addNewChip();
     }
 
     public void dropChip(KeyEvent e) {
@@ -185,10 +186,14 @@ public class Connect4 extends Game implements PropertyChangeListener {
                 System.out.println(row);
                 row++;
             }
-            if(row != -1) {   
+            if (row != -1) {
                 spaces[row][col] = true;
                 Point dest = circlePoints[row][col];
                 currentChip.moving = true;
+                if(currentChip != null) {
+                    removePropertyEvent(currentChip, "landed", CHIP_LANDED_PRIORITY);
+                }
+                addPropertyEvent(this::chipFell, 1, currentChip, "landed");
                 ChipFalling dropChip = new ChipFalling(currentChip, this, dest);
                 dropChip.start();
             }
@@ -197,49 +202,34 @@ public class Connect4 extends Game implements PropertyChangeListener {
 
     public void restartGame(ActionEvent e) {
         gamePanel.entities.clear();
-        round = -1;
-       nextTurn();
+        round = 0;
+        spaces = new boolean[NUM_ROWS][NUM_COLS];
+        nextTurn();
         addNewChip();
     }
 
-    public void determineWin(Connect4 game, KeyEvent e) {
-
-    }
-
-    public void requestFocus(ActionEvent e) {
-        gamePanel.requestFocus();
-    }
-
+    
     public void nextTurn() {
-        // System.out.println(e.getKeyCode());
         round++;
         currentPlayer = PLAYERS[round % 2];
-        updateStatus();
-        // System.out.println("Activated");
-    }
-
-    private void updateStatus() {
         statusLabel.setForeground(currentPlayer.DARKER_COLOR);
         statusLabel.setText(currentPlayer.NAME + TURN);
     }
-
-    public void moveChip(int key) {
-
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("DONE FALLING");
-       nextTurn();
+    
+    public void chipFell(PropertyChangeEvent evt) {
+        previousChip = currentChip;
+        nextTurn();
         addNewChip();
+        System.out.println("returned");
     }
-
+    
     public void addNewChip() {
-        //CLONE POINT
         currentChip = new ConnectChip(this, (Point) startingChipLocation.clone(),
-                PLAYERS[round % 2]);
+        PLAYERS[round % 2]);
         addEntity(currentChip);
         currentChipX = 3;
-        currentChip.addPropertyChangeListener(this, "landed");
+    }
+    private void requestFocus(ActionEvent e) {
+        gamePanel.requestFocus();
     }
 }

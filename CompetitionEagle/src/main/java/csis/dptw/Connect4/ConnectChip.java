@@ -37,9 +37,11 @@ public class ConnectChip extends Entity {
         PaintHelper.drawCircleFromMiddle(position, radius, g);
     }
 
-    public void setLanded(boolean newLanded) {
+    public synchronized void setLanded(boolean newLanded) {
         boolean oldLanded = landed;
-       landed = newLanded;
-       eventHelper.firePropertyChange("landed", oldLanded, true);
+        landed = newLanded;
+        System.out.println("BEfore");
+        eventHelper.firePropertyChange("landed", oldLanded, true);
+        System.out.println("after");
     }
 }

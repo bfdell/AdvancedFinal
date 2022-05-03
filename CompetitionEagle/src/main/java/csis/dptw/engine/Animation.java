@@ -1,6 +1,6 @@
 package csis.dptw.engine;
 
-public class Animation extends Thread{
+public abstract class Animation extends Thread{
     public final int REFRESH_RATE = 30;
     protected Entity entity;
     protected Game game;
@@ -22,11 +22,9 @@ public class Animation extends Thread{
         }
     }
 
-    public void animation(){
-        
-    }
-
-    public boolean done() {
+    public abstract void animation();
+    
+    public synchronized boolean done() {
         return true;
     }
 }

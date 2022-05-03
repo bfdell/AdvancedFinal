@@ -199,11 +199,10 @@ public class Connect4 extends Game {
         Point dest = game.circlePoints[row][col];
         ChipFalling dropChip = new ChipFalling(game.currentChip, game ,dest); 
         dropChip.start();
-    //    try {
-    //     dropChip.join();
-    // } catch (InterruptedException e1) {
-    //     e1.printStackTrace();
-    // }
+        
+        while(!dropChip.done()) {
+
+        }
     }
 
     public void restartGame(Connect4 game, ActionEvent e) {

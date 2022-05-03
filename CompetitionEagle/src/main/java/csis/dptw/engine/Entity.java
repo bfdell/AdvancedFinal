@@ -27,6 +27,13 @@ public class Entity implements Serializable {
         this.eventHelper.removePropertyChangeListener(listener);
     }
 
+    public void addPropertyChangeListener(PropertyChangeListener listener, String propertyName) {
+        this.eventHelper.addPropertyChangeListener(listener);
+    }
+    public void removePropertyChangeListener(PropertyChangeListener listener, String propertyName) {
+        this.eventHelper.removePropertyChangeListener(listener);
+    }
+
 
     /**
      * Constructor to be used with anonymous class that overrides makeEntityImage

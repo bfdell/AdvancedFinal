@@ -68,7 +68,8 @@ public class Connect4 extends Game {
         //         PLAYERS[round % 2]));
         // gamePanel.addEntity(new ConnectChip(this, new Point(120, 51), Color.ORANGE));
         // gamePanel.addEntity(new ConnectChip(this, new Point(51, 120), Color.ORANGE));
-        addKeyEvent(EventType.KPRESSED, e -> nextTurn(this, (KeyEvent) e), 1, KeyEvent.VK_ENTER);
+        addKeyEvent(EventType.KPRESSED, e -> nextTurn(this, (KeyEvent) e), 2, KeyEvent.VK_ENTER);
+        addKeyEvent(EventType.KPRESSED, e -> dropChip(this, (KeyEvent) e), 1, KeyEvent.VK_ENTER);
         addActionEvent(e -> startGame(this, (ActionEvent) e), 1, start);
         //SEE IF I CAN CALL NOT STATIC METHODS WITH METHOD REFERENCES
         addActionEvent(e -> requestFocus(this, (ActionEvent) e), 3);
@@ -184,6 +185,23 @@ public class Connect4 extends Game {
                 PLAYERS[round % 2]);
         gamePanel.addEntity(currentChip);
         currentChipX = 3;
+    }
+
+    public static void dropChip(Connect4 game, KeyEvent e) {
+        int col = game.currentChipX;
+        
+        int row = 0;
+        while(!game.spaces[row + 1][col]) {
+            row++;
+        }
+        Point dest = game.circlePoints[row][col];
+        ChipFalling dropChip = new ChipFalling(game.currentChip, game ,dest); 
+        dropChip.start();
+       try {
+        dropChip.join();
+    } catch (InterruptedException e1) {
+        e1.printStackTrace();
+    }
     }
 
     public void restartGame(Connect4 game, ActionEvent e) {

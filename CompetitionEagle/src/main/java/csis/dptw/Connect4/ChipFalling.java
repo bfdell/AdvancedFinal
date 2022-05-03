@@ -7,23 +7,23 @@ import java.awt.*;
 
 public class ChipFalling extends Animation{
 
+    public static final int CHIP_SPEED = 10;
     Point destination;
     
-    public ChipFalling(Entity entity, Game game, Point destination) {
-        super(entity, game);
+    public ChipFalling(ConnectChip chip, Connect4 game, Point destination) {
+        super(chip, game);
         this.destination = destination;
     }   
 
     @Override
     public void animation(){
-        
-            entity.position.y++;
+            entity.position.y += CHIP_SPEED;
     }
 
     @Override
     public boolean done(){
         // checking if the next spot in matrix is false or true
-        if(entity.position.y == destination.y){
+        if(entity.position.y <= destination.y){
             done = true;
         }
         return done;

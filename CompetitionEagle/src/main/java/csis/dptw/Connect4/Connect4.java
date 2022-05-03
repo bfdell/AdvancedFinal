@@ -70,33 +70,33 @@ public class Connect4 extends Game implements PropertyChangeListener {
         // gamePanel.addEntity(new ConnectChip(this, new Point(120, 51), Color.ORANGE));
         // gamePanel.addEntity(new ConnectChip(this, new Point(51, 120), Color.ORANGE));
         // addKeyEvent(EventType.KPRESSED, e -> nextTurn(this, (KeyEvent) e), 2, KeyEvent.VK_ENTER);
-        addKeyEvent(EventType.KPRESSED, e -> dropChip(this, (KeyEvent) e), 1, KeyEvent.VK_ENTER);
-        addActionEvent(e -> startGame(this, (ActionEvent) e), 1, start);
+        addKeyEvent(EventType.KPRESSED, this::dropChip, 1, KeyEvent.VK_ENTER);
+        addActionEvent(this::startGame, 1, start);
         //SEE IF I CAN CALL NOT STATIC METHODS WITH METHOD REFERENCES
-        addActionEvent(e -> requestFocus(this, (ActionEvent) e), 3);
-        addActionEvent(e -> restartGame(this, (ActionEvent) e), 2, restart);
-        addKeyEvent(EventType.KPRESSED, e -> moveChip(this, (KeyEvent) e), 3,
-                Arrays.asList(KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT));
+        addActionEvent(this::requestFocus, 3);
+        addActionEvent(this::restartGame, 2, restart);
         // addKeyEvent(EventType.KPRESSED, e -> keyTest(this, (KeyEvent) e), 2, KeyEvent.VK_UP);
+        addKeyEvent(EventType.KPRESSED, this::moveChip, 3,
+                Arrays.asList(KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT));
 
         gamePanel.repaint();
     }
 
-    public static void moveChip(Connect4 game, KeyEvent e) {
-        if (!game.currentChip.moving) {
+    public void moveChip(KeyEvent e) {
+        if (!currentChip.moving) {
             System.out.println("MOVED");
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 System.out.println("RIGHT");
-                // game.gamePanel.removeEntity(game.currentChip);
-                if (game.currentChipX > -1 && game.currentChipX < 6) {
-                    game.currentChip.position.x = game.circlePoints[0][++game.currentChipX].x;
-                    System.out.println(game.currentChipX);
+                // anel.removeEntity(currentChip);
+                if (currentChipX > -1 && currentChipX < 6) {
+                    currentChip.position.x = circlePoints[0][++currentChipX].x;
+                    System.out.println(currentChipX);
                 }
             } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 System.out.println("LEFT");
-                if (game.currentChipX > 0 && game.currentChipX < 7) {
-                    game.currentChip.position.x = game.circlePoints[0][--game.currentChipX].x;
-                    System.out.println(game.currentChipX);
+                if (currentChipX > 0 && currentChipX < 7) {
+                    currentChip.position.x = circlePoints[0][--currentChipX].x;
+                    System.out.println(currentChipX);
                 }
             }
         }
@@ -166,9 +166,9 @@ public class Connect4 extends Game implements PropertyChangeListener {
         statusLabel.setFont(TEXT_FONT);
     }
 
-    public void startGame(Connect4 game, ActionEvent e) {
-        game.gameStarted = true;
-        nextTurn(this, null);
+    public void startGame(ActionEvent e) {
+        gameStarted = true;
+        nextTurn(null);
         System.out.println("GAME STARTED");
 
         GridBagLayout layout = (GridBagLayout) top.getLayout();
@@ -180,44 +180,44 @@ public class Connect4 extends Game implements PropertyChangeListener {
         top.revalidate();
         top.validate();
         restart.setVisible(true);
-        game.addNewChip();
+        addNewChip();
     }
 
-    public static void dropChip(Connect4 game, KeyEvent e) {
-        if (!game.currentChip.moving) {
-            int col = game.currentChipX;
+    public void dropChip(KeyEvent e) {
+        if (!currentChip.moving) {
+            int col = currentChipX;
 
             int row = -1;
-            while (row < NUM_ROWS - 1 && !game.spaces[row + 1][col]) {
+            while (row < NUM_ROWS - 1 && !spaces[row + 1][col]) {
                 System.out.println(row);
                 row++;
             }
             if(row != -1) {   
-                game.spaces[row][col] = true;
-                Point dest = game.circlePoints[row][col];
-                game.currentChip.moving = true;
-                ChipFalling dropChip = new ChipFalling(game.currentChip, game, dest);
+                spaces[row][col] = true;
+                Point dest = circlePoints[row][col];
+                currentChip.moving = true;
+                ChipFalling dropChip = new ChipFalling(currentChip, this, dest);
                 dropChip.start();
             }
         }
     }
 
-    public void restartGame(Connect4 game, ActionEvent e) {
-        game.gamePanel.entities.clear();
-        game.round = -1;
-        nextTurn(game, null);
-        game.addNewChip();
+    public void restartGame(ActionEvent e) {
+        gamePanel.entities.clear();
+        round = -1;
+        nextTurn(null);
+        addNewChip();
     }
 
     public void determineWin(Connect4 game, KeyEvent e) {
 
     }
 
-    public void requestFocus(Connect4 game, ActionEvent e) {
-        game.gamePanel.requestFocus();
+    public void requestFocus(ActionEvent e) {
+        gamePanel.requestFocus();
     }
 
-    public void nextTurn(Connect4 game, KeyEvent e) {
+    public void nextTurn(KeyEvent e) {
         // System.out.println(e.getKeyCode());
         round++;
         currentPlayer = PLAYERS[round % 2];
@@ -237,7 +237,7 @@ public class Connect4 extends Game implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("DONE FALLING");
-        nextTurn(this, null);
+        nextTurn(null);
         addNewChip();
     }
 

@@ -78,7 +78,7 @@ public class CupPong extends Game {
         Point cur = e.getPoint();
         for(Entity cup : game.gamePanel.entities) {
             if(cup != game.ball && ((Cup)cup).colidesWith(cur)) {
-                System.out.println("Collieds");
+                System.out.println("col·li·sion");
                 game.moveCup((Cup) cup,(CupPong)game);
             }
         }

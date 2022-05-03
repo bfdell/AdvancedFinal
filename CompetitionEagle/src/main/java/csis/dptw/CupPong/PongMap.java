@@ -41,17 +41,20 @@ public class PongMap extends Map{
         ((Graphics2D) g).setStroke(new BasicStroke(5));
         g.drawLine(endX / 2, topY, endX / 2, height);
 
+        // g.setColor(Color.BLACK);
+        // g.drawOval(389, 305, 50, 50);
+        
         //////////////////////
-        int boardHeight = height - topY;
-        int boardWidth = rightX - leftX;
+        // int boardHeight = height - topY;
+        // int boardWidth = rightX - leftX;
 
-        int triangleOffset = (int) (boardWidth * triangleXPercent);
-        int outlineLeftX = (int) leftX + triangleOffset;
-        int outlineRightX = (int) rightX - triangleOffset;
+        // int triangleOffset = (int) (boardWidth * triangleXPercent);
+        // int outlineLeftX = (int) leftX + triangleOffset;
+        // int outlineRightX = (int) rightX - triangleOffset;
 
-        int cupTip = (int) (boardHeight * triangleYPercent) + topY;
-        int[] outlineXS = { outlineLeftX, outlineRightX, endX / 2 };
-        int[] outlineYS = { topY, topY, cupTip };
+        // int cupTip = (int) (boardHeight * triangleYPercent) + topY;
+        // int[] outlineXS = { outlineLeftX, outlineRightX, endX / 2 };
+        // int[] outlineYS = { topY, topY, cupTip };
 
         // Polygon cupOutline = new Polygon(outlineXS, outlineYS, outlineXS.length);
         // g.setColor(Color.BLACK);

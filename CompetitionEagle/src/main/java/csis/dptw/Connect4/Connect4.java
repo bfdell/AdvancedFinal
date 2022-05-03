@@ -65,7 +65,6 @@ public class Connect4 extends Game implements PropertyChangeListener {
         super.run();
         startingChipLocation = new Point(circlePoints[0][3].x,
                 circlePoints[0][3].y - (RING_WIDTH / 2 + (CHIP_PADDING * 2) + CHIP_RADIUS * 2));
-        addMouseEvent(EventType.MRELEASED, (e) -> myFirst(this), 2);
         // gamePanel.addEntity(new ConnectChip(this, startingChipLocation,
         //         PLAYERS[round % 2]));
         // gamePanel.addEntity(new ConnectChip(this, new Point(120, 51), Color.ORANGE));
@@ -165,10 +164,6 @@ public class Connect4 extends Game implements PropertyChangeListener {
         // JLabel winLabel = new JLabel();
         statusLabel = new JLabel();
         statusLabel.setFont(TEXT_FONT);
-    }
-
-    public void myFirst(Connect4 game) {
-        System.out.println(game.first++ + ",");
     }
 
     public void startGame(Connect4 game, ActionEvent e) {

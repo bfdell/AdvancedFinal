@@ -10,8 +10,8 @@ import java.awt.event.*;
  * @author Brian Dell
  * @version Spring 2022
  */
-public class Event implements Comparable<Event> {
-    EventFunction function;
+public class Event<T> implements Comparable<Event<T>> {
+    EventFunction<T> function;
     EventRestriction restriction;
 
     public EventType eventType;
@@ -38,21 +38,21 @@ public class Event implements Comparable<Event> {
         }
     }
 
-    public Event(EventType eventType, EventFunction function, int priorityNum) {
+    public Event(EventType eventType, EventFunction<T> function, int priorityNum) {
         this.function = function;
         this.eventType = eventType;
         this.priorityNum = priorityNum;
     }
 
-    public Event(EventType eventType, EventFunction function, int priorityNum, EventRestriction restriction) {
+    public Event(EventType eventType, EventFunction<T> function, int priorityNum, EventRestriction restriction) {
         this.function = function;
         this.eventType = eventType;
         this.priorityNum = priorityNum;
         this.restriction = restriction;
     }
 
-    public void execute(AWTEvent e) {
-        function.call(e);
+    public void execute(T event) {
+        function.call(event);
     }
 
     // public boolean validate(Object t) {
@@ -60,7 +60,7 @@ public class Event implements Comparable<Event> {
     // }
 
     @Override
-    public int compareTo(Event event) {
+    public int compareTo(Event<T> event) {
         return priorityNum - event.priorityNum;
     }
 }

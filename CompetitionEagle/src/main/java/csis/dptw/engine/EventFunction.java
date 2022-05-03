@@ -11,10 +11,10 @@ import java.awt.*;
  * @version Spring 2022
  */
 @FunctionalInterface
-public interface EventFunction {
+public interface EventFunction<T> {
 
     /**
      * Calls lambda function that was implemented to create instance of interface.
      */
-    public void call(AWTEvent e);
+    public void call(T event);
 }

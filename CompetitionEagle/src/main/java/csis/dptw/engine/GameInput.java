@@ -24,24 +24,24 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
     // ^^^ Probably not because only one input event can be done at a time mostly.
 
     // PriorityQueues for event types
-    private PriorityQueue<Event> mPressedQueue = new PriorityQueue<Event>();
-    private PriorityQueue<Event> mDraggedQueue = new PriorityQueue<Event>();
-    private PriorityQueue<Event> mMovedQueue = new PriorityQueue<Event>();
-    private PriorityQueue<Event> mReleasedQueue = new PriorityQueue<Event>();
-    private PriorityQueue<Event> mClickedQueue = new PriorityQueue<Event>();
-    private PriorityQueue<Event> mEnteredQueue = new PriorityQueue<Event>();
-    private PriorityQueue<Event> mExitedQueue = new PriorityQueue<Event>();
-    private PriorityQueue<Event> kPressedQueue = new PriorityQueue<Event>();
-    private PriorityQueue<Event> kTypedQueue = new PriorityQueue<Event>();
-    private PriorityQueue<Event> kReleasedQueue = new PriorityQueue<Event>();
-    private PriorityQueue<Event> actionEventQueue = new PriorityQueue<Event>();
+    private PriorityQueue<Event<MouseEvent>> mPressedQueue = new PriorityQueue<Event<MouseEvent>>();
+    private PriorityQueue<Event<MouseEvent>> mDraggedQueue = new PriorityQueue<Event<MouseEvent>>();
+    private PriorityQueue<Event<MouseEvent>> mMovedQueue = new PriorityQueue<Event<MouseEvent>>();
+    private PriorityQueue<Event<MouseEvent>> mReleasedQueue = new PriorityQueue<Event<MouseEvent>>();
+    private PriorityQueue<Event<MouseEvent>> mClickedQueue = new PriorityQueue<Event<MouseEvent>>();
+    private PriorityQueue<Event<MouseEvent>> mEnteredQueue = new PriorityQueue<Event<MouseEvent>>();
+    private PriorityQueue<Event<MouseEvent>> mExitedQueue = new PriorityQueue<Event<MouseEvent>>();
+    private PriorityQueue<Event<KeyEvent>> kPressedQueue = new PriorityQueue<Event<KeyEvent>>();
+    private PriorityQueue<Event<KeyEvent>> kTypedQueue = new PriorityQueue<Event<KeyEvent>>();
+    private PriorityQueue<Event<KeyEvent>> kReleasedQueue = new PriorityQueue<Event<KeyEvent>>();
+    private PriorityQueue<Event<ActionEvent>> actionEventQueue = new PriorityQueue<Event<ActionEvent>>();
 
     public GameInput() {
     }
 
     // Different methods for different restrictions or no restrictions
-    public void addMouseEvent(EventType eventType, EventFunction function, int priorityNum) {
-        Event eventToAdd = new Event(eventType, function, priorityNum);
+    public void addMouseEvent(EventType eventType, EventFunction<MouseEvent> function, int priorityNum) {
+        Event<MouseEvent> eventToAdd = new Event<MouseEvent>(eventType, function, priorityNum);
 
         switch (eventType) {
             case MPRESSED:
@@ -70,10 +70,10 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
         }
     }
 
-    public void addKeyEvent(EventType eventType, EventFunction function, int priorityNum,
+    public void addKeyEvent(EventType eventType, EventFunction<KeyEvent> function, int priorityNum,
             int keyRestriction) {
 
-        Event eventToAdd = new Event(eventType, function, priorityNum,
+        Event<KeyEvent> eventToAdd = new Event<KeyEvent>(eventType, function, priorityNum,
                 i -> ((KeyEvent) i).getKeyCode() == keyRestriction);
 
         switch (eventType) {
@@ -86,7 +86,7 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
                 char charRestriction = (char) keyRestriction;
                 EventRestriction keyTypeRestriction = i -> ((KeyEvent) i).getKeyChar() == charRestriction
                         || ((KeyEvent) i).getKeyChar() == (charRestriction | 0x20);
-                Event keyTypeEvent = new Event(eventType, function, priorityNum,
+                Event<KeyEvent> keyTypeEvent = new Event<KeyEvent>(eventType, function, priorityNum,
                         keyTypeRestriction);
                 kTypedQueue.add(keyTypeEvent);
                 break;
@@ -98,10 +98,10 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
         }
     }
 
-    public void addKeyEvent(EventType eventType, EventFunction function, int priorityNum,
+    public void addKeyEvent(EventType eventType, EventFunction<KeyEvent> function, int priorityNum,
             java.util.List<Integer> keyRestrictions) {
 
-        Event eventToAdd = new Event(eventType, function, priorityNum,
+        Event<KeyEvent> eventToAdd = new Event<KeyEvent>(eventType, function, priorityNum,
                 i -> keyRestrictions.contains(((KeyEvent) i).getKeyCode()));
 
         switch (eventType) {
@@ -114,7 +114,7 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
                 EventRestriction keyTypeRestriction = i -> keyRestrictions.stream()
                         .anyMatch(k -> ((KeyEvent) i).getKeyChar() == (char) (int) k
                                 || ((KeyEvent) i).getKeyChar() == ((char) (int) k | 0x20));
-                Event keyTypeEvent = new Event(eventType, function, priorityNum,
+                Event<KeyEvent> keyTypeEvent = new Event<KeyEvent>(eventType, function, priorityNum,
                         keyTypeRestriction);
                 kTypedQueue.add(keyTypeEvent);
                 break;
@@ -127,23 +127,23 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
     }
 
     // ALL ACTION EVENTS
-    public void addActionEvent(EventFunction function, int priorityNum) {
-        Event actionEvent = new Event(EventType.Action, function, priorityNum, i -> true);
+    public void addActionEvent(EventFunction<ActionEvent> function, int priorityNum) {
+        Event<ActionEvent> actionEvent = new Event<ActionEvent>(EventType.Action, function, priorityNum, i -> true);
         actionEventQueue.add(actionEvent);
     }
 
-    public void addActionEvent(EventFunction function, int priorityNum, AbstractButton button) {
+    public void addActionEvent(EventFunction<ActionEvent> function, int priorityNum, AbstractButton button) {
         button.addActionListener(this);
-        Event actionEvent = new Event(EventType.Action, function, priorityNum,
+        Event<ActionEvent> actionEvent = new Event<ActionEvent>(EventType.Action, function, priorityNum,
                 e -> ((ActionEvent) e).getSource() == button);
         actionEventQueue.add(actionEvent);
 
     }
 
-    public void addActionEvent(EventFunction function, int priorityNum, AbstractButton button,
+    public void addActionEvent(EventFunction<ActionEvent> function, int priorityNum, AbstractButton button,
             EventRestriction restriction) {
         button.addActionListener(this);
-        Event actionEvent = new Event(EventType.Action, function, priorityNum, restriction);
+        Event<ActionEvent> actionEvent = new Event<ActionEvent>(EventType.Action, function, priorityNum, restriction);
         actionEventQueue.add(actionEvent);
     }
 

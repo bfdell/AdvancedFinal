@@ -15,14 +15,6 @@ public class Map extends JPanel {
         setFocusable(true);
     }
 
-    public void addEntity(Entity entity) {
-        entities.add(entity);
-    }
-
-    public boolean removeEntity(Entity entity) {
-        return entities.remove(entity);
-    }
-
     @Override
     public void paintComponent(Graphics g) {
         paintBackground((Graphics2D) g);

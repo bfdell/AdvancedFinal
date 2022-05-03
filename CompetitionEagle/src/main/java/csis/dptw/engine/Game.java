@@ -48,6 +48,14 @@ public abstract class Game extends GameInput implements Runnable {
         AWTEvent event = new MouseEvent(gamePanel, i, i, i, i, i, i, false);
     }
 
+    public void addEntity(Entity entity) {
+        gamePanel.entities.add(entity);
+    }
+
+    public boolean removeEntity(Entity entity) {
+        return  gamePanel.entities.remove(entity);
+    }
+
     public abstract void initializeMap();
 
     // public abstract void addAllMouseEvents();

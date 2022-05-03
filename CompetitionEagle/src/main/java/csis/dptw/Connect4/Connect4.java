@@ -65,11 +65,6 @@ public class Connect4 extends Game implements PropertyChangeListener {
         super.run();
         startingChipLocation = new Point(circlePoints[0][3].x,
                 circlePoints[0][3].y - (RING_WIDTH / 2 + (CHIP_PADDING * 2) + CHIP_RADIUS * 2));
-        // gamePanel.addEntity(new ConnectChip(this, startingChipLocation,
-        //         PLAYERS[round % 2]));
-        // gamePanel.addEntity(new ConnectChip(this, new Point(120, 51), Color.ORANGE));
-        // gamePanel.addEntity(new ConnectChip(this, new Point(51, 120), Color.ORANGE));
-        // addKeyEvent(EventType.KPRESSED, e -> nextTurn(this, (KeyEvent) e), 2, KeyEvent.VK_ENTER);
         addKeyEvent(EventType.KPRESSED, this::dropChip, 1, KeyEvent.VK_ENTER);
         addActionEvent(this::startGame, 1, start);
         //SEE IF I CAN CALL NOT STATIC METHODS WITH METHOD REFERENCES
@@ -78,8 +73,6 @@ public class Connect4 extends Game implements PropertyChangeListener {
         // addKeyEvent(EventType.KPRESSED, e -> keyTest(this, (KeyEvent) e), 2, KeyEvent.VK_UP);
         addKeyEvent(EventType.KPRESSED, this::moveChip, 3,
                 Arrays.asList(KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT));
-
-        gamePanel.repaint();
     }
 
     public void moveChip(KeyEvent e) {
@@ -168,7 +161,7 @@ public class Connect4 extends Game implements PropertyChangeListener {
 
     public void startGame(ActionEvent e) {
         gameStarted = true;
-        nextTurn(null);
+       nextTurn();
         System.out.println("GAME STARTED");
 
         GridBagLayout layout = (GridBagLayout) top.getLayout();
@@ -205,7 +198,7 @@ public class Connect4 extends Game implements PropertyChangeListener {
     public void restartGame(ActionEvent e) {
         gamePanel.entities.clear();
         round = -1;
-        nextTurn(null);
+       nextTurn();
         addNewChip();
     }
 
@@ -217,7 +210,7 @@ public class Connect4 extends Game implements PropertyChangeListener {
         gamePanel.requestFocus();
     }
 
-    public void nextTurn(KeyEvent e) {
+    public void nextTurn() {
         // System.out.println(e.getKeyCode());
         round++;
         currentPlayer = PLAYERS[round % 2];
@@ -237,7 +230,7 @@ public class Connect4 extends Game implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("DONE FALLING");
-        nextTurn(null);
+       nextTurn();
         addNewChip();
     }
 
@@ -245,7 +238,7 @@ public class Connect4 extends Game implements PropertyChangeListener {
         //CLONE POINT
         currentChip = new ConnectChip(this, (Point) startingChipLocation.clone(),
                 PLAYERS[round % 2]);
-        gamePanel.addEntity(currentChip);
+        addEntity(currentChip);
         currentChipX = 3;
         currentChip.addPropertyChangeListener(this, "landed");
     }

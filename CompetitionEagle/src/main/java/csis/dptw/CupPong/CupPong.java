@@ -35,13 +35,13 @@ public class CupPong extends Game {
         super.run();
         
         addCups();
-        gamePanel.addEntity(ball);
+        addEntity(ball);
         //outlineCups();
         addMouseEvent(EventType.MPRESSED, e -> clickInCup(this, (MouseEvent) e), 1);
     }
 
     public void outlineCups(int x, int y){
-        // gamePanel.addEntity(new OutlineOfCups(this, new Point(x, y)));
+        // addEntity(new OutlineOfCups(this, new Point(x, y)));
     }
 
     public void addCups(){
@@ -61,7 +61,7 @@ public class CupPong extends Game {
                x = 389;
            }
 
-            gamePanel.addEntity(new Cup(this, new Point(x, y), "CompetitionEagle/src/main/java/csis/dptw/BeFunky-photo.png"));
+            addEntity(new Cup(this, new Point(x, y), "CompetitionEagle/src/main/java/csis/dptw/BeFunky-photo.png"));
             outlineCups(x, y);
             x += 48;
         }

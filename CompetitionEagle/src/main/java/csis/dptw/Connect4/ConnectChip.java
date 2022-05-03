@@ -21,6 +21,7 @@ public class ConnectChip extends Entity {
     public final ConnectPlayer PLAYER;
 
     public boolean landed = false;
+    public boolean moving = false;
 
     public ConnectChip(Game game, Point position, ConnectPlayer player) {
         super(game, position);
@@ -34,5 +35,11 @@ public class ConnectChip extends Entity {
         g.setColor(PLAYER.DARKER_COLOR);
         g.setStroke(new BasicStroke(RING_WIDTH));
         PaintHelper.drawCircleFromMiddle(position, radius, g);
+    }
+
+    public void setLanded(boolean newLanded) {
+        boolean oldLanded = landed;
+       landed = newLanded;
+       eventHelper.firePropertyChange("landed", oldLanded, true);
     }
 }

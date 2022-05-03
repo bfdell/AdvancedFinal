@@ -31,8 +31,9 @@ public class ChipFalling extends Animation{
     public boolean done(){
         // checking if the next spot in matrix is false or true
         if(entity.position.y >= destination.y){
+            entity.position.y = destination.y;
             done = true;
-            ((ConnectChip)entity).landed = true;
+            ((ConnectChip)entity).setLanded(true);
             // notifyAll();
         }
         return done;

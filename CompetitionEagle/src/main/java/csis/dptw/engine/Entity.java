@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 
 
 public class Entity implements Serializable { 
-    private PropertyChangeSupport eventHelper = new PropertyChangeSupport(this);
+    protected PropertyChangeSupport eventHelper = new PropertyChangeSupport(this);
     private Toolkit toolkit = Toolkit.getDefaultToolkit();
     private Image entityImage;
     private Game game;

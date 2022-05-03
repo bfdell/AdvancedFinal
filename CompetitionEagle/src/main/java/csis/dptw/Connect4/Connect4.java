@@ -82,7 +82,7 @@ public class Connect4 extends Game {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 System.out.println("RIGHT");
                 if(game.currentChip.position.x > -1 && game.currentChip.position.x < 7) {
-                    game.currentChip.position.x = game.currentChipX++;
+                    game.currentChip.position.x = game.circlePoints[0][game.currentChipX++].x;
                 }
         } else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
             System.out.println("LEFT");

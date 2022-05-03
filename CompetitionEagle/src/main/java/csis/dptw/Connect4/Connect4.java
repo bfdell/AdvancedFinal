@@ -5,6 +5,7 @@ import csis.dptw.engine.Event.EventType;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -69,8 +70,15 @@ public class Connect4 extends Game {
         //SEE IF I CAN CALL NOT STATIC METHODS WITH METHOD REFERENCES
         addActionEvent(e -> requestFocus(this, (ActionEvent) e), 3);
         addActionEvent(e -> restartGame(this, (ActionEvent) e), 2, restart);
+        addKeyEvent(EventType.KTYPED, e -> keyTest(this, (KeyEvent) e), 3, Arrays.asList(KeyEvent.VK_UP,KeyEvent.VK_RIGHT,KeyEvent.VK_LEFT,KeyEvent.VK_DOWN));
+        // addKeyEvent(EventType.KPRESSED, e -> keyTest(this, (KeyEvent) e), 2, KeyEvent.VK_UP);
 
         gamePanel.repaint();
+    }
+
+    public static void keyTest(Connect4 game, KeyEvent e) {
+        System.out.println("SDFSF");
+        System.out.print(e.getKeyChar());
     }
 
     @Override
@@ -136,19 +144,19 @@ public class Connect4 extends Game {
         statusLabel = new JLabel();
         statusLabel.setFont(TEXT_FONT);
     }
-
+    
     public void myFirst(Connect4 game) {
         System.out.println(game.first++ + ",");
     }
-
+    
     public void startGame(Connect4 game, ActionEvent e) {
         game.gameStarted = true;
         nextTurn(this, null);
         System.out.println("GAME STARTED");
-
+        
         GridBagLayout layout = (GridBagLayout) top.getLayout();
         GridBagConstraints gbc = layout.getConstraints(start);
-
+        
         top.remove(start);
         updateStatus();
         top.add(statusLabel, gbc);
@@ -156,7 +164,7 @@ public class Connect4 extends Game {
         top.validate();
         restart.setVisible(true);
     }
-
+    
     public void restartGame(Connect4 game, ActionEvent e) {
         game.round = 1;
         currentPlayer = PLAYERS[round % 2];
@@ -165,7 +173,7 @@ public class Connect4 extends Game {
         game.gamePanel.repaint();
         updateStatus();
     }
-
+       
     public void determineWin(Connect4 game, KeyEvent e) {
 
     }
@@ -185,5 +193,10 @@ public class Connect4 extends Game {
     private void updateStatus() {
         statusLabel.setForeground(currentPlayer.DARKER_COLOR);
         statusLabel.setText(currentPlayer.NAME + TURN);
+    }   
+
+    public void moveChip() {
+        
     }
+
 }

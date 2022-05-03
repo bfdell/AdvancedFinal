@@ -9,19 +9,21 @@ import javax.swing.AbstractButton;
 import csis.dptw.engine.Event.EventType;
 
 /**
- * This class represents input sources for a Game, which includes MouseEvents and KeyEvents.
- * It also implements many functionality for passing in lambda funcions to be executed by events.
- * It organizes events into different PriorityQueues for each type of event, 
- * So the order that the lambda functions get executed in can be assigned. 
+ * This class represents input sources for a Game, which includes MouseEvents
+ * and KeyEvents.
+ * It also implements many functionality for passing in lambda funcions to be
+ * executed by events.
+ * It organizes events into different PriorityQueues for each type of event,
+ * So the order that the lambda functions get executed in can be assigned.
  * 
  * @author Brian Dell
  * @version Spring 2022
  */
 public abstract class GameInput implements MouseMotionListener, MouseListener, KeyListener, ActionListener {
-    //MAKE anonymous threads that carry out every event type at the same time?
-    //^^^ Probably not because only one input event can be done at a time mostly.
+    // MAKE anonymous threads that carry out every event type at the same time?
+    // ^^^ Probably not because only one input event can be done at a time mostly.
 
-    //PriorityQueues for event types
+    // PriorityQueues for event types
     private PriorityQueue<Event> mPressedQueue = new PriorityQueue<Event>();
     private PriorityQueue<Event> mDraggedQueue = new PriorityQueue<Event>();
     private PriorityQueue<Event> mMovedQueue = new PriorityQueue<Event>();
@@ -37,7 +39,7 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
     public GameInput() {
     }
 
-    //Different methods for different restrictions or no restrictions
+    // Different methods for different restrictions or no restrictions
     public void addMouseEvent(EventType eventType, EventFunction function, int priorityNum) {
         Event eventToAdd = new Event(eventType, function, priorityNum);
 
@@ -79,8 +81,8 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
                 kPressedQueue.add(eventToAdd);
                 break;
             case KTYPED:
-                //IF OUR EVENT IS A KEY_TYPE, ALLOW METHOD TO EXECUTE IF THE CHAR CODE
-                //MATCHES THE UPPER OR LOWERCASE LETTER
+                // IF OUR EVENT IS A KEY_TYPE, ALLOW METHOD TO EXECUTE IF THE CHAR CODE
+                // MATCHES THE UPPER OR LOWERCASE LETTER
                 char charRestriction = (char) keyRestriction;
                 EventRestriction keyTypeRestriction = i -> ((KeyEvent) i).getKeyChar() == charRestriction
                         || ((KeyEvent) i).getKeyChar() == (charRestriction | 0x20);
@@ -96,31 +98,62 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
         }
     }
 
-    //ALL ACTION EVENTS
+    public void addKeyEvent(EventType eventType, EventFunction function, int priorityNum,
+            java.util.List<Integer> keyRestrictions) {
+
+        Event eventToAdd = new Event(eventType, function, priorityNum,
+                i -> keyRestrictions.contains(((KeyEvent) i).getKeyCode()));
+
+        switch (eventType) {
+            case KPRESSED:
+                kPressedQueue.add(eventToAdd);
+                break;
+            case KTYPED:
+                // IF OUR EVENT IS A KEY_TYPE, ALLOW METHOD TO EXECUTE IF THE CHAR CODE
+                // MATCHES THE UPPER OR LOWERCASE LETTER
+                EventRestriction keyTypeRestriction = i -> keyRestrictions.stream()
+                        .anyMatch(k -> ((KeyEvent) i).getKeyChar() == (char) (int) k
+                                || ((KeyEvent) i).getKeyChar() == ((char) (int) k | 0x20));
+                Event keyTypeEvent = new Event(eventType, function, priorityNum,
+                        keyTypeRestriction);
+                kTypedQueue.add(keyTypeEvent);
+                break;
+            case KRELEASED:
+                kReleasedQueue.add(eventToAdd);
+                break;
+            default:
+                break;
+        }
+    }
+
+    // ALL ACTION EVENTS
     public void addActionEvent(EventFunction function, int priorityNum) {
         Event actionEvent = new Event(EventType.Action, function, priorityNum, i -> true);
         actionEventQueue.add(actionEvent);
     }
+
     public void addActionEvent(EventFunction function, int priorityNum, AbstractButton button) {
         button.addActionListener(this);
-        Event actionEvent = new Event(EventType.Action, function, priorityNum, e -> ((ActionEvent) e).getSource() == button);
+        Event actionEvent = new Event(EventType.Action, function, priorityNum,
+                e -> ((ActionEvent) e).getSource() == button);
         actionEventQueue.add(actionEvent);
 
     }
-    public void addActionEvent(EventFunction function, int priorityNum, AbstractButton button, EventRestriction restriction) {
+
+    public void addActionEvent(EventFunction function, int priorityNum, AbstractButton button,
+            EventRestriction restriction) {
         button.addActionListener(this);
         Event actionEvent = new Event(EventType.Action, function, priorityNum, restriction);
         actionEventQueue.add(actionEvent);
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
         actionEventQueue.stream().filter(event -> event.restriction.isValid(e))
-        .forEach(event -> event.execute(e));
+                .forEach(event -> event.execute(e));
     }
 
-    //MAYBE CHANGE MOUSE EVENT PARAMETER TO THE POINT OF THE MOUSE EVENT
+    // MAYBE CHANGE MOUSE EVENT PARAMETER TO THE POINT OF THE MOUSE EVENT
     @Override
     public void mouseDragged(MouseEvent e) {
         mDraggedQueue.forEach(event -> event.execute(e));

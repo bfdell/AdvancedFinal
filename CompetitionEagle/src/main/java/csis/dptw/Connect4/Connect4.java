@@ -36,25 +36,22 @@ public class Connect4 extends Game {
     public static final String RESTART = "Restart Game";
     public static final String PLAY_AGAIN = "Play Again";
     private static final int CHIP_LANDED_PRIORITY = 1;
-    
+
     private JButton restartButton = new JButton(RESTART);
     private JButton startButton = new JButton("START");
     private JLabel statusLabel = new JLabel();
-    private JPanel titlePanel =  new JPanel();
+    private JPanel titlePanel = new JPanel();
 
     private final ConnectPlayer[] PLAYERS = new ConnectPlayer[2];
     private boolean gameStarted = false;
     private int currentRound = 0;
     private ConnectPlayer currentPlayer;
     private ConnectChip currentChip;
-    private ConnectChip previousChip;
     private int currentChipCol;
     private int currentDstRow;
-    public Point startingChipLocation;
-    Point[][] circlePoints = new Point[NUM_ROWS][NUM_COLS];
-    ConnectPlayer[][] takenSpots = new ConnectPlayer[NUM_ROWS][NUM_COLS];
-
-   
+    private ConnectPlayer[][] takenSpots = new ConnectPlayer[NUM_ROWS][NUM_COLS];
+    private Point startingChipLocation;
+    private Point[][] circlePoints = new Point[NUM_ROWS][NUM_COLS];
 
     public Connect4() {
         super();
@@ -70,11 +67,77 @@ public class Connect4 extends Game {
                 circlePoints[0][3].y - (RING_WIDTH / 2 + (CHIP_PADDING * 2) + CHIP_RADIUS * 2));
 
         addActionEvent(this::startGame, 1, startButton);
-        addActionEvent(this::requestFocus, 3);
         addActionEvent(this::restartGame, 2, restartButton);
         addKeyEvent(EventType.KPRESSED, this::shiftChip, 1,
                 Arrays.asList(KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT));
         addKeyEvent(EventType.KPRESSED, this::dropChip, 2, KeyEvent.VK_ENTER);
+    }
+
+    @Override
+    public void initializeMap() {
+        gamePanel = new ConnectBoard(new BorderLayout(), circlePoints, CHIP_RADIUS, CHIP_PADDING, RING_WIDTH);
+        GridBagLayout layout = new GridBagLayout();
+        titlePanel.setLayout(layout);
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        // gbc.weightx = 0.5;
+        // gbc.gridx = 0;
+        // gbc.gridy = 0;
+        // gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+
+        // JLabel one = new JLabel(PLAYER1);
+        // Font playerOneFont = TEXT_FONT;
+        // one.setFont(playerOneFont);
+        // one.setForeground(PLAYERS[1].DARKER_COLOR);
+        // titlePanel.add(one, gbc);
+
+        gbc.weightx = 0.5;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.NORTH;
+
+        Font titleFont = TITLE_FONT;
+        JLabel titleLabel = new JLabel(CONNECT4);
+        titleLabel.setFont(titleFont);
+        titleLabel.setForeground(TITLE_COLOR);
+        titlePanel.add(titleLabel, gbc);
+
+        // gbc.weightx = 0.5;
+        // gbc.gridx = 2;
+        // gbc.gridy = 0;
+        // gbc.anchor = GridBagConstraints.FIRST_LINE_END;
+        // Font playerTwoFont = TEXT_FONT;
+        // JLabel three = new JLabel(PLAYER2);
+        // three.setFont(playerTwoFont);
+        // three.setForeground(PLAYERS[0].DARKER_COLOR);
+        // titlePanel.add(three, gbc);
+
+        gbc.weightx = 0.5;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.BELOW_BASELINE;
+        titlePanel.add(startButton, gbc);
+
+        gbc.gridy = 2;
+        titlePanel.add(restartButton, gbc);
+
+        restartButton.setVisible(false);
+        statusLabel.setFont(TEXT_FONT);
+        gamePanel.add(titlePanel, BorderLayout.NORTH);
+    }
+
+    @Override
+    public void keyPressed(KeyEvent event) {
+        if (gameStarted) {
+            super.keyPressed(event);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        super.actionPerformed(event);
+        gamePanel.requestFocus();
+
     }
 
     public void shiftChip(KeyEvent e) {
@@ -93,71 +156,10 @@ public class Connect4 extends Game {
         }
     }
 
-    @Override
-    public void initializeMap() {
-        gamePanel = new ConnectBoard(new BorderLayout(), circlePoints, CHIP_RADIUS, CHIP_PADDING, RING_WIDTH);
-
-        GridBagLayout layout = new GridBagLayout();
-        titlePanel.setLayout(layout);
-        GridBagConstraints gbc = new GridBagConstraints();
-
-        gbc.weightx = 0.5;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-
-        JLabel one = new JLabel(PLAYER1);
-        Font playerOneFont = TEXT_FONT;
-        one.setFont(playerOneFont);
-        one.setForeground(PLAYERS[1].DARKER_COLOR);
-        titlePanel.add(one, gbc);
-
-        gbc.weightx = 0.5;
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.NORTH;
-
-        Font titleFont = TITLE_FONT;
-        JLabel two = new JLabel(CONNECT4);
-        two.setFont(titleFont);
-        two.setForeground(TITLE_COLOR);
-        titlePanel.add(two, gbc);
-
-        gbc.weightx = 0.5;
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.FIRST_LINE_END;
-        Font playerTwoFont = TEXT_FONT;
-        JLabel three = new JLabel(PLAYER2);
-        three.setFont(playerTwoFont);
-        three.setForeground(PLAYERS[0].DARKER_COLOR);
-        titlePanel.add(three, gbc);
-
-        gbc.weightx = 0.5;
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.BELOW_BASELINE;
-        titlePanel.add(startButton, gbc);
-
-        gamePanel.add(titlePanel, BorderLayout.NORTH);
-        gbc.gridy = 2;
-        titlePanel.add(restartButton, gbc);
-        restartButton.setVisible(false);
-
-        statusLabel.setFont(TEXT_FONT);
-    }
-
-    @Override
-    public void keyPressed(KeyEvent event) {
-        if (gameStarted) {
-            super.keyPressed(event);
-        }
-    }
-
     public void startGame(ActionEvent e) {
         gameStarted = true;
         nextTurn();
-        addNewChip();
+        addNextChip();
         System.out.println("GAME STARTED");
 
         GridBagLayout layout = (GridBagLayout) titlePanel.getLayout();
@@ -196,7 +198,7 @@ public class Connect4 extends Game {
         currentRound = 0;
         takenSpots = new ConnectPlayer[NUM_ROWS][NUM_COLS];
         nextTurn();
-        addNewChip();
+        addNextChip();
     }
 
     public void nextTurn() {
@@ -208,20 +210,15 @@ public class Connect4 extends Game {
 
     public void chipFell(PropertyChangeEvent evt) {
         System.out.println("IS GAME OVER: " + gameOver());
-        previousChip = currentChip;
         nextTurn();
-        addNewChip();
+        addNextChip();
     }
 
-    public void addNewChip() {
+    public void addNextChip() {
         currentChip = new ConnectChip(this, (Point) startingChipLocation.clone(),
                 PLAYERS[currentRound % 2]);
         addEntity(currentChip);
         currentChipCol = 3;
-    }
-
-    private void requestFocus(ActionEvent e) {
-        gamePanel.requestFocus();
     }
 
     public void playAgain() {
@@ -244,6 +241,14 @@ public class Connect4 extends Game {
         if (matrixFilled()) {
             return true;
         }
+        //DISPLAY MESSAGE ABOUT MATRIX BEING FILLED
+
+        LinkedList<Point> vertical = checkVertical(currentDstRow, currentChipCol);
+        LinkedList<Point> horizontal = checkHorizontal(currentDstRow, currentChipCol);
+        LinkedList<Point> diagonalOne = BL_TR_Diagonal(currentDstRow, currentChipCol);
+        LinkedList<Point> diagonalTwo = TL_BR_Diagonal(currentDstRow, currentChipCol);
+ 
+
         if (fourInARow(currentDstRow, currentChipCol)) {
             return true;
         }

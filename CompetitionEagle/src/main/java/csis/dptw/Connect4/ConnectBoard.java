@@ -51,11 +51,8 @@ public class ConnectBoard extends Map {
         super.paintComponent(g);
         g.setColor(LIGHT_BLUE);
         paintBackground((Graphics2D) g);
-
         g.setClip(BOARD_AREA);
         g.setColor(DARK_BLUE);
-        paintBackground((Graphics2D) g);
-
         paintEmptySpots((Graphics2D) g);
         paintEntities((Graphics2D) g);
         paintRings((Graphics2D) g);
@@ -69,8 +66,6 @@ public class ConnectBoard extends Map {
 
     private void paintRings(Graphics2D g) {
         g.setColor(DARK_BLUE);
-        //DARK BLUE^^^
-        // g.setColor(Color.BLACK);
         g.setStroke(new BasicStroke(RING_WIDTH));
         Arrays.stream(circlePoints)
                 .forEach(pa -> Arrays.stream(pa).forEach(p -> PaintHelper.drawCircleFromMiddle(p, CHIP_RADIUS, g)));
@@ -94,7 +89,7 @@ public class ConnectBoard extends Map {
         }
     }
 
-    public Area createBoardArea(Rectangle2D.Double baseBoard) {
+    private Area createBoardArea(Rectangle2D.Double baseBoard) {
         Area baseArea = new Area(baseBoard);
         Area boardArea = new Area(baseBoard);
 

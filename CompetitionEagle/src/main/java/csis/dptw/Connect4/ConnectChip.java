@@ -17,7 +17,6 @@ public class ConnectChip extends Entity {
     ConnectPlayer player;
     public final static int radius = 40;
     Color ringColor;
-    // final int PLAYER_NUM;
     public final ConnectPlayer PLAYER;
 
     public boolean landed = false;

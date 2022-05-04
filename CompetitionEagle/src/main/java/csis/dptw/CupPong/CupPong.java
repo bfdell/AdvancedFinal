@@ -40,7 +40,7 @@ public class CupPong extends Game {
     public void run() {
         super.run();
         
-        addCups();
+        // addCups();
         addEntity(ball);
         //outlineCups();
         addMouseEvent(EventType.MPRESSED, e -> clickInCup(this, (MouseEvent) e), 1);
@@ -112,5 +112,6 @@ public class CupPong extends Game {
         ////////////////REMOVE ALL BUTTONS AND SHIT
         ((PongMap)gamePanel).remove(play);
         ((PongMap)gamePanel).remove(mainMenu);
+        addCups();
     }
 }

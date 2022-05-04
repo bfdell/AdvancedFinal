@@ -80,4 +80,9 @@ public class PongMap extends Map{
         // g.drawPolygon(cupOutline);
     }
 
+    // @Override
+    // public void paintEntities(Graphics2D g) {
+
+    // }
+
 }

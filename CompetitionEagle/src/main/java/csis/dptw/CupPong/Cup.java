@@ -26,7 +26,7 @@ public class Cup extends Entity {
     @Override
     public void paint(Graphics2D g) {
         super.paint(g);
-        g.draw(cupColision);
+        //g.draw(cupColision);
     }
     
     //https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse 

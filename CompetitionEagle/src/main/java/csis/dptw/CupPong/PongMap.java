@@ -14,33 +14,50 @@ public class PongMap extends Map{
     public double triangleYPercent = .35;
     public double triangleXPercent = .15;
 
+    public boolean playing = false;
+
+    final String CUP = "Cup";
+    final String PONG = "Pong";
+
     public PongMap(LayoutManager layout, int width, int height) {
         super(layout, App.gameDimension);
         //TODO Auto-generated constructor stub
     }
-
+    
     @Override
     public void paintBackground(Graphics2D g) {
-        int endX = getWidth();
-        int height = getHeight();
+        if (playing) {
+            int endX = getWidth();
+            int height = getHeight();
 
-        int topY = (int) (height * boardYPercent);
+            int topY = (int) (height * boardYPercent);
 
-        int xOffset = (int) (endX * boardXPercent);
-        int leftX = xOffset;
-        int rightX = endX - xOffset;
+            int xOffset = (int) (endX * boardXPercent);
+            int leftX = xOffset;
+            int rightX = endX - xOffset;
 
-        int[] boardXS = { 0, endX, rightX, leftX };
-        int[] boardYS = { height, height, topY, topY };
+            int[] boardXS = { 0, endX, rightX, leftX };
+            int[] boardYS = { height, height, topY, topY };
 
-        Polygon board = new Polygon(boardXS, boardYS, boardXS.length);
-        g.setColor(DARK_GREEN);
-        g.fillPolygon(board);
-        g.setColor(Color.WHITE);
-        ((Graphics2D) g).setStroke(new BasicStroke(10));
-        g.drawPolygon(board);
-        ((Graphics2D) g).setStroke(new BasicStroke(5));
-        g.drawLine(endX / 2, topY, endX / 2, height);
+            Polygon board = new Polygon(boardXS, boardYS, boardXS.length);
+            g.setColor(DARK_GREEN);
+            g.fillPolygon(board);
+            g.setColor(Color.WHITE);
+            ((Graphics2D) g).setStroke(new BasicStroke(10));
+            g.drawPolygon(board);
+            ((Graphics2D) g).setStroke(new BasicStroke(5));
+            g.drawLine(endX / 2, topY, endX / 2, height);
+        } else {
+            Font newFont = new Font("SansSerif", Font.BOLD, 30);
+            g.setFont(newFont);
+    
+            g.setColor(Color.RED);
+            g.drawString(CUP, (getWidth() - g.getFontMetrics().stringWidth(CUP + " " + PONG))/2, 50);
+    
+            g.setColor(Color.BLACK);
+            g.drawString(" "+ PONG, (getWidth() - g.getFontMetrics().stringWidth(CUP + " " + PONG))/2 + (g.getFontMetrics().stringWidth(CUP)), 50);
+        }
+        
 
         // g.setColor(Color.BLACK);
         // g.drawOval(389, 305, 50, 50);
@@ -62,5 +79,10 @@ public class PongMap extends Map{
         // ((Graphics2D) g).setStroke(new BasicStroke(8));
         // g.drawPolygon(cupOutline);
     }
-    
+
+    // @Override
+    // public void paintEntities(Graphics2D g) {
+
+    // }
+
 }

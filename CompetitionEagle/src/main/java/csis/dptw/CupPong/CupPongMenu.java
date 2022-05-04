@@ -4,11 +4,11 @@ import java.awt.*;
 import javax.swing.*;
 
 import csis.dptw.App;
+import csis.dptw.engine.Game;
 import csis.dptw.engine.Map;
 import java.awt.event.*;
 
 public class CupPongMenu extends Map implements ActionListener, Runnable{
-     JLabel cupPongLabel = new JLabel("Cup Pong");
     final String CUP = "Cup";
     final String PONG = "Pong";
     private JButton play;
@@ -17,7 +17,7 @@ public class CupPongMenu extends Map implements ActionListener, Runnable{
     public CupPongMenu(LayoutManager layout, int width, int height) {
         super(new FlowLayout(), App.gameDimension);
     }
-
+    
     @Override
     public void run() {
         play = new JButton("Play");
@@ -47,6 +47,9 @@ public class CupPongMenu extends Map implements ActionListener, Runnable{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+        if (e.getSource() == play) {
+            Game playGame = new CupPong();
+            // this = new PongMap(new FlowLayout(), LANE_WIDTH, LANE_WIDTH);
+        }
     }
 }

@@ -41,7 +41,7 @@ public class CupPong extends Game {
         super.run();
         
         // addCups();
-        addEntity(ball);
+        // addEntity(ball);
         //outlineCups();
         addMouseEvent(EventType.MPRESSED, e -> clickInCup(this, (MouseEvent) e), 1);
         addActionEvent(this::startGame, 1, play);
@@ -113,5 +113,6 @@ public class CupPong extends Game {
         ((PongMap)gamePanel).remove(play);
         ((PongMap)gamePanel).remove(mainMenu);
         addCups();
+        addEntity(ball);
     }
 }

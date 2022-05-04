@@ -42,16 +42,15 @@ public class BallAnimation extends Animation {
         }
         if(!descending) {
             ball.size += 2;
-            ball.position.x += dx1;
-            ball.position.y += dy1;
+           // ball.position.x += dx1;
+            ball.position.y -= dy1;
 
             if(ball.size > MAX_SIZE) {
                 descending = true;
             }
         } else {
-
-            ball.size -= 2;
-            ball.position.x += dx1;
+                ball.size -= 2;
+                ball.position.y += dy1;
             
             // if(Ball.colidesWith(ball.position)) {
             //     ball.position.y -= dy1;
@@ -63,7 +62,10 @@ public class BallAnimation extends Animation {
 
     @Override
     public boolean done(){
-       return currentFrame < TOTAL_FRAMES;
+        if(descending && ball.position.y >= destination.y ){
+            return true;
+        }
+       return false;
     }
 
     public static int[] calculateSlope(Point p1, Point p2) {

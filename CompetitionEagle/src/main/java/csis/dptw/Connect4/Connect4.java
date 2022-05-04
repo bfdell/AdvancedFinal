@@ -250,6 +250,10 @@ public class Connect4 extends Game {
         if(matrixFilled()){
             return true;
         }
+        if(fourInARow()){
+            return true;
+        }
+        return false;
 
     }
 

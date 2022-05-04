@@ -266,7 +266,7 @@ public class Connect4 extends Game {
         for(int row = 0; row < spaces.length; row++) {
             for(int col = 0; col<spaces[row].length-3;col++){
                 int current = takenSpots[row][col].PLAYER_NUM;
-              if(!spaces[row][col]) {
+              if(current == takenSpots[row][col+1].PLAYER_NUM && current == takenSpots[row][col+2].PLAYER_NUM && current == takenSpots[row][col+3].PLAYER_NUM) {
                   return true;
               } 
             }

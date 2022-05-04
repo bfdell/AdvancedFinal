@@ -260,6 +260,7 @@ public class Connect4 extends Game {
         //vertical right
         //diagonal left
         //diagonal right
+        return checkHorizontal() || checkVertical() || checkRightDiagonal() || checkLeftDiagonal();
     }
 
     public boolean checkHorizontal(){

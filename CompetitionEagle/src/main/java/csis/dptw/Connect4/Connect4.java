@@ -274,4 +274,17 @@ public class Connect4 extends Game {
         }
         return false;
     }
+
+    public boolean checkVertical(){
+        for(int row = 0; row < spaces.length-3; row++) {
+            for(int col = 0; col<spaces[row].length;col++){
+                int current = takenSpots[row][col].PLAYER_NUM;
+              if(current == takenSpots[row+1][col].PLAYER_NUM && current == takenSpots[row+2][col].PLAYER_NUM && current == takenSpots[row+3][col].PLAYER_NUM) {
+                  return true;
+              } 
+            }
+
+        }
+        return false;
+    }
 }

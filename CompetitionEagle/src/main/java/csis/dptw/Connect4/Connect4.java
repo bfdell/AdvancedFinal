@@ -38,6 +38,7 @@ public class Connect4 extends Game {
     public Point startingChipLocation;
     boolean[][] spaces = new boolean[NUM_ROWS][NUM_COLS];
     Point[][] circlePoints = new Point[NUM_ROWS][NUM_COLS];
+    ConnectPlayer[][] takenSpots = new ConnectPlayer[NUM_ROWS][NUM_COLS];
 
     private JLabel statusLabel;
 
@@ -231,5 +232,46 @@ public class Connect4 extends Game {
     }
     private void requestFocus(ActionEvent e) {
         gamePanel.requestFocus();
+    }
+
+    public boolean matrixFilled(){
+        for(int row = 0; row < spaces.length; row++) {
+            for(int col = 0; col<spaces[row].length;col++){
+              if(!spaces[row][col]) {
+                  return false;
+              } 
+            }
+
+        }
+        return true;
+    }
+
+    public boolean gameOver(){
+        if(matrixFilled()){
+            return true;
+        }
+
+    }
+
+    public boolean fourInARow(){
+        //horizontal left
+        //horizontal right
+        //vertical left
+        //vertical right
+        //diagonal left
+        //diagonal right
+    }
+
+    public boolean checkHorizontal(){
+        for(int row = 0; row < spaces.length; row++) {
+            for(int col = 0; col<spaces[row].length-3;col++){
+                int current = takenSpots[row][col].PLAYER_NUM;
+              if(!spaces[row][col]) {
+                  return true;
+              } 
+            }
+
+        }
+        return false;
     }
 }

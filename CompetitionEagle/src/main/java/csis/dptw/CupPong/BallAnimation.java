@@ -49,8 +49,12 @@ public class BallAnimation extends Animation {
                 descending = true;
             }
         } else {
-            // if() {
+
+            ball.size -= 2;
+            ball.position.x += dx1;
             
+            // if(Ball.colidesWith(ball.position)) {
+            //     ball.position.y -= dy1;
             // }
         }
 

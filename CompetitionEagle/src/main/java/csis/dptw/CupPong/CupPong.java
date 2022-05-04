@@ -87,5 +87,8 @@ public class CupPong extends Game {
     public void moveCup(Cup cup, CupPong game) {
         CupAnimation animation = new CupAnimation(cup, game);
         animation.start();
+        // if(Cup.colidesWith(ball.position)) {
+        //     ball.position.y -= dy1;
+        // }
     }
 }

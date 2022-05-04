@@ -18,6 +18,12 @@ public class CupPong extends Game {
 
     public static final Point BALL_START = new Point(420, 700);
     public Ball ball = new Ball(this, BALL_START);
+
+    //////////////////////////
+    final String CUP = "Cup";
+    final String PONG = "Pong";
+    private JButton play;
+    private JButton mainMenu;
     public CupPong() {
         super();//FIX TIHIS LINE BECCUSE GAMAE PANEL IS BEING INITIOALIZED IN ANONYMOUS INNER CLASS
         run();
@@ -38,6 +44,7 @@ public class CupPong extends Game {
         addEntity(ball);
         //outlineCups();
         addMouseEvent(EventType.MPRESSED, e -> clickInCup(this, (MouseEvent) e), 1);
+        addActionEvent(this::startGame, 1, play);
     }
 
     public void outlineCups(int x, int y){
@@ -70,7 +77,15 @@ public class CupPong extends Game {
     @Override
     public void initializeMap() {
         gamePanel = new PongMap(new FlowLayout(), LANE_WIDTH, LANE_WIDTH);
-       //gamePanel = new cupPongM(new FlowLayout(), LANE_WIDTH, LANE_WIDTH);
+      
+        play = new JButton("Play");
+        mainMenu = new JButton("Main Menu");
+
+        gamePanel.add(play);
+        gamePanel.add(mainMenu);
+
+        play.setVisible(true);
+        mainMenu.setVisible(true);
         
     }
 
@@ -90,5 +105,12 @@ public class CupPong extends Game {
         // if(Cup.colidesWith(ball.position)) {
         //     ball.position.y -= dy1;
         // }
+    }
+
+    public void startGame(ActionEvent e) {
+        ((PongMap)gamePanel).playing = true;
+        ////////////////REMOVE ALL BUTTONS AND SHIT
+        ((PongMap)gamePanel).remove(play);
+        ((PongMap)gamePanel).remove(mainMenu);
     }
 }

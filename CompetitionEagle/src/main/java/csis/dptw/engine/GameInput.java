@@ -160,7 +160,6 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
     public void removePropertyEvent(Entity entity, String propertyName, int priorityNum) {
         entity.removePropertyChangeListener(this, propertyName);
         propertyEventQueue.removeIf(pe -> pe.priorityNum == priorityNum);
-        System.out.println("CLEARED FROM QUEUE");
     }
 
     //OVERRIDEN EVENT METHODS THAT EXECUTE ALL LAMBDA METHODS

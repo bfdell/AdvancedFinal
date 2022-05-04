@@ -6,8 +6,8 @@ import csis.dptw.engine.Event.EventType;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,8 +19,6 @@ import javax.swing.JPanel;
  * @version Spring 2022
  */
 public class Connect4 extends Game {
-    int first = 0;
-    ////////////////////////////////////////////////////////////////
     public static final Font TITLE_FONT = new Font("Phosphate", Font.BOLD, 50);
     public static final Font TEXT_FONT = new Font("Arial", Font.BOLD, 30);
     public static final Color TITLE_COLOR = Color.ORANGE;
@@ -31,33 +29,32 @@ public class Connect4 extends Game {
     public static final String WINS = "Wins!";
     public static final int NUM_ROWS = 6;
     public static final int NUM_COLS = 7;
-    public static final int WIN_AMOUNT = 3;
-
     public final int CHIP_PADDING = 12;
     public final int CHIP_RADIUS = 40;
     public final int RING_WIDTH = 8;
+    public static final int WIN_AMOUNT = 4;
+    public static final String RESTART = "Restart Game";
+    public static final String PLAY_AGAIN = "Play Again";
+    private static final int CHIP_LANDED_PRIORITY = 1;
+    
+    private JButton restartButton = new JButton(RESTART);
+    private JButton startButton = new JButton("START");
+    private JLabel statusLabel = new JLabel();
+    private JPanel titlePanel =  new JPanel();
+
+    private final ConnectPlayer[] PLAYERS = new ConnectPlayer[2];
+    private boolean gameStarted = false;
+    private int currentRound = 0;
+    private ConnectPlayer currentPlayer;
+    private ConnectChip currentChip;
+    private ConnectChip previousChip;
+    private int currentChipCol;
+    private int currentDstRow;
     public Point startingChipLocation;
-    boolean[][] spaces = new boolean[NUM_ROWS][NUM_COLS];
     Point[][] circlePoints = new Point[NUM_ROWS][NUM_COLS];
     ConnectPlayer[][] takenSpots = new ConnectPlayer[NUM_ROWS][NUM_COLS];
 
-    private JLabel statusLabel;
-
-    private boolean gameStarted = false;
-    int round = 0;
-    JPanel top;
-
-    JButton restart = new JButton("Restart Game");
-
-    JButton start;
-    final ConnectPlayer[] PLAYERS = new ConnectPlayer[2];
-    ConnectPlayer currentPlayer;
-    ConnectChip currentChip;
-    ConnectChip previousChip;
-    int currentChipCol;
-    int currentDstRow;
-
-    private static final int CHIP_LANDED_PRIORITY = 1;
+   
 
     public Connect4() {
         super();
@@ -71,26 +68,23 @@ public class Connect4 extends Game {
         super.run();
         startingChipLocation = new Point(circlePoints[0][3].x,
                 circlePoints[0][3].y - (RING_WIDTH / 2 + (CHIP_PADDING * 2) + CHIP_RADIUS * 2));
-        addKeyEvent(EventType.KPRESSED, this::dropChip, 2, KeyEvent.VK_ENTER);
 
-        addActionEvent(this::startGame, 1, start);
+        addActionEvent(this::startGame, 1, startButton);
         addActionEvent(this::requestFocus, 3);
-        addActionEvent(this::restartGame, 2, restart);
+        addActionEvent(this::restartGame, 2, restartButton);
         addKeyEvent(EventType.KPRESSED, this::shiftChip, 1,
                 Arrays.asList(KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT));
+        addKeyEvent(EventType.KPRESSED, this::dropChip, 2, KeyEvent.VK_ENTER);
     }
 
     public void shiftChip(KeyEvent e) {
         if (!currentChip.moving) {
-            System.out.println("MOVED");
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                System.out.println("RIGHT");
                 if (currentChipCol > -1 && currentChipCol < 6) {
                     currentChip.position.x = circlePoints[0][++currentChipCol].x;
                     System.out.println(currentChipCol);
                 }
             } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                System.out.println("LEFT");
                 if (currentChipCol > 0 && currentChipCol < 7) {
                     currentChip.position.x = circlePoints[0][--currentChipCol].x;
                     System.out.println(currentChipCol);
@@ -103,13 +97,10 @@ public class Connect4 extends Game {
     public void initializeMap() {
         gamePanel = new ConnectBoard(new BorderLayout(), circlePoints, CHIP_RADIUS, CHIP_PADDING, RING_WIDTH);
 
-        top = new JPanel();
         GridBagLayout layout = new GridBagLayout();
-        top.setLayout(layout);
+        titlePanel.setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // gbc.fill = GridBagConstraints.HORIZONTAL;
-        // gbc.ipadx = 5;
         gbc.weightx = 0.5;
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -119,9 +110,8 @@ public class Connect4 extends Game {
         Font playerOneFont = TEXT_FONT;
         one.setFont(playerOneFont);
         one.setForeground(PLAYERS[1].DARKER_COLOR);
-        top.add(one, gbc);
+        titlePanel.add(one, gbc);
 
-        // gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -131,10 +121,8 @@ public class Connect4 extends Game {
         JLabel two = new JLabel(CONNECT4);
         two.setFont(titleFont);
         two.setForeground(TITLE_COLOR);
-        top.add(two, gbc);
+        titlePanel.add(two, gbc);
 
-        // gbc.fill = GridBagConstraints.HORIZONTAL;
-        // gbc.weighty= 0.5;
         gbc.weightx = 0.5;
         gbc.gridx = 2;
         gbc.gridy = 0;
@@ -143,24 +131,27 @@ public class Connect4 extends Game {
         JLabel three = new JLabel(PLAYER2);
         three.setFont(playerTwoFont);
         three.setForeground(PLAYERS[0].DARKER_COLOR);
-        top.add(three, gbc);
+        titlePanel.add(three, gbc);
 
         gbc.weightx = 0.5;
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.BELOW_BASELINE;
-        start = new JButton("START");
-        top.add(start, gbc);
+        titlePanel.add(startButton, gbc);
 
-        gamePanel.add(top, BorderLayout.NORTH);
+        gamePanel.add(titlePanel, BorderLayout.NORTH);
         gbc.gridy = 2;
-        top.add(restart, gbc);
-        restart.setVisible(false);
+        titlePanel.add(restartButton, gbc);
+        restartButton.setVisible(false);
 
-        ////////////////////////////////////////////////////////////////
-        // JLabel winLabel = new JLabel();
-        statusLabel = new JLabel();
         statusLabel.setFont(TEXT_FONT);
+    }
+
+    @Override
+    public void keyPressed(KeyEvent event) {
+        if (gameStarted) {
+            super.keyPressed(event);
+        }
     }
 
     public void startGame(ActionEvent e) {
@@ -169,28 +160,26 @@ public class Connect4 extends Game {
         addNewChip();
         System.out.println("GAME STARTED");
 
-        GridBagLayout layout = (GridBagLayout) top.getLayout();
-        GridBagConstraints gbc = layout.getConstraints(start);
+        GridBagLayout layout = (GridBagLayout) titlePanel.getLayout();
+        GridBagConstraints gbc = layout.getConstraints(startButton);
 
-        top.remove(start);
-        top.add(statusLabel, gbc);
-        top.revalidate();
-        top.validate();
-        restart.setVisible(true);
+        titlePanel.remove(startButton);
+        titlePanel.add(statusLabel, gbc);
+        titlePanel.revalidate();
+        titlePanel.validate();
+        restartButton.setVisible(true);
     }
 
     public void dropChip(KeyEvent e) {
         if (!currentChip.moving) {
             currentDstRow = -1;
-            while (currentDstRow < NUM_ROWS - 1 && !spaces[currentDstRow + 1][currentChipCol]) {
+            while (currentDstRow < NUM_ROWS - 1 && takenSpots[currentDstRow + 1][currentChipCol] == null) {
                 System.out.println(currentDstRow);
                 currentDstRow++;
             }
             if (currentDstRow != -1) {
-                spaces[currentDstRow][currentChipCol] = true;
                 takenSpots[currentDstRow][currentChipCol] = currentPlayer;
                 Point dest = circlePoints[currentDstRow][currentChipCol];
-                System.out.println("=--------------------" + currentDstRow + " " + currentChipCol);
                 currentChip.moving = true;
                 if (currentChip != null) {
                     removePropertyEvent(currentChip, "landed", CHIP_LANDED_PRIORITY);
@@ -204,30 +193,29 @@ public class Connect4 extends Game {
 
     public void restartGame(ActionEvent e) {
         gamePanel.entities.clear();
-        round = 0;
-        spaces = new boolean[NUM_ROWS][NUM_COLS];
+        currentRound = 0;
+        takenSpots = new ConnectPlayer[NUM_ROWS][NUM_COLS];
         nextTurn();
         addNewChip();
     }
 
     public void nextTurn() {
-        round++;
-        currentPlayer = PLAYERS[round % 2];
+        currentRound++;
+        currentPlayer = PLAYERS[currentRound % 2];
         statusLabel.setForeground(currentPlayer.DARKER_COLOR);
         statusLabel.setText(currentPlayer.NAME + TURN);
     }
 
     public void chipFell(PropertyChangeEvent evt) {
-        System.out.println("WIN STATUS IS HERE:_____________________->-> " + gameOver());
+        System.out.println("IS GAME OVER: " + gameOver());
         previousChip = currentChip;
         nextTurn();
         addNewChip();
-        System.out.println("returned");
     }
 
     public void addNewChip() {
         currentChip = new ConnectChip(this, (Point) startingChipLocation.clone(),
-                PLAYERS[round % 2]);
+                PLAYERS[currentRound % 2]);
         addEntity(currentChip);
         currentChipCol = 3;
     }
@@ -236,10 +224,14 @@ public class Connect4 extends Game {
         gamePanel.requestFocus();
     }
 
+    public void playAgain() {
+        restartButton.setText(PLAY_AGAIN);
+    }
+
     public boolean matrixFilled() {
-        for (int row = 0; row < spaces.length; row++) {
-            for (int col = 0; col < spaces[row].length; col++) {
-                if (!spaces[row][col]) {
+        for (int row = 0; row < NUM_ROWS; row++) {
+            for (int col = 0; col < NUM_COLS; col++) {
+                if (takenSpots[row][col] == null) {
                     return false;
                 }
             }
@@ -260,111 +252,219 @@ public class Connect4 extends Game {
     }
 
     public boolean fourInARow(int row, int col) {
-        //horizontal left
-        //horizontal right
-        //vertical left
-        //vertical right
-        //diagonal left
-        //diagonal right
-        // return checkHorizontal(row, col) || checkVertical(row, col) || checkRightDiagonal(row, col)
-        //         || checkLeftDiagonal(row, col);
-        return checkHorizontal(row, col) || checkVertical(row, col);
+        // System.out.println(BL_TR_Diagonal(row, col));
+        // System.out.println(TL_BR_Diagonal(row, col));
+        System.out.println(checkVertical(row, col));
+        // System.out.println(checkHorizontal(row, col));
+        // return tr != null;
+        return true;
     }
 
-    public boolean checkHorizontal(int row, int col) {
-        // for (int row1 = 0; row1 < spaces.length; row1++) {
-
-        //     for (int col1 = 0; col1 < spaces[row1].length - 3; col1++) {
-        //         int current = takenSpots[row1][col1].PLAYER_NUM;
-        //         if (current == takenSpots[row1][col1 + 1].PLAYER_NUM && current == takenSpots[row1][col1 + 2].PLAYER_NUM
-        //                 && current == takenSpots[row1][col1 + 3].PLAYER_NUM) {
-        //             return true;
-        //         }
-        //     }
-
-        // }
-        // return false;
-
+    private LinkedList<Point> BL_TR_Diagonal(int row, int col) {
+        //INITIALIZES CURRENTSPOTPLAYER, AND WINLIST WITH CHIP THAT JUST DROPPED
         int currentSpotPlayer = takenSpots[row][col].PLAYER_NUM;
-        int leftCol = col + 1;
-        while (col + WIN_AMOUNT < NUM_COLS && leftCol < col + WIN_AMOUNT) {
+        LinkedList<Point> winList = new LinkedList<Point>();
+        winList.add(circlePoints[row][col]);
+
+        ////////////////////////////////////
+        //DEBUG LIST 
+        LinkedList<String> debugList = new LinkedList<String>();
+        debugList.add(col + ", " + row + "|");
+        //////////////////////////////////////
+
+        //CHECKS THAT MAKE SURE A CONNECTION OF 4 IS EVEN POSSIBLE
+        if ((row <= 1 && col <= 1) || (row >= NUM_ROWS - 1 && col >= NUM_COLS - 1)) {
+            return winList;
+        }
+
+        //ADDS ALL TOP RIGHT DIAGONALS THAT MATCH PLAYER TO END OF LINKED LIST
+        int topRow = row - 1;
+        int rightCol = col + 1;
+        while (topRow > -1 && rightCol < NUM_COLS) {
+            if (takenSpots[topRow][rightCol] == null || takenSpots[topRow][rightCol].PLAYER_NUM != currentSpotPlayer) {
+                break;
+            } else {
+                winList.add(circlePoints[topRow][rightCol]);
+                ///////////////////////////////////
+                debugList.add(rightCol + ", " + topRow + "|");
+                ///////////////////////////////////
+                topRow--;
+                rightCol++;
+            }
+        }
+
+        //ADDS ALL BOTTOM LEFT DIAGONALS THAT MATCH PLAYER TO BEGINNING OF LINKED LIST
+        int bottomRow = row + 1;
+        int leftCol = col - 1;
+        while (bottomRow < NUM_ROWS && leftCol > -1) {
+            if (takenSpots[bottomRow][leftCol] == null
+                    || takenSpots[bottomRow][leftCol].PLAYER_NUM != currentSpotPlayer) {
+                break;
+            } else {
+                winList.push(circlePoints[bottomRow][leftCol]);
+                ///////////////////////////////////
+                debugList.push(leftCol + ", " + bottomRow + "|");
+                //////////////////////////////////
+                bottomRow++;
+                leftCol--;
+            }
+        }
+
+        //Prints out debug list of connections in x coordinate order
+        System.out.println(debugList.toString());
+        return winList;
+    }
+
+    private LinkedList<Point> TL_BR_Diagonal(int row, int col) {
+        //INITIALIZES CURRENTSPOTPLAYER, AND WINLIST WITH CHIP THAT JUST DROPPED
+        int currentSpotPlayer = takenSpots[row][col].PLAYER_NUM;
+        LinkedList<Point> winList = new LinkedList<Point>();
+        winList.add(circlePoints[row][col]);
+
+        ////////////////////////////////////
+        //DEBUG LIST 
+        LinkedList<String> debugList = new LinkedList<String>();
+        debugList.add(col + ", " + row + "|");
+        //////////////////////////////////////
+
+        //CHECKS THAT MAKE SURE A CONNECTION OF 4 IS EVEN POSSIBLE
+        if ((row <= 1 && col >= NUM_COLS - 1) || (row >= NUM_ROWS - 1 && col <= 1)) {
+            return winList;
+        }
+
+        //ADDS ALL TOP LEFT DIAGONALS THAT MATCH PLAYER TO BEGINNING OF LINKED LIST
+        int topRow = row - 1;
+        int leftCol = col - 1;
+        while (topRow > -1 && leftCol > -1) {
+            if (takenSpots[topRow][leftCol] == null || takenSpots[topRow][leftCol].PLAYER_NUM != currentSpotPlayer) {
+                break;
+            } else {
+                winList.push(circlePoints[topRow][leftCol]);
+                ///////////////////////////////////
+                debugList.push(leftCol + ", " + topRow + "|");
+                ///////////////////////////////////
+                topRow--;
+                leftCol--;
+            }
+        }
+
+        //ADDS ALL BOTTOM LEFT DIAGONALS THAT MATCH PLAYER TO END OF LINKED LIST
+        int bottomRow = row + 1;
+        int rightCol = col + 1;
+        while (bottomRow < NUM_ROWS && rightCol < NUM_COLS) {
+            if (takenSpots[bottomRow][rightCol] == null
+                    || takenSpots[bottomRow][rightCol].PLAYER_NUM != currentSpotPlayer) {
+                break;
+            } else {
+                winList.add(circlePoints[bottomRow][rightCol]);
+                ///////////////////////////////////
+                debugList.add(rightCol + ", " + bottomRow + "|");
+                //////////////////////////////////
+                bottomRow++;
+                rightCol++;
+            }
+        }
+
+        //Prints out debug list of connections in x coordinate order
+        System.out.println(debugList.toString());
+        return winList;
+    }
+
+    private LinkedList<Point> checkVertical(int row, int col) {
+        //INITIALIZES CURRENTSPOTPLAYER, AND WINLIST WITH CHIP THAT JUST DROPPED
+        int currentSpotPlayer = takenSpots[row][col].PLAYER_NUM;
+        LinkedList<Point> winList = new LinkedList<Point>();
+        winList.add(circlePoints[row][col]);
+
+        ////////////////////////////////////
+        //DEBUG LIST 
+        LinkedList<String> debugList = new LinkedList<String>();
+        debugList.add(col + ", " + row + "|");
+        //////////////////////////////////////
+
+        //ADDS ALL TOP CHIPS THAT MATCH PLAYER TO BEGINNING OF LINKED LIST
+        // int topRow = row - 1;
+        // while (topRow > -1) {
+        //     if (takenSpots[topRow][col] == null || takenSpots[topRow][col].PLAYER_NUM != currentSpotPlayer) {
+        //         break;
+        //     } else {
+        //         winList.push(circlePoints[topRow][col]);
+        //         ///////////////////////////////////
+        //         debugList.push(col + ", " + topRow + "|");
+        //         ///////////////////////////////////
+        //         topRow--;
+        //     }
+        // }
+
+        //NO NEED TO CHECK TOP BECAUSE ITS IMPOSSIBLE
+        //ADDS ALL BOTTOM CHIPS THAT MATCH PLAYER TO END OF LINKED LIST
+        int bottomRow = row + 1;
+        while (bottomRow < NUM_ROWS) {
+            if (takenSpots[bottomRow][col] == null
+                    || takenSpots[bottomRow][col].PLAYER_NUM != currentSpotPlayer) {
+                break;
+            } else {
+                winList.add(circlePoints[bottomRow][col]);
+                ///////////////////////////////////
+                debugList.add(col + ", " + bottomRow + "|");
+                //////////////////////////////////
+                bottomRow++;
+            }
+        }
+
+        //Prints out debug list of connections in top to bottom coordinate order
+        System.out.println(debugList.toString());
+        return winList;
+    }
+
+    private LinkedList<Point> checkHorizontal(int row, int col) {
+        //INITIALIZES CURRENTSPOTPLAYER, AND WINLIST WITH CHIP THAT JUST DROPPED
+        int currentSpotPlayer = takenSpots[row][col].PLAYER_NUM;
+        LinkedList<Point> winList = new LinkedList<Point>();
+        winList.add(circlePoints[row][col]);
+
+        ////////////////////////////////////
+        //DEBUG LIST 
+        LinkedList<String> debugList = new LinkedList<String>();
+        debugList.add(col + ", " + row + "|");
+        //////////////////////////////////////
+
+        //CHECKS THAT MAKE SURE A CONNECTION OF 4 IS EVEN POSSIBLE
+        if ((row <= 1 && col >= NUM_COLS - 1) || (row >= NUM_ROWS - 1 && col <= 1)) {
+            return winList;
+        }
+
+        //ADDS ALL LEFT CHIPS MATCH PLAYER TO BEGINNING OF LINKED LIST
+        int leftCol = col - 1;
+        while (leftCol > -1) {
             if (takenSpots[row][leftCol] == null || takenSpots[row][leftCol].PLAYER_NUM != currentSpotPlayer) {
-                return false;
+                break;
+            } else {
+                winList.push(circlePoints[row][leftCol]);
+                ///////////////////////////////////
+                debugList.push(leftCol + ", " + row + "|");
+                ///////////////////////////////////
+                leftCol--;
             }
-            leftCol++;
         }
 
-        currentSpotPlayer = takenSpots[row][col].PLAYER_NUM;
-        int rightCol = col - 1;
-        while (col - WIN_AMOUNT > 0 && rightCol > col - WIN_AMOUNT) {
-            if (takenSpots[row][rightCol] == null || takenSpots[row][rightCol].PLAYER_NUM != currentSpotPlayer) {
-                return false;
+        //ADDS ALL RIGHT CHIPS THAT MATCH PLAYER TO END OF LINKED LIST
+        int rightCol = col + 1;
+        while (rightCol < NUM_COLS) {
+            if (takenSpots[row][rightCol] == null
+                    || takenSpots[row][rightCol].PLAYER_NUM != currentSpotPlayer) {
+                break;
+            } else {
+                winList.add(circlePoints[row][rightCol]);
+                ///////////////////////////////////
+                debugList.add(rightCol + ", " + row + "|");
+                //////////////////////////////////
+                rightCol++;
             }
-            rightCol--;
-        }
-        return true;
-    }
-
-    public boolean checkVertical(int row, int col) {
-        // for (row = 0; row < spaces.length - 3; row++) {
-        //     for (col = 0; col < spaces[row].length; col++) {
-        //         int current = takenSpots[row][col].PLAYER_NUM;
-        //         if (current == takenSpots[row + 1][col].PLAYER_NUM && current == takenSpots[row + 2][col].PLAYER_NUM
-        //                 && current == takenSpots[row + 3][col].PLAYER_NUM) {
-        //             return true;
-        //         }
-        //     }
-
-        // }
-        // return false;
-
-        int currentSpotPlayer = takenSpots[row][col].PLAYER_NUM;
-        int topRow = row + 1;
-        while (row + WIN_AMOUNT < NUM_COLS && topRow < row + WIN_AMOUNT) {
-            if (takenSpots[topRow][col] == null || takenSpots[topRow][col].PLAYER_NUM != currentSpotPlayer) {
-                return false;
-            }
-            topRow++;
         }
 
-        currentSpotPlayer = takenSpots[row][col].PLAYER_NUM;
-        int bottomRow = row - 1;
-        while (row - WIN_AMOUNT > 0 && bottomRow > row - WIN_AMOUNT) {
-            if (takenSpots[bottomRow][col] == null || takenSpots[bottomRow][col].PLAYER_NUM != currentSpotPlayer) {
-                return false;
-            }
-            bottomRow--;
-        }
-        return true;
-    }
-
-    public boolean checkRightDiagonal(int row, int col) {
-        // for (row = 0; row < spaces.length - 3; row++) {
-        //     for (col = 0; col < spaces[row].length - 3; col++) {
-        //         int current = takenSpots[row][col].PLAYER_NUM;
-        //         if (current == takenSpots[row + 1][col + 1].PLAYER_NUM
-        //                 && current == takenSpots[row + 2][col + 2].PLAYER_NUM
-        //                 && current == takenSpots[row + 3][col + 3].PLAYER_NUM) {
-        //             return true;
-        //         }
-        //     }
-        // }
-        // return false;
-        return true;
-    }
-
-    public boolean checkLeftDiagonal(int row, int col) {
-        // for (int row1 = 0; row1 < spaces.length - 3; row1++) {
-        //     for (int col1 = 3; col1 < spaces[row1].length; col1++) {
-        //         int current = takenSpots[row1][col1].PLAYER_NUM;
-        //         if (current == takenSpots[row1 + 1][col1 - 1].PLAYER_NUM
-        //                 && current == takenSpots[row1 + 2][col1 - 2].PLAYER_NUM
-        //                 && current == takenSpots[row1 + 3][col1 - 3].PLAYER_NUM) {
-        //             return true;
-        //         }
-        //     }
-        // }
-        // return false;
-        return true;
+        //Prints out debug list of connections in x coordinate order
+        System.out.println(debugList.toString());
+        return winList;
     }
 }

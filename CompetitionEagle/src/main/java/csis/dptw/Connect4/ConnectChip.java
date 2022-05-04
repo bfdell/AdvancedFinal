@@ -40,8 +40,6 @@ public class ConnectChip extends Entity {
     public synchronized void setLanded(boolean newLanded) {
         boolean oldLanded = landed;
         landed = newLanded;
-        System.out.println("BEfore");
         eventHelper.firePropertyChange("landed", oldLanded, true);
-        System.out.println("after");
     }
 }

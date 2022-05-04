@@ -48,6 +48,7 @@ public class ConnectBoard extends Map {
 
     @Override
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         g.setColor(LIGHT_BLUE);
         paintBackground((Graphics2D) g);
 

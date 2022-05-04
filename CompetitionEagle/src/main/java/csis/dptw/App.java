@@ -22,17 +22,6 @@ public class App implements Runnable {
     JFrame frame;
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new App());     
-
-        //Lambda Example
-        // java.util.List<Integer> test = Arrays.asList(4, 4, 6, 8, 3, 5, 8, 9, 4, 1, 6, 9, 5, 3, 7, 4);
-        // test.forEach(i -> System.out.print(i * 4 + ", "));
-        // Collections.sort(test, (s1, s2) -> s2.compareTo(s1));
-        // System.out.println("\n" + test);
-        // test.forEach(i -> {
-        //     if (i % 2 == 0) {
-        //         System.out.print(i + ", ");
-        //     }
-        // });
     }
 
     @Override
@@ -62,5 +51,10 @@ public class App implements Runnable {
         frame.setResizable(false);
         frame.pack();
         gameDimension = new Dimension(850, 850 - frame.getInsets().top - frame.getInsets().bottom);
+    }
+
+
+    public void makeMenu() {
+        
     }
 }

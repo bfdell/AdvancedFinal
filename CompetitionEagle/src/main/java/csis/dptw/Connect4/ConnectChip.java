@@ -4,7 +4,6 @@ import java.awt.*;
 
 import csis.dptw.engine.Entity;
 import csis.dptw.engine.Game;
-import csis.dptw.engine.Player;
 import csis.dptw.util.*;
 
 /**
@@ -13,9 +12,7 @@ import csis.dptw.util.*;
  * @version Spring 2022
  */
 public class ConnectChip extends Entity {
-    public static final int RING_WIDTH = 8;
     ConnectPlayer player;
-    public final static int radius = 40;
     Color ringColor;
     public final ConnectPlayer PLAYER;
 
@@ -30,10 +27,10 @@ public class ConnectChip extends Entity {
     @Override
     public void paint(Graphics2D g) {
         g.setColor(PLAYER.COLOR);
-        PaintHelper.fillCircleFromMiddle(position, radius, g);
+        PaintHelper.fillCircleFromMiddle(position, Connect4.CHIP_RADIUS, g);
         g.setColor(PLAYER.DARKER_COLOR);
-        g.setStroke(new BasicStroke(RING_WIDTH));
-        PaintHelper.drawCircleFromMiddle(position, radius, g);
+        g.setStroke(new BasicStroke(Connect4.RING_WIDTH));
+        PaintHelper.drawCircleFromMiddle(position, Connect4.CHIP_RADIUS, g);
     }
 
     public synchronized void setLanded(boolean newLanded) {

@@ -29,9 +29,9 @@ public class Connect4 extends Game {
     public static final String WINS = "Wins!";
     public static final int NUM_ROWS = 6;
     public static final int NUM_COLS = 7;
+    public static final int RING_WIDTH = 8;
+    public static final int CHIP_RADIUS = 40;
     public final int CHIP_PADDING = 12;
-    public final int CHIP_RADIUS = 40;
-    public final int RING_WIDTH = 8;
     public static final int WIN_AMOUNT = 4;
     public static final String RESTART = "Restart Game";
     public static final String PLAY_AGAIN = "Play Again";

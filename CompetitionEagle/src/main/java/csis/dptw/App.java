@@ -1,5 +1,7 @@
 package csis.dptw;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,6 +33,13 @@ public class App implements ActionListener, Runnable {
 
     Game testGame;
     JPanel app;
+
+
+//     Icon imgIcon = new ImageIcon(this.getClass().getResource("ajax-loader.gif"));
+//     JLabel label = new JLabel(imgIcon);
+//     label.setBounds(668, 43, 46, 14); // for example, you can use your own values
+//     frame.getContentPane().add(label);
+    //Icon eagle = new ImageIcon(this.getClass().getResource(")TheCompetitionEagle.gif"));
 
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new App());
@@ -72,6 +81,11 @@ public class App implements ActionListener, Runnable {
         app = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
+
+        // JLabel l = new JLabel(eagle);
+        // l.add(select);
+        // select.setBounds(212, 212, 850, 850);
+        // frame.getContentPane().add(l);
 
 
         title = new JLabel("Competition Eagle");

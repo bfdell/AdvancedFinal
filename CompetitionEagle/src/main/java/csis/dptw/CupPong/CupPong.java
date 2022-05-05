@@ -24,6 +24,8 @@ public class CupPong extends Game {
     final String PONG = "Pong";
     private JButton play;
     private JButton mainMenu;
+    DirectionMeter m;
+    Powerbar pb;
     public CupPong() {
         super();//FIX TIHIS LINE BECCUSE GAMAE PANEL IS BEING INITIOALIZED IN ANONYMOUS INNER CLASS
         run();
@@ -43,10 +45,23 @@ public class CupPong extends Game {
         // addCups();
         // addEntity(ball);
         //outlineCups();
-        addMouseEvent(EventType.MPRESSED, e -> clickInCup(this, (MouseEvent) e), 1);
+        addKeyEvent(EventType.KPRESSED, this::adjustShot, 1, KeyEvent.VK_SPACE);
+        addMouseEvent(EventType.MPRESSED, this::clickInCup, 1);
         addActionEvent(this::startGame, 1, play);
     }
 
+    public void adjustShot(KeyEvent e) {
+        System.out.println("ACTIVATING");
+        if(m != null) {
+            m.interrupt();
+            m = null;
+            pb = new Powerbar(this);
+            pb.start();
+        } else if(pb != null) {
+            pb.interrupt();
+            pb = null;
+        }   
+    }
     public void outlineCups(int x, int y){
         // addEntity(new OutlineOfCups(this, new Point(x, y)));
     }
@@ -86,15 +101,16 @@ public class CupPong extends Game {
 
         play.setVisible(true);
         mainMenu.setVisible(true);
-        
     }
 
-    public static void clickInCup(CupPong game, MouseEvent e) {
+    public void clickInCup(MouseEvent e) {
         Point cur = e.getPoint();
-        for(Entity cup : game.gamePanel.entities) {
-            if(cup != game.ball && ((Cup)cup).colidesWith(cur)) {
-                System.out.println("col·li·sion");
-                game.moveCup((Cup) cup,(CupPong)game);
+        for(Entity cup : gamePanel.entities) {
+            if(cup instanceof Cup) {
+                if(cup != ball && ((Cup)cup).colidesWith(cur)) {
+                    System.out.println("col·li·sion");
+                    moveCup((Cup) cup,(CupPong)this);
+                }
             }
         }
     }
@@ -114,7 +130,8 @@ public class CupPong extends Game {
         ((PongMap)gamePanel).remove(mainMenu);
         addCups();
         addEntity(ball);
-        DirectionMeter m = new DirectionMeter(ball.position, this);
+        m = new DirectionMeter(ball.position, this);
         m.start();
+        
     }
 }

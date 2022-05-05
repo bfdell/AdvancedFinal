@@ -13,7 +13,6 @@ import java.awt.event.*;
 import java.awt.*;
 import java.awt.geom.*;
 
-
 public class CupPong extends Game {
 
     public static final Point BALL_START = new Point(420, 700);
@@ -26,12 +25,13 @@ public class CupPong extends Game {
     private JButton mainMenu;
     DirectionMeter m;
     Powerbar pb;
+
     public CupPong() {
         super();//FIX TIHIS LINE BECCUSE GAMAE PANEL IS BEING INITIOALIZED IN ANONYMOUS INNER CLASS
         run();
     }
 
-     public final int LANE_WIDTH = 500;
+    public final int LANE_WIDTH = 500;
     // ///////////////////////
     // public double boardYPercent = .3;
     // public double boardXPercent = .3;
@@ -41,7 +41,7 @@ public class CupPong extends Game {
     @Override
     public void run() {
         super.run();
-        
+
         // addCups();
         // addEntity(ball);
         //outlineCups();
@@ -52,41 +52,40 @@ public class CupPong extends Game {
 
     public void adjustShot(KeyEvent e) {
         System.out.println("ACTIVATING");
-        if(m != null) {
+        if (m != null) {
             m.interrupt();
             m.isDirectonSet = true;
             // removeEntity(m.meter);
             m = null;
             pb = new Powerbar(this);
             pb.start();
-        } else if(pb != null) {
+        } else if (pb != null) {
             pb.interrupt();
             pb.powerSpecified = true;
             // removeEntity(pb.bar);
             pb = null;
             System.out.println("removeing powerbar");
-        }   
+        }
     }
-    public void outlineCups(int x, int y){
+
+    public void outlineCups(int x, int y) {
         // addEntity(new OutlineOfCups(this, new Point(x, y)));
     }
 
-    public void addCups(){
+    public void addCups() {
         int x = 318;
         int y = 200;
-        for(int i = 0; i < 10; i++){
-           if(i == 4){
-               y += 35;
-               x = 342;
+        for (int i = 0; i < 10; i++) {
+            if (i == 4) {
+                y += 35;
+                x = 342;
+            } else if (i == 7) {
+                y += 35;
+                x = 365;
+            } else if (i == 9) {
+                y += 35;
+                x = 389;
             }
-        else if(i == 7){
-               y += 35;
-               x = 365;
-            }
-        else if(i == 9){
-               y += 35;
-               x = 389;
-           }
 
             addEntity(new Cup(this, new Point(x, y), "CompetitionEagle/src/main/java/csis/dptw/BeFunky-photo.png"));
             outlineCups(x, y);
@@ -97,7 +96,7 @@ public class CupPong extends Game {
     @Override
     public void initializeMap() {
         gamePanel = new PongMap(new FlowLayout(), LANE_WIDTH, LANE_WIDTH);
-      
+
         play = new JButton("Play");
         mainMenu = new JButton("Main Menu");
 
@@ -110,11 +109,11 @@ public class CupPong extends Game {
 
     public void clickInCup(MouseEvent e) {
         Point cur = e.getPoint();
-        for(Entity cup : gamePanel.entities) {
-            if(cup instanceof Cup) {
-                if(cup != ball && ((Cup)cup).colidesWith(cur)) {
+        for (Entity cup : gamePanel.entities) {
+            if (cup instanceof Cup) {
+                if (cup != ball && ((Cup) cup).colidesWith(cur)) {
                     System.out.println("col·li·sion");
-                    moveCup((Cup) cup,(CupPong)this);
+                    moveCup((Cup) cup, (CupPong) this);
                 }
             }
         }
@@ -129,16 +128,19 @@ public class CupPong extends Game {
     }
 
     public void startGame(ActionEvent e) {
-        ((PongMap)gamePanel).playing = true;
+        ((PongMap) gamePanel).playing = true;
         ////////////////REMOVE ALL BUTTONS AND SHIT
-        ((PongMap)gamePanel).remove(play);
-        ((PongMap)gamePanel).remove(mainMenu);
+        ((PongMap) gamePanel).remove(play);
+        ((PongMap) gamePanel).remove(mainMenu);
         addCups();
         addEntity(ball);
         m = new DirectionMeter(ball.position, this);
         m.start();
+        // pb = new Powerbar(this);
+        // pb.start();
 
         System.out.println("SETTING");
-        gamePanel.requestFocus();;
+        gamePanel.requestFocus();
+        ;
     }
 }

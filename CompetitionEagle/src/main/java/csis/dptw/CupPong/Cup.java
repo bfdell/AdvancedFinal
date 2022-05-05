@@ -20,14 +20,13 @@ public class Cup extends Entity {
     }
 
     public boolean colidesWith(Point point) {
-        //return cupColision.point();
-        return false;                  
+        return cupColision.contains(point);      
     }
 
     @Override
     public void paint(Graphics2D g) {
         super.paint(g);
-        //g.draw(cupColision);
+        g.draw(cupColision);
     }
 
     // public boolean iCup(Point p){

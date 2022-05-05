@@ -36,6 +36,7 @@ public class BallAnimation extends Animation {
 
     @Override
     public void animation(){
+        
         try {
             sleep(Repainter.DELAY_TIME);
         } catch (InterruptedException e) {

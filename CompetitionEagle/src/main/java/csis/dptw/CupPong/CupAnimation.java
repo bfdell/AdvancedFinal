@@ -42,7 +42,6 @@ public class CupAnimation extends Animation{
             try {
                 sleep(STAY_AT_TOP);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             waited = true;

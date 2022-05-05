@@ -115,5 +115,6 @@ public class CupPong extends Game {
         addCups();
         addEntity(ball);
         DirectionMeter m = new DirectionMeter(ball.position, this);
+        m.start();
     }
 }

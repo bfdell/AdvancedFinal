@@ -35,7 +35,7 @@ public class App implements ActionListener, Runnable {
     JPanel app;
 
 
-//     Icon imgIcon = new ImageIcon(this.getClass().getResource("ajax-loader.gif"));
+    // Icon imgIcon = new ImageIcon(this.getClass().getResource("ajax-loader.gif"));
 //     JLabel label = new JLabel(imgIcon);
 //     label.setBounds(668, 43, 46, 14); // for example, you can use your own values
 //     frame.getContentPane().add(label);
@@ -141,6 +141,9 @@ public class App implements ActionListener, Runnable {
         // app.remove(title);
         frame.remove(app);
         displayGame(testGame);
+
+
+        //Add return to main menu as method refrence in game superclass?
 
     }
 }

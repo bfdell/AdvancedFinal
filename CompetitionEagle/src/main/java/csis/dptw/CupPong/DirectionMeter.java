@@ -29,6 +29,7 @@ public class DirectionMeter extends Animation {
     public double currentRotationAmount = 0;
 
     private int moveCount;
+
     public DirectionMeter(Point fulcrumPoint, Game game) {
         super(new Meter(game, fulcrumPoint, new Point(fulcrumPoint.x, fulcrumPoint.y - METER_HEIGHT)), game);
         game.addEntity(entity);
@@ -37,30 +38,36 @@ public class DirectionMeter extends Animation {
 
     @Override
     public void animation() {
-        synchronized (lock) {
+        // synchronized (lock) {
+        // try {
+        // sleep(Repainter.DELAY_TIME);
+        // } catch (InterruptedException e) {
 
-            try {
-                sleep(Repainter.DELAY_TIME);
-            } catch (InterruptedException e) {
+        // }
+        // }
 
-            }
+        try {
+            sleep(Repainter.DELAY_TIME);
+        } catch (InterruptedException e) {
+
         }
-        System.out.println("moved: " + moveCount++);
+
+        // System.out.println("moved: " + moveCount++);
         meter.rotate(direction);
         currentRotationAmount += Meter.ROTATION;
-        System.out.println(Meter.MAX_X + " " + Meter.MIN_X);
-        System.out.println(meter.endPoint.getX());
-        
+        // System.out.println(Meter.MAX_X + " " + Meter.MIN_X);
+        // System.out.println(meter.endPoint.getX());
+
         if (meter.endPoint.getX() > Meter.MAX_X) {
             direction *= -1;
             currentRotationAmount = 0;
-            System.out.println("cahnged directions");
+            // System.out.println("cahnged directions");
         }
 
         if (meter.endPoint.getX() < Meter.MIN_X) {
             direction *= -1;
             currentRotationAmount = 0;
-            System.out.println("cahnged directions");
+            // System.out.println("cahnged directions");
         }
         // chnagne direaction if needed
 
@@ -95,7 +102,7 @@ public class DirectionMeter extends Animation {
             MIN_X = ((Point) transformer.transform(topPoint, testPoint)).getX();
             transformer.setToRotation((Math.PI / 4), position.x, position.y);
             MAX_X = ((Point) transformer.transform(topPoint, testPoint)).getX();
-            
+
             System.out.println(MAX_X + "__________" + MIN_X);
             transformer.setToRotation(ROTATION, position.x, position.y);
             topPoint = transformer.transform(endPoint, topPoint);

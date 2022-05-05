@@ -42,9 +42,9 @@ public class App implements ActionListener, Runnable {
         makeMenu();
 
         // Game testGame = new Connect4();
-        // Game testGame = new CupPong();
-        // Thread gameThread = new Thread(testGame);
-        // gameThread.start();
+         //Game testGame = new CupPong();
+         //Thread gameThread = new Thread(testGame);
+         //gameThread.start();
 
         // ASK TERESCO QUESTIONS ABOUT RUNNABLE AND NOT USING INVOKE LATER ETC.....
         // testGame.gamePanel.addEntity(new Entity(testGame, new Point(1, 1),
@@ -69,26 +69,45 @@ public class App implements ActionListener, Runnable {
     }
 
     public void makeMenu() {
-        app = new JPanel();
+        app = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+
 
         title = new JLabel("Competition Eagle");
         Font titleFont = new Font("SansSerif", Font.BOLD, 50);
         title.setFont(titleFont);
+        c.weightx = 0.5;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 0;
+        app.add(title,c);
 
         select = new JLabel("Select A Game");
         Font selectFont = new Font("SansSerif", Font.BOLD, 20);
         select.setFont(selectFont);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c .weightx = 0.5;
+        c.gridx = 1;
+        c.gridy = 0;    
+        app.add(select,c);
 
         startConnect4 = new JButton("Connect4");
-        startCupPong = new JButton("Cup Pong");
-
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        c.gridx = 2;
+        c.gridy = 0;
+        app.add(startConnect4,c);
         startConnect4.addActionListener(this);
-        startCupPong.addActionListener(this);
 
-        app.add(title);
-        app.add(select);
-        app.add(startConnect4);
-        app.add(startCupPong);
+        startCupPong = new JButton("Cup Pong");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.0;
+        c.gridwidth = 3;
+        c.gridx = 0;
+        c.gridy = 1;
+        app.add(startCupPong,c);
+        startCupPong.addActionListener(this);
 
         frame.add(app);
     }

@@ -45,7 +45,7 @@ public class CupPong extends Game {
         // addCups();
         // addEntity(ball);
         //outlineCups();
-        addKeyEvent(EventType.KPRESSED, this::adjustShot, 1, KeyEvent.VK_SPACE);
+        addKeyEvent(EventType.KPRESSED, this::adjustShot, 4, KeyEvent.VK_SPACE);
         addMouseEvent(EventType.MPRESSED, this::clickInCup, 1);
         addActionEvent(this::startGame, 1, play);
     }
@@ -54,12 +54,17 @@ public class CupPong extends Game {
         System.out.println("ACTIVATING");
         if(m != null) {
             m.interrupt();
+            m.isDirectonSet = true;
+            // removeEntity(m.meter);
             m = null;
             pb = new Powerbar(this);
             pb.start();
         } else if(pb != null) {
             pb.interrupt();
+            pb.powerSpecified = true;
+            // removeEntity(pb.bar);
             pb = null;
+            System.out.println("removeing powerbar");
         }   
     }
     public void outlineCups(int x, int y){
@@ -132,6 +137,8 @@ public class CupPong extends Game {
         addEntity(ball);
         m = new DirectionMeter(ball.position, this);
         m.start();
-        
+
+        System.out.println("SETTING");
+        gamePanel.requestFocus();;
     }
 }

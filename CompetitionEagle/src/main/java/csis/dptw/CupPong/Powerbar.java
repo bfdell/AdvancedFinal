@@ -17,7 +17,6 @@ public class Powerbar extends Animation {
     public Bar bar;
 
     public int direction = 1;
-    private boolean wentUp = false;
     public static int UP_SPEED = 10;
     public static int SIDE_SPEED = 25;
 

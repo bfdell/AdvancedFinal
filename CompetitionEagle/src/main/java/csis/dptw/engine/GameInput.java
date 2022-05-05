@@ -212,6 +212,7 @@ public abstract class GameInput implements MouseMotionListener, MouseListener, K
 
     @Override
     public void keyPressed(KeyEvent e) {
+        System.out.println("CALLING");
         kPressedQueue.stream().filter(event -> event.restriction.isValid(e))
                 .forEach(event -> event.execute(e));
     }

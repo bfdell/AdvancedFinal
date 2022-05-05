@@ -107,9 +107,8 @@ public class Connect4 extends Game {
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.NORTH;
 
-        Font titleFont = TITLE_FONT;
         JLabel titleLabel = new JLabel(CONNECT4);
-        titleLabel.setFont(titleFont);
+        titleLabel.setFont(TITLE_FONT);
         titleLabel.setForeground(TITLE_COLOR);
         titlePanel.add(titleLabel, gbc);
 
@@ -121,7 +120,7 @@ public class Connect4 extends Game {
         // JLabel three = new JLabel(PLAYER2);
         // three.setFont(playerTwoFont);
         // three.setForeground(PLAYERS[0].DARKER_COLOR);
-        // titlePanel.add(three, gbc);
+        // titlePanel.add(three, gbcz );
 
         gbc.weightx = 0.5;
         gbc.gridx = 1;

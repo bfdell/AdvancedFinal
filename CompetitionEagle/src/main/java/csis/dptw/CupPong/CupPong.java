@@ -1,11 +1,11 @@
 package csis.dptw.CupPong;
 
 import javax.swing.*;
+import javax.swing.text.GapContent;
 
 import csis.dptw.*;
 import csis.dptw.engine.Entity;
 import csis.dptw.engine.Game;
-import csis.dptw.engine.Repainter;
 import csis.dptw.engine.Event.EventType;
 
 import java.awt.event.*;
@@ -14,24 +14,26 @@ import java.awt.*;
 import java.awt.geom.*;
 
 public class CupPong extends Game {
-
-    public static final Point BALL_START = new Point(420, 700);
+    public static final Point BALL_START = new Point(App.gameDimension.width / 2, 700);
     public Ball ball = new Ball(this, BALL_START);
+    public static final String PROMPT_MESSAGE = "Press enter to start your shot";
+
+    private JLabel shotLabel = new JLabel(PROMPT_MESSAGE);
+    private JButton play = new JButton("Play");
+    private JButton mainMenu = new JButton("Main Menu");
 
     //////////////////////////
     final String CUP = "Cup";
     final String PONG = "Pong";
-    private JButton play;
-    private JButton mainMenu;
-    DirectionMeter m;
-    Powerbar pb;
+
+    DirectionMeter directionMeter;
+    Powerbar powerBar;
 
     public CupPong() {
         super();//FIX TIHIS LINE BECCUSE GAMAE PANEL IS BEING INITIOALIZED IN ANONYMOUS INNER CLASS
         run();
     }
 
-    public final int LANE_WIDTH = 500;
     // ///////////////////////
     // public double boardYPercent = .3;
     // public double boardXPercent = .3;
@@ -41,35 +43,26 @@ public class CupPong extends Game {
     @Override
     public void run() {
         super.run();
-
-        // addCups();
-        // addEntity(ball);
-        //outlineCups();
         addKeyEvent(EventType.KPRESSED, this::adjustShot, 4, KeyEvent.VK_SPACE);
         addMouseEvent(EventType.MPRESSED, this::clickInCup, 1);
         addActionEvent(this::startGame, 1, play);
     }
 
     public void adjustShot(KeyEvent e) {
-        System.out.println("ACTIVATING");
-        if (m != null) {
-            m.interrupt();
-            m.isDirectonSet = true;
+        if (directionMeter != null) {
+            directionMeter.interrupt();
+            directionMeter.isDirectonSet = true;
             // removeEntity(m.meter);
-            m = null;
-            pb = new Powerbar(this);
-            pb.start();
-        } else if (pb != null) {
-            pb.interrupt();
-            pb.powerSpecified = true;
+            directionMeter = null;
+            powerBar = new Powerbar(this);
+            powerBar.start();
+        } else if (powerBar != null) {
+            powerBar.interrupt();
+            powerBar.powerSpecified = true;
             // removeEntity(pb.bar);
-            pb = null;
+            powerBar = null;
             System.out.println("removeing powerbar");
         }
-    }
-
-    public void outlineCups(int x, int y) {
-        // addEntity(new OutlineOfCups(this, new Point(x, y)));
     }
 
     public void addCups() {
@@ -88,20 +81,86 @@ public class CupPong extends Game {
             }
 
             addEntity(new Cup(this, new Point(x, y), "CompetitionEagle/src/main/java/csis/dptw/BeFunky-photo.png"));
-            outlineCups(x, y);
             x += 48;
         }
     }
 
     @Override
     public void initializeMap() {
-        gamePanel = new PongMap(new FlowLayout(), LANE_WIDTH, LANE_WIDTH);
+        GridBagLayout layout = new GridBagLayout();
+        gamePanel = new PongMap(layout);
+        GridBagConstraints gbc = new GridBagConstraints();
 
-        play = new JButton("Play");
-        mainMenu = new JButton("Main Menu");
+    
+        shotLabel.setFont(PongMap.TITLE_FONT);
 
-        gamePanel.add(play);
-        gamePanel.add(mainMenu);
+        gbc.weightx = 4;
+        gbc.weighty = 0;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.ipady = 250;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        JLabel filler = new JLabel("");
+        gamePanel.add(filler, gbc);
+
+        gbc.ipady = 25;
+        gbc.weightx = 3.75;
+        gbc.weighty = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        JLabel rightMargin = new JLabel("");
+        gamePanel.add(rightMargin, gbc);
+
+        gbc.weightx = 3.75;
+        gbc.weighty = 0;
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        JLabel leftMargin = new JLabel("");
+        gamePanel.add(leftMargin, gbc);
+        
+        gbc.weightx = 0;
+        gbc.weighty = 0;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.ipady = 25;
+        gbc.anchor = GridBagConstraints.CENTER;
+        play.setFont(PongMap.TITLE_FONT);
+        gamePanel.add(play, gbc);
+
+        gbc.gridy = 2;
+        gbc.ipady = 100;
+        JLabel verticalMargin = new JLabel("");
+        gamePanel.add(verticalMargin, gbc);
+
+
+        gbc.weightx = 0;
+        gbc.weighty = 0;
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.ipady = 25;
+        mainMenu.setFont(PongMap.TITLE_FONT);
+        gamePanel.add(mainMenu, gbc);
+        
+        gbc.gridy = 4;
+        gbc.gridx = 1;
+        gbc.weighty = 3;
+        JLabel bottomMargin = new JLabel("");
+        gamePanel.add(bottomMargin, gbc);
+        gbc.anchor = GridBagConstraints.CENTER;
+        
+
+        
+
+        // gbc.weightx = 1;
+        // gbc.weighty = 1.0;
+
+        // gbc.weightx = 0.5;
+        // gbc.gridx = 2;
+        // gbc.gridy = 0;
+        // gbc.anchor = GridBagConstraints.FIRST_LINE_END;
 
         play.setVisible(true);
         mainMenu.setVisible(true);
@@ -134,13 +193,11 @@ public class CupPong extends Game {
         ((PongMap) gamePanel).remove(mainMenu);
         addCups();
         addEntity(ball);
-        m = new DirectionMeter(ball.position, this);
-        m.start();
+        directionMeter = new DirectionMeter(ball.position, this);
+        directionMeter.start();
         // pb = new Powerbar(this);
         // pb.start();
 
-        System.out.println("SETTING");
         gamePanel.requestFocus();
-        ;
     }
 }

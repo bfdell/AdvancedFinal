@@ -96,4 +96,10 @@ public abstract class Game extends GameInput implements Runnable {
         gamePanel.addMouseMotionListener(this);
         gamePanel.addKeyListener(this);
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        gamePanel.requestFocus();
+    }
 }

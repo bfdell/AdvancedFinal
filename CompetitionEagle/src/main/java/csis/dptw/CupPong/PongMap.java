@@ -1,35 +1,43 @@
 package csis.dptw.CupPong;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.LayoutManager;
+import java.awt.Polygon;
 
 import csis.dptw.App;
+import csis.dptw.engine.Entity;
 import csis.dptw.engine.Map;
 
 public class PongMap extends Map{
     public final Color DARK_GREEN = new Color(30, 112, 52);
-    public final int LANE_WIDTH = 500;
+    public static final Color CUP_COLOR = Color.RED;
+    public static final Color PONG_COLOR = Color.BLACK;
+    public static final Font TITLE_FONT = new Font("SignPainter", Font.BOLD, 100);
     ///////////////////////
     public static final double BOARD_Y_PERCENT = .3;
     public static final double BOARD_X_PERCENT = .3;
-    // public static final double TRIANGLE_Y_PERCENT = .35;
-    // public static final double TRIANGLE_X_PERCENT = .15;
 
     public boolean playing = false;
 
     final String CUP = "Cup";
     final String PONG = "Pong";
 
-    public PongMap(LayoutManager layout, int width, int height) {
+    public PongMap(LayoutManager layout) {
         super(layout, App.gameDimension);
-        //TODO Auto-generated constructor stub
+        
     }
     
     @Override
     public void paintBackground(Graphics2D g) {
         if (playing) {
-            int endX = getWidth();
+             Image img = Entity.toolkit.getImage("CompetitionEagle/src/main/java/csis/dptw/pongbg.png");
+             g.drawImage(img, -500, 0, this);
             int height = getHeight();
-
+            int endX = getWidth();
             int topY = (int) (height * BOARD_Y_PERCENT);
 
             int xOffset = (int) (endX * BOARD_X_PERCENT);
@@ -48,14 +56,13 @@ public class PongMap extends Map{
             ((Graphics2D) g).setStroke(new BasicStroke(5));
             g.drawLine(endX / 2, topY, endX / 2, height);
         } else {
-            Font newFont = new Font("SansSerif", Font.BOLD, 30);
-            g.setFont(newFont);
+            g.setFont(TITLE_FONT);
     
             g.setColor(Color.RED);
-            g.drawString(CUP, (getWidth() - g.getFontMetrics().stringWidth(CUP + " " + PONG))/2, 50);
+            g.drawString(CUP, (getWidth() - g.getFontMetrics().stringWidth(CUP + " " + PONG))/2, g.getFontMetrics().getHeight());
     
             g.setColor(Color.BLACK);
-            g.drawString(" "+ PONG, (getWidth() - g.getFontMetrics().stringWidth(CUP + " " + PONG))/2 + (g.getFontMetrics().stringWidth(CUP)), 50);
+            g.drawString(" "+ PONG, (getWidth() - g.getFontMetrics().stringWidth(CUP + " " + PONG))/2 + (g.getFontMetrics().stringWidth(CUP)), g.getFontMetrics().getHeight());
         }
         
 

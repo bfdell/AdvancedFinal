@@ -23,7 +23,7 @@ public abstract class Animation extends Thread{
 
     public abstract void animation();
     
-    public synchronized boolean done() {
+    public boolean done() {
         return true;
     }
 }

@@ -53,6 +53,10 @@ public class Connect4 extends Game {
     private Point startingChipLocation;
     private Point[][] circlePoints = new Point[NUM_ROWS][NUM_COLS];
 
+    /**
+     * Initializes the players, calls the super class contructor and calls the run
+     * method
+     */
     public Connect4() {
         super();
         PLAYERS[1] = new ConnectPlayer(1, Color.RED, PLAYER1);
@@ -60,6 +64,10 @@ public class Connect4 extends Game {
         run();
     }
 
+    /**
+     * Calls the super class run method, adds the starting chip location and adds
+     * event listeners for the initial board
+     */
     @Override
     public void run() {
         super.run();
@@ -73,6 +81,9 @@ public class Connect4 extends Game {
         addKeyEvent(EventType.KPRESSED, this::dropChip, 2, KeyEvent.VK_ENTER);
     }
 
+    /**
+     * Draws the board and adds the buttons
+     */
     @Override
     public void initializeMap() {
         gamePanel = new ConnectBoard(new BorderLayout(), circlePoints, CHIP_RADIUS, CHIP_PADDING, RING_WIDTH);
@@ -140,6 +151,11 @@ public class Connect4 extends Game {
 
     }
 
+    /**
+     * Shifts the chip to a column within the matrix, either left or right
+     * 
+     * @param e
+     */
     public void shiftChip(KeyEvent e) {
         if (!currentChip.moving) {
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -156,6 +172,12 @@ public class Connect4 extends Game {
         }
     }
 
+    /**
+     * Starts the first turn and player, and allows the user to start playing the
+     * game
+     * 
+     * @param e
+     */
     public void startGame(ActionEvent e) {
         gameStarted = true;
         nextTurn();
@@ -172,6 +194,11 @@ public class Connect4 extends Game {
         restartButton.setVisible(true);
     }
 
+    /**
+     * Drops the chip to the next available index in that column of the matrix
+     * 
+     * @param e
+     */
     public void dropChip(KeyEvent e) {
         if (!currentChip.moving) {
             currentDstRow = -1;
@@ -193,15 +220,23 @@ public class Connect4 extends Game {
         }
     }
 
+    /**
+     * If the button is pressed, it will clear all entities
+     * 
+     * @param e
+     */
     public void restartGame(ActionEvent e) {
         gamePanel.entities.clear();
         currentRound = 0;
         takenSpots = new ConnectPlayer[NUM_ROWS][NUM_COLS];
         nextTurn();
         addNextChip();
-        
+
     }
 
+    /**
+     * Increases the round, and changes the player
+     */
     public void nextTurn() {
         currentRound++;
         currentPlayer = PLAYERS[currentRound % 2];
@@ -209,21 +244,31 @@ public class Connect4 extends Game {
         statusLabel.setText(currentPlayer.NAME + TURN);
     }
 
+    /**
+     * If the game is not over, then the next turn and chip are added, Otherwise, it
+     * checks whether the matrix is not filled, and sets the player wins and the
+     * button text to play again
+     * 
+     * @param evt
+     */
     public void chipFell(PropertyChangeEvent evt) {
         System.out.println("IS GAME OVER: " + gameOver());
-        
-        if(!gameOver()){
+
+        if (!gameOver()) {
             nextTurn();
             addNextChip();
-        }else{
-            if(!matrixFilled()){
+        } else {
+            if (!matrixFilled()) {
                 statusLabel.setText(currentPlayer.NAME + " Wins");
             }
-                restartButton.setText(PLAY_AGAIN);
-            
+            restartButton.setText(PLAY_AGAIN);
+
         }
     }
 
+    /**
+     * Adds a new chip, in the next player's color at the top of the matrix
+     */
     public void addNextChip() {
         currentChip = new ConnectChip(this, (Point) startingChipLocation.clone(),
                 PLAYERS[currentRound % 2]);
@@ -231,7 +276,11 @@ public class Connect4 extends Game {
         currentChipCol = 3;
     }
 
-    
+    /**
+     * Checks to see whether the matrix has been filled
+     * 
+     * @return true if the condition is met
+     */
     public boolean matrixFilled() {
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int col = 0; col < NUM_COLS; col++) {
@@ -244,19 +293,23 @@ public class Connect4 extends Game {
         return true;
     }
 
+    /**
+     * Checks to see if the matrix has been filled or that there is a connect 4
+     * 
+     * @return true when either condition is met
+     */
     public boolean gameOver() {
         if (matrixFilled()) {
             statusLabel.setForeground(Color.blue);
             statusLabel.setText("DRAW");
             return true;
         }
-        //DISPLAY MESSAGE ABOUT MATRIX BEING FILLED
+        // DISPLAY MESSAGE ABOUT MATRIX BEING FILLED
 
         LinkedList<Point> vertical = checkVertical(currentDstRow, currentChipCol);
         LinkedList<Point> horizontal = checkHorizontal(currentDstRow, currentChipCol);
         LinkedList<Point> diagonalOne = BL_TR_Diagonal(currentDstRow, currentChipCol);
         LinkedList<Point> diagonalTwo = TL_BR_Diagonal(currentDstRow, currentChipCol);
- 
 
         if (fourInARow(currentDstRow, currentChipCol)) {
             return true;
@@ -265,37 +318,54 @@ public class Connect4 extends Game {
 
     }
 
+    /**
+     * Checks to see if there are 4 chips in a row, either vertical, diagonal,
+     * bottom left to top right or bottom right to top left
+     * 
+     * @param row
+     * @param col
+     * @return true if one of these conditions has been met
+     */
     public boolean fourInARow(int row, int col) {
         System.out.println(BL_TR_Diagonal(row, col));
         System.out.println(TL_BR_Diagonal(row, col));
         System.out.println(checkVertical(row, col));
         System.out.println(checkHorizontal(row, col));
 
-        if(BL_TR_Diagonal(row, col).size() >= 4 || TL_BR_Diagonal(row, col).size() >= 4 || checkVertical(row, col).size() >= 4 || checkHorizontal(row, col).size() >=4 ){
+        if (BL_TR_Diagonal(row, col).size() >= 4 || TL_BR_Diagonal(row, col).size() >= 4
+                || checkVertical(row, col).size() >= 4 || checkHorizontal(row, col).size() >= 4) {
             return true;
         }
         // return tr != null;
         return false;
     }
 
+    /**
+     * Checks to see whether the current player's chips are forming a bottom left to
+     * top right diagonal connect4
+     * 
+     * @param row
+     * @param col
+     * @return winlist, the amount of chips in x value increasing order
+     */
     private LinkedList<Point> BL_TR_Diagonal(int row, int col) {
-        //INITIALIZES CURRENTSPOTPLAYER, AND WINLIST WITH CHIP THAT JUST DROPPED
+        // INITIALIZES CURRENTSPOTPLAYER, AND WINLIST WITH CHIP THAT JUST DROPPED
         int currentSpotPlayer = takenSpots[row][col].PLAYER_NUM;
         LinkedList<Point> winList = new LinkedList<Point>();
         winList.add(circlePoints[row][col]);
 
         ////////////////////////////////////
-        //DEBUG LIST 
+        // DEBUG LIST
         LinkedList<String> debugList = new LinkedList<String>();
         debugList.add(col + ", " + row + "|");
         //////////////////////////////////////
 
-        //CHECKS THAT MAKE SURE A CONNECTION OF 4 IS EVEN POSSIBLE
+        // CHECKS THAT MAKE SURE A CONNECTION OF 4 IS EVEN POSSIBLE
         if ((row <= 1 && col <= 1) || (row >= NUM_ROWS - 1 && col >= NUM_COLS - 1)) {
             return winList;
         }
 
-        //ADDS ALL TOP RIGHT DIAGONALS THAT MATCH PLAYER TO END OF LINKED LIST
+        // ADDS ALL TOP RIGHT DIAGONALS THAT MATCH PLAYER TO END OF LINKED LIST
         int topRow = row - 1;
         int rightCol = col + 1;
         while (topRow > -1 && rightCol < NUM_COLS) {
@@ -311,7 +381,7 @@ public class Connect4 extends Game {
             }
         }
 
-        //ADDS ALL BOTTOM LEFT DIAGONALS THAT MATCH PLAYER TO BEGINNING OF LINKED LIST
+        // ADDS ALL BOTTOM LEFT DIAGONALS THAT MATCH PLAYER TO BEGINNING OF LINKED LIST
         int bottomRow = row + 1;
         int leftCol = col - 1;
         while (bottomRow < NUM_ROWS && leftCol > -1) {
@@ -328,29 +398,38 @@ public class Connect4 extends Game {
             }
         }
 
-        //Prints out debug list of connections in x coordinate order
+        // Prints out debug list of connections in x coordinate order
         System.out.println(debugList.toString());
         return winList;
     }
 
+    /**
+     * Checks to see whether the current player's chips are forming a bottom right
+     * to
+     * top left diagonal connect4
+     * 
+     * @param row
+     * @param col
+     * @return winlist, the amount of chips in x value increasing order
+     */
     private LinkedList<Point> TL_BR_Diagonal(int row, int col) {
-        //INITIALIZES CURRENTSPOTPLAYER, AND WINLIST WITH CHIP THAT JUST DROPPED
+        // INITIALIZES CURRENTSPOTPLAYER, AND WINLIST WITH CHIP THAT JUST DROPPED
         int currentSpotPlayer = takenSpots[row][col].PLAYER_NUM;
         LinkedList<Point> winList = new LinkedList<Point>();
         winList.add(circlePoints[row][col]);
 
         ////////////////////////////////////
-        //DEBUG LIST 
+        // DEBUG LIST
         LinkedList<String> debugList = new LinkedList<String>();
         debugList.add(col + ", " + row + "|");
         //////////////////////////////////////
 
-        //CHECKS THAT MAKE SURE A CONNECTION OF 4 IS EVEN POSSIBLE
+        // CHECKS THAT MAKE SURE A CONNECTION OF 4 IS EVEN POSSIBLE
         if ((row <= 1 && col >= NUM_COLS - 1) || (row >= NUM_ROWS - 1 && col <= 1)) {
             return winList;
         }
 
-        //ADDS ALL TOP LEFT DIAGONALS THAT MATCH PLAYER TO BEGINNING OF LINKED LIST
+        // ADDS ALL TOP LEFT DIAGONALS THAT MATCH PLAYER TO BEGINNING OF LINKED LIST
         int topRow = row - 1;
         int leftCol = col - 1;
         while (topRow > -1 && leftCol > -1) {
@@ -366,7 +445,7 @@ public class Connect4 extends Game {
             }
         }
 
-        //ADDS ALL BOTTOM LEFT DIAGONALS THAT MATCH PLAYER TO END OF LINKED LIST
+        // ADDS ALL BOTTOM LEFT DIAGONALS THAT MATCH PLAYER TO END OF LINKED LIST
         int bottomRow = row + 1;
         int rightCol = col + 1;
         while (bottomRow < NUM_ROWS && rightCol < NUM_COLS) {
@@ -383,39 +462,48 @@ public class Connect4 extends Game {
             }
         }
 
-        //Prints out debug list of connections in x coordinate order
+        // Prints out debug list of connections in x coordinate order
         System.out.println(debugList.toString());
         return winList;
     }
 
+    /**
+     * Checks to see whether the current player's chips are forming a vertical
+     * connect4
+     * 
+     * @param row
+     * @param col
+     * @return winlist, the amount of chips in x value increasing order
+     */
     private LinkedList<Point> checkVertical(int row, int col) {
-        //INITIALIZES CURRENTSPOTPLAYER, AND WINLIST WITH CHIP THAT JUST DROPPED
+        // INITIALIZES CURRENTSPOTPLAYER, AND WINLIST WITH CHIP THAT JUST DROPPED
         int currentSpotPlayer = takenSpots[row][col].PLAYER_NUM;
         LinkedList<Point> winList = new LinkedList<Point>();
         winList.add(circlePoints[row][col]);
 
         ////////////////////////////////////
-        //DEBUG LIST 
+        // DEBUG LIST
         LinkedList<String> debugList = new LinkedList<String>();
         debugList.add(col + ", " + row + "|");
         //////////////////////////////////////
 
-        //ADDS ALL TOP CHIPS THAT MATCH PLAYER TO BEGINNING OF LINKED LIST
+        // ADDS ALL TOP CHIPS THAT MATCH PLAYER TO BEGINNING OF LINKED LIST
         // int topRow = row - 1;
         // while (topRow > -1) {
-        //     if (takenSpots[topRow][col] == null || takenSpots[topRow][col].PLAYER_NUM != currentSpotPlayer) {
-        //         break;
-        //     } else {
-        //         winList.push(circlePoints[topRow][col]);
-        //         ///////////////////////////////////
-        //         debugList.push(col + ", " + topRow + "|");
-        //         ///////////////////////////////////
-        //         topRow--;
-        //     }
+        // if (takenSpots[topRow][col] == null || takenSpots[topRow][col].PLAYER_NUM !=
+        // currentSpotPlayer) {
+        // break;
+        // } else {
+        // winList.push(circlePoints[topRow][col]);
+        // ///////////////////////////////////
+        // debugList.push(col + ", " + topRow + "|");
+        // ///////////////////////////////////
+        // topRow--;
+        // }
         // }
 
-        //NO NEED TO CHECK TOP BECAUSE ITS IMPOSSIBLE
-        //ADDS ALL BOTTOM CHIPS THAT MATCH PLAYER TO END OF LINKED LIST
+        // NO NEED TO CHECK TOP BECAUSE ITS IMPOSSIBLE
+        // ADDS ALL BOTTOM CHIPS THAT MATCH PLAYER TO END OF LINKED LIST
         int bottomRow = row + 1;
         while (bottomRow < NUM_ROWS) {
             if (takenSpots[bottomRow][col] == null
@@ -430,29 +518,37 @@ public class Connect4 extends Game {
             }
         }
 
-        //Prints out debug list of connections in top to bottom coordinate order
+        // Prints out debug list of connections in top to bottom coordinate order
         System.out.println(debugList.toString());
         return winList;
     }
 
+    /**
+     * Checks to see whether the current player's chips are forming a horizontal
+     * connect4
+     * 
+     * @param row
+     * @param col
+     * @return winlist, the amount of chips in x value increasing order
+     */
     private LinkedList<Point> checkHorizontal(int row, int col) {
-        //INITIALIZES CURRENTSPOTPLAYER, AND WINLIST WITH CHIP THAT JUST DROPPED
+        // INITIALIZES CURRENTSPOTPLAYER, AND WINLIST WITH CHIP THAT JUST DROPPED
         int currentSpotPlayer = takenSpots[row][col].PLAYER_NUM;
         LinkedList<Point> winList = new LinkedList<Point>();
         winList.add(circlePoints[row][col]);
 
         ////////////////////////////////////
-        //DEBUG LIST 
+        // DEBUG LIST
         LinkedList<String> debugList = new LinkedList<String>();
         debugList.add(col + ", " + row + "|");
         //////////////////////////////////////
 
-        //CHECKS THAT MAKE SURE A CONNECTION OF 4 IS EVEN POSSIBLE
+        // CHECKS THAT MAKE SURE A CONNECTION OF 4 IS EVEN POSSIBLE
         if ((row <= 1 && col >= NUM_COLS - 1) || (row >= NUM_ROWS - 1 && col <= 1)) {
             return winList;
         }
 
-        //ADDS ALL LEFT CHIPS MATCH PLAYER TO BEGINNING OF LINKED LIST
+        // ADDS ALL LEFT CHIPS MATCH PLAYER TO BEGINNING OF LINKED LIST
         int leftCol = col - 1;
         while (leftCol > -1) {
             if (takenSpots[row][leftCol] == null || takenSpots[row][leftCol].PLAYER_NUM != currentSpotPlayer) {
@@ -466,7 +562,7 @@ public class Connect4 extends Game {
             }
         }
 
-        //ADDS ALL RIGHT CHIPS THAT MATCH PLAYER TO END OF LINKED LIST
+        // ADDS ALL RIGHT CHIPS THAT MATCH PLAYER TO END OF LINKED LIST
         int rightCol = col + 1;
         while (rightCol < NUM_COLS) {
             if (takenSpots[row][rightCol] == null
@@ -481,7 +577,7 @@ public class Connect4 extends Game {
             }
         }
 
-        //Prints out debug list of connections in x coordinate order
+        // Prints out debug list of connections in x coordinate order
         System.out.println(debugList.toString());
         return winList;
     }

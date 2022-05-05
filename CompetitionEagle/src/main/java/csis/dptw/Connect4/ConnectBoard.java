@@ -55,7 +55,7 @@ public class ConnectBoard extends Map {
         g.setColor(DARK_BLUE);
         paintEmptySpots((Graphics2D) g);
         paintEntities((Graphics2D) g);
-        paintRings((Graphics2D) g);
+        // paintRings((Graphics2D) g);
     }
 
     private void paintEmptySpots(Graphics2D g) {

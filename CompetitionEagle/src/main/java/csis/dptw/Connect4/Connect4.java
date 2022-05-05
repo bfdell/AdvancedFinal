@@ -199,6 +199,7 @@ public class Connect4 extends Game {
         takenSpots = new ConnectPlayer[NUM_ROWS][NUM_COLS];
         nextTurn();
         addNextChip();
+        
     }
 
     public void nextTurn() {

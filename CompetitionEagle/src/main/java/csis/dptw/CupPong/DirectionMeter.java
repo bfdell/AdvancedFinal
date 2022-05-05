@@ -1,5 +1,7 @@
 package csis.dptw.CupPong;
 
+import java.awt.*;
+
 import csis.dptw.App;
 import csis.dptw.engine.Animation;
 import csis.dptw.engine.Entity;
@@ -8,48 +10,19 @@ import csis.dptw.engine.Repainter;
 
 public class DirectionMeter extends Animation{
     
-    public static final int TOP = 158;
-    private boolean wentUp = false;
-    public static int UP_SPEED = 10;
-    public static int SIDE_SPEED = 25;
+    public final Point FULCRUM_POINT;
+    public final int METER_HEIGHT = 20;
+    public final int METER_WIDTH;
 
-    boolean waited = false;
-    public static int STAY_AT_TOP = 150;
-    
-    public DirectionMeter(Entity entity, Game game) {
-        super(entity, game);  
+    public DirectionMeter(Point fulcrumPoint, Entity entity, Game game) {
+        super(new Meter(game, fulcrumPoint, ), game);
+        FULCRUM_POINT = fulcrumPoint;  
+        //Chechk later
+        METER_WIDTH = (int) (App.gameDimension.width * PongMap.BOARD_X_PERCENT);
     }
 
     @Override
     public void animation(){
-        try {
-            sleep(Repainter.DELAY_TIME);
-        } catch (InterruptedException e) {
-        }
-
-        if(!wentUp){
-            while(entity.position.y > TOP){
-                try {
-                    sleep(Repainter.DELAY_TIME);
-                } catch (InterruptedException e) {
-                }
-                entity.position.y -= UP_SPEED;
-            }
-            wentUp = true;
-        }
-
-        if(!waited) {
-            try {
-                sleep(STAY_AT_TOP);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            waited = true;
-        }
-        entity.position.x += SIDE_SPEED;
-    }
- 
     @Override
     public boolean done(){
         //checking if cup is off the screen
@@ -57,5 +30,22 @@ public class DirectionMeter extends Animation{
             done = true;
         }
         return done;
+    }
+
+
+    private static class Meter extends Entity {
+        Point endPoint;
+
+        public Meter(Game game, Point position, Point endPoint) {
+            super(game, position);
+            this.endPoint = endPoint;
+        }
+
+
+        @Override
+        public void paint(Graphics2D g) {
+
+        }
+
     }
 }

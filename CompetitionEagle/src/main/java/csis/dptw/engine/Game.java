@@ -40,7 +40,7 @@ public abstract class Game extends GameInput implements Runnable {
 
         // addMouseEvent(EventType.MRELEASED, e -> testEvent(this, (MouseEvent) e), 2);
         // addMouseEvent(EventType.MPRESSED, e -> testEvent2(this, (MouseEvent) e), 1);
-        // addMouseEvent(EventType.MCLICKED, e -> testEvent2(this, (MouseEvent) e), 1);
+        addMouseEvent(EventType.MCLICKED, e -> testEvent2(this, (MouseEvent) e), 1);
         // addKeyEvent(EventType.KTYPED, e -> keyTest(this, (KeyEvent) e), 1, KeyEvent.VK_C);
         // addKeyEvent(EventType.KPRESSED, e -> keyTest2(this, (KeyEvent) e), 1, KeyEvent.VK_C);
         // addKeyEvent(EventType.KRELEASED, e -> keyTest3(this, (KeyEvent) e), 1, KeyEvent.VK_C);

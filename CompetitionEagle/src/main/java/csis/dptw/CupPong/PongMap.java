@@ -9,10 +9,10 @@ public class PongMap extends Map{
     public final Color DARK_GREEN = new Color(30, 112, 52);
     public final int LANE_WIDTH = 500;
     ///////////////////////
-    public double boardYPercent = .3;
-    public double boardXPercent = .3;
-    public double triangleYPercent = .35;
-    public double triangleXPercent = .15;
+    public static final double BOARD_Y_PERCENT = .3;
+    public static final double BOARD_X_PERCENT = .3;
+    // public static final double TRIANGLE_Y_PERCENT = .35;
+    // public static final double TRIANGLE_X_PERCENT = .15;
 
     public boolean playing = false;
 
@@ -30,9 +30,9 @@ public class PongMap extends Map{
             int endX = getWidth();
             int height = getHeight();
 
-            int topY = (int) (height * boardYPercent);
+            int topY = (int) (height * BOARD_Y_PERCENT);
 
-            int xOffset = (int) (endX * boardXPercent);
+            int xOffset = (int) (endX * BOARD_X_PERCENT);
             int leftX = xOffset;
             int rightX = endX - xOffset;
 

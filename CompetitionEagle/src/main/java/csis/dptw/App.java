@@ -1,4 +1,5 @@
 package csis.dptw;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,8 +14,6 @@ import java.io.IOException;
 import java.util.*;
 import java.awt.event.*;
 
-
-
 //POSSIBLY USE DATA TRANSFER TO TRANSFER DATA
 /**
  * Hello world!
@@ -25,40 +24,39 @@ public class App implements ActionListener, Runnable {
     JFrame frame;
 
     //////
-    JButton c4;
-    JButton cPong;
+    JButton startConnect4;
+    JButton startCupPong;
     JLabel select;
     JLabel title;
 
     Game testGame;
-    JPanel app; 
+    JPanel app;
 
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new App());     
+        javax.swing.SwingUtilities.invokeLater(new App());
     }
 
     @Override
     public void run() {
-        
         initFrame();
         makeMenu();
-        
-        //Game testGame = new Connect4();
-        //  Game testGame = new CupPong();
+
+        // Game testGame = new Connect4();
+        // Game testGame = new CupPong();
         // Thread gameThread = new Thread(testGame);
         // gameThread.start();
 
-        //ASK TERESCO QUESTIONS ABOUT RUNNABLE AND NOT USING INVOKE LATER ETC.....
-        // testGame.gamePanel.addEntity(new Entity(testGame, new Point(1, 1), "competitioneagle/src/main/java/csis/dptw/TCUP.png"));
-      
-            frame.setVisible(true);
+        // ASK TERESCO QUESTIONS ABOUT RUNNABLE AND NOT USING INVOKE LATER ETC.....
+        // testGame.gamePanel.addEntity(new Entity(testGame, new Point(1, 1),
+        // "competitioneagle/src/main/java/csis/dptw/TCUP.png"));
+
+        frame.setVisible(true);
     }
 
     private void displayGame(Game testGame) {
         frame.add(testGame.gamePanel);
-        frame.setVisible( true );
+        frame.setVisible(true);
     }
-
 
     private void initFrame() {
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -81,29 +79,28 @@ public class App implements ActionListener, Runnable {
         Font selectFont = new Font("SansSerif", Font.BOLD, 20);
         select.setFont(selectFont);
 
+        startConnect4 = new JButton("Connect4");
+        startCupPong = new JButton("Cup Pong");
 
-        c4 = new JButton("Connect4");
-        cPong = new JButton("Cup Pong");
-        
-        c4.addActionListener(this);   
-        cPong.addActionListener(this);   
+        startConnect4.addActionListener(this);
+        startCupPong.addActionListener(this);
 
         app.add(title);
         app.add(select);
-        app.add(c4);
-        app.add(cPong);
-        
+        app.add(startConnect4);
+        app.add(startCupPong);
+
         frame.add(app);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == c4){
+        if (e.getSource() == startConnect4) {
             testGame = new Connect4();
-        }else if(e.getSource() == cPong){
+        } else if (e.getSource() == startCupPong) {
             testGame = new CupPong();
         }
-        
+
         // app.remove(c4);
         // app.remove(cPong);
         // app.remove(select);

@@ -20,7 +20,7 @@ public class Cup extends Entity {
     }
 
     public boolean colidesWith(Point point) {
-        return cupColision.contains(point);
+        return cupColision.                                                                        (point);
     }
 
     @Override
@@ -28,9 +28,7 @@ public class Cup extends Entity {
         super.paint(g);
         //g.draw(cupColision);
     }
-    
-    //https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse 
-    
+
     // public boolean iCup(Point p){
 
     //         double squaredA = Math.pow(p.x + 5 - centerX, 2);
@@ -46,7 +44,4 @@ public class Cup extends Entity {
     //         }
     //         return false;
     // }
-   
-
-    
 }

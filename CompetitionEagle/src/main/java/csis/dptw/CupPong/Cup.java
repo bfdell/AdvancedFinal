@@ -20,7 +20,8 @@ public class Cup extends Entity {
     }
 
     public boolean colidesWith(Point point) {
-        return cupColision.                                                                        (point);
+        //return cupColision.point();
+        return false;                  
     }
 
     @Override

@@ -114,5 +114,6 @@ public class CupPong extends Game {
         ((PongMap)gamePanel).remove(mainMenu);
         addCups();
         addEntity(ball);
+        DirectionMeter m = new DirectionMeter(ball.position, this);
     }
 }

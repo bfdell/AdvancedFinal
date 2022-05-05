@@ -1,7 +1,6 @@
 package csis.dptw.engine;
 
 public abstract class Animation extends Thread{
-    public final int REFRESH_RATE = 30;
     protected Entity entity;
     protected Game game;
 

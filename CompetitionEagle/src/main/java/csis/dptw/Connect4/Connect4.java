@@ -43,7 +43,7 @@ public class Connect4 extends Game {
     private JPanel titlePanel = new JPanel();
 
     private final ConnectPlayer[] PLAYERS = new ConnectPlayer[2];
-    private boolean gameStarted = false;
+    private boolean gameActive = false;
     private int currentRound = 0;
     private ConnectPlayer currentPlayer;
     private ConnectChip currentChip;
@@ -138,7 +138,7 @@ public class Connect4 extends Game {
 
     @Override
     public void keyPressed(KeyEvent event) {
-        if (gameStarted) {
+        if (gameActive) {
             super.keyPressed(event);
         }
     }
@@ -178,7 +178,7 @@ public class Connect4 extends Game {
      * @param e
      */
     public void startGame(ActionEvent e) {
-        gameStarted = true;
+        gameActive = true;
         nextTurn();
         addNextChip();
         System.out.println("GAME STARTED");
@@ -225,6 +225,10 @@ public class Connect4 extends Game {
      * @param e
      */
     public void restartGame(ActionEvent e) {
+        if(!gameActive) {
+            restartButton.setText(RESTART);
+            gameActive = true;
+        }
         gamePanel.entities.clear();
         currentRound = 0;
         takenSpots = new ConnectPlayer[NUM_ROWS][NUM_COLS];
@@ -251,9 +255,9 @@ public class Connect4 extends Game {
      * @param evt
      */
     public void chipFell(PropertyChangeEvent evt) {
-        System.out.println("IS GAME OVER: " + gameOver());
-
-        if (!gameOver()) {
+        // System.out.println("IS GAME OVER: " + gameOver());
+        gameActive = !gameOver();
+        if (gameActive) {
             nextTurn();
             addNextChip();
         } else {
@@ -305,10 +309,10 @@ public class Connect4 extends Game {
         }
         // DISPLAY MESSAGE ABOUT MATRIX BEING FILLED
 
-        LinkedList<Point> vertical = checkVertical(currentDstRow, currentChipCol);
-        LinkedList<Point> horizontal = checkHorizontal(currentDstRow, currentChipCol);
-        LinkedList<Point> diagonalOne = BL_TR_Diagonal(currentDstRow, currentChipCol);
-        LinkedList<Point> diagonalTwo = TL_BR_Diagonal(currentDstRow, currentChipCol);
+        // LinkedList<Point> vertical = checkVertical(currentDstRow, currentChipCol);
+        // LinkedList<Point> horizontal = checkHorizontal(currentDstRow, currentChipCol);
+        // LinkedList<Point> diagonalOne = BL_TR_Diagonal(currentDstRow, currentChipCol);
+        // LinkedList<Point> diagonalTwo = TL_BR_Diagonal(currentDstRow, currentChipCol);
 
         if (fourInARow(currentDstRow, currentChipCol)) {
             return true;
@@ -326,10 +330,10 @@ public class Connect4 extends Game {
      * @return true if one of these conditions has been met
      */
     public boolean fourInARow(int row, int col) {
-        System.out.println(BL_TR_Diagonal(row, col));
-        System.out.println(TL_BR_Diagonal(row, col));
-        System.out.println(checkVertical(row, col));
-        System.out.println(checkHorizontal(row, col));
+        // System.out.println(BL_TR_Diagonal(row, col));
+        // System.out.println(TL_BR_Diagonal(row, col));
+        // System.out.println(checkVertical(row, col));
+        // System.out.println(checkHorizontal(row, col));
 
         if (BL_TR_Diagonal(row, col).size() >= 4 || TL_BR_Diagonal(row, col).size() >= 4
                 || checkVertical(row, col).size() >= 4 || checkHorizontal(row, col).size() >= 4) {
@@ -486,21 +490,6 @@ public class Connect4 extends Game {
         debugList.add(col + ", " + row + "|");
         //////////////////////////////////////
 
-        // ADDS ALL TOP CHIPS THAT MATCH PLAYER TO BEGINNING OF LINKED LIST
-        // int topRow = row - 1;
-        // while (topRow > -1) {
-        // if (takenSpots[topRow][col] == null || takenSpots[topRow][col].PLAYER_NUM !=
-        // currentSpotPlayer) {
-        // break;
-        // } else {
-        // winList.push(circlePoints[topRow][col]);
-        // ///////////////////////////////////
-        // debugList.push(col + ", " + topRow + "|");
-        // ///////////////////////////////////
-        // topRow--;
-        // }
-        // }
-
         // NO NEED TO CHECK TOP BECAUSE ITS IMPOSSIBLE
         // ADDS ALL BOTTOM CHIPS THAT MATCH PLAYER TO END OF LINKED LIST
         int bottomRow = row + 1;
@@ -541,11 +530,6 @@ public class Connect4 extends Game {
         LinkedList<String> debugList = new LinkedList<String>();
         debugList.add(col + ", " + row + "|");
         //////////////////////////////////////
-
-        // CHECKS THAT MAKE SURE A CONNECTION OF 4 IS EVEN POSSIBLE
-        if ((row <= 1 && col >= NUM_COLS - 1) || (row >= NUM_ROWS - 1 && col <= 1)) {
-            return winList;
-        }
 
         // ADDS ALL LEFT CHIPS MATCH PLAYER TO BEGINNING OF LINKED LIST
         int leftCol = col - 1;

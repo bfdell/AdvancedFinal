@@ -211,8 +211,17 @@ public class Connect4 extends Game {
 
     public void chipFell(PropertyChangeEvent evt) {
         System.out.println("IS GAME OVER: " + gameOver());
-        nextTurn();
-        addNextChip();
+        
+        if(!gameOver()){
+            nextTurn();
+            addNextChip();
+        }else{
+            if(!matrixFilled()){
+                statusLabel.setText(currentPlayer.NAME + " Wins");
+            }
+                restartButton.setText(PLAY_AGAIN);
+            
+        }
     }
 
     public void addNextChip() {
@@ -222,10 +231,7 @@ public class Connect4 extends Game {
         currentChipCol = 3;
     }
 
-    public void playAgain() {
-        restartButton.setText(PLAY_AGAIN);
-    }
-
+    
     public boolean matrixFilled() {
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int col = 0; col < NUM_COLS; col++) {
@@ -240,6 +246,8 @@ public class Connect4 extends Game {
 
     public boolean gameOver() {
         if (matrixFilled()) {
+            statusLabel.setForeground(Color.blue);
+            statusLabel.setText("DRAW");
             return true;
         }
         //DISPLAY MESSAGE ABOUT MATRIX BEING FILLED
@@ -258,12 +266,16 @@ public class Connect4 extends Game {
     }
 
     public boolean fourInARow(int row, int col) {
-        // System.out.println(BL_TR_Diagonal(row, col));
-        // System.out.println(TL_BR_Diagonal(row, col));
+        System.out.println(BL_TR_Diagonal(row, col));
+        System.out.println(TL_BR_Diagonal(row, col));
         System.out.println(checkVertical(row, col));
-        // System.out.println(checkHorizontal(row, col));
+        System.out.println(checkHorizontal(row, col));
+
+        if(BL_TR_Diagonal(row, col).size() >= 4 || TL_BR_Diagonal(row, col).size() >= 4 || checkVertical(row, col).size() >= 4 || checkHorizontal(row, col).size() >=4 ){
+            return true;
+        }
         // return tr != null;
-        return true;
+        return false;
     }
 
     private LinkedList<Point> BL_TR_Diagonal(int row, int col) {

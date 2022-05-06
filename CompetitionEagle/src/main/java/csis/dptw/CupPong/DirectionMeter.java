@@ -11,6 +11,7 @@ import csis.dptw.engine.Repainter;
 import csis.dptw.util.PaintHelper;
 
 /**
+ * Creates a direction meter that aims the ball object
  * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
  * @version Spring 2022
  */

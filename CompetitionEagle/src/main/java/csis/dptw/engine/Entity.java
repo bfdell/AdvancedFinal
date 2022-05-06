@@ -14,6 +14,12 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 
+/**
+ *Creates an entity that can be used to create objects for the specified game
+ * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
+ * @version Spring 2022
+ */
+
 
 public class Entity implements Serializable { 
     protected PropertyChangeSupport eventHelper = new PropertyChangeSupport(this);

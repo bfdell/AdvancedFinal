@@ -1,6 +1,10 @@
 package csis.dptw.engine;
 
-
+/**
+ * Creates the players and assigns values to the amount of players
+ * @author Brian Dell
+ * @version Spring 2022
+ */
 
 public class Player {
   

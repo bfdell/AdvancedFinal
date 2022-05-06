@@ -1,5 +1,10 @@
 package csis.dptw.engine;
 
+/**
+ * Animates the entities within the games
+ * @author Brian Dell
+ * @version Spring 2022
+ */
 public abstract class Animation extends Thread {
     public Entity entity;
     protected Game game;

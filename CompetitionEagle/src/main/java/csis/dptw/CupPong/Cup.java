@@ -7,7 +7,7 @@ import csis.dptw.engine.Game;
 import csis.dptw.util.PaintHelper;
 
 /**
- *
+ * Creates the entity cup that will be used to create cupPong
  * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
  * @version Spring 2022
  */

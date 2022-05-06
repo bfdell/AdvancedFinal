@@ -14,9 +14,9 @@ public class BallAnimation extends Animation {
     public static final int MIN_SIZE = 5;
     public final double GROWTH_RATE;
     public final double SHRINKING_RATE;
-    public static final int TOTAL_FRAMES = 40;
     public static final int BALL_SPEED = 7;
     public final int TOP_DIFFERENCE = 80;
+    public static final int TOTAL_FRAMES = 90;
 
     public int currentFrame = 1;
     Point2D destination;
@@ -25,14 +25,13 @@ public class BallAnimation extends Animation {
     Ball ball;
     boolean descending = false;
 
-    double dx1;
-    double dy1;
-
-    /////
     double slope;
     int currentX = 0;
-    int direction;
+    double direction;
     double amountIterations;
+
+    double dx; 
+    double dy;
 
     public BallAnimation(Entity entity, Game game, Point2D destination, double slope, double totalDy) {
         super(entity, game);
@@ -42,16 +41,19 @@ public class BallAnimation extends Animation {
         ball = (Ball) entity;
         direction = destination.getX() < ball.getPosition().getX() ? -1 : 1;
         this.slope = destination.getX() < ball.getPosition().getX() ? -1 * slope : slope;
+
+         dy = TOTAL_FRAMES / slope; 
+        //  dx = TOTAL_FRAMES / 
+
         amountIterations = -1 * (totalDy + TOP_DIFFERENCE) / this.slope;
         System.out.println(amountIterations);
         abovePoint = new Point2D.Double(destination.getX() + TOP_DIFFERENCE, destination.getY() - TOP_DIFFERENCE);
+        
+        // GROWTH_RATE = (MAX_SIZE - ball.size) / amountIterations;
+        GROWTH_RATE = .1;
 
-        double[] riseOverRun = calculateSlope(ball.getPosition(), abovePoint);
-        dy1 = riseOverRun[0];
-        dx1 = riseOverRun[1];
-        /////
-        GROWTH_RATE = (MAX_SIZE - ball.size) / amountIterations;
-        SHRINKING_RATE = GROWTH_RATE * 6;
+        SHRINKING_RATE = GROWTH_RATE * 5;
+        
     }
 
     @Override
@@ -72,17 +74,13 @@ public class BallAnimation extends Animation {
             ball.getPosition().setLocation(ball.getPosition().getX() + direction, ball.getPosition().getY() + slope);
 
             System.out.println(ball.getPosition());
-            if (ball.size > MAX_SIZE) {
+            if (abovePoint.getY() > ball.getPosition().getY()) {
                 descending = true;
-                direction *= -1;
+                direction = (direction * -1)/2;
             } 
         } else {
             ball.size -= SHRINKING_RATE;
             ball.getPosition().setLocation(ball.getPosition().getX() - direction, ball.getPosition().getY() - slope);
-
-            // if(Ball.colidesWith(ball.getPosition())) {
-            // ball.getPosition().getY() -= dy1;
-            // }
         }
 
         currentFrame++;
@@ -114,5 +112,4 @@ public class BallAnimation extends Animation {
     public int nextY() {
         return 0;
     }
-
 }

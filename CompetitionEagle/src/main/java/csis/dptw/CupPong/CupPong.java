@@ -46,6 +46,7 @@ public class CupPong extends Game {
         addKeyEvent(EventType.KPRESSED, this::adjustShot, 4, KeyEvent.VK_SPACE);
         // addMouseEvent(EventType.MPRESSED, this::clickInCup, 1);
         addActionEvent(this::startGame, 1, play);
+        addPropertyEvent(this::ballLanded, BALL_LANDED_PRIORITY, currentBall, "landed");
     }
 
     public void adjustShot(KeyEvent e) {
@@ -63,7 +64,6 @@ public class CupPong extends Game {
             powerBar.powerSpecified = true;
             powerBar.interrupt();
             throwBall();
-            addPropertyEvent(this::ballLanded, BALL_LANDED_PRIORITY, currentBall, "landed");
 
             Thread removeTimer = new Thread() {
                 @Override
@@ -171,17 +171,6 @@ public class CupPong extends Game {
         mainMenu.setVisible(true);
     }
 
-    public void clickInCup(MouseEvent e) {
-        Point cur = e.getPoint();
-        for (Entity cup : gamePanel.entities) {
-            if (cup instanceof Cup) {
-                if (cup != currentBall && ((Cup) cup).colidesWith(cur)) {
-                    System.out.println("col·li·sion");
-                    moveCup((Cup) cup);
-                }
-            }
-        }
-    }
 
     public void moveCup(Cup cup) {
         CupAnimation cupAnimation = new CupAnimation(cup, this);
@@ -236,9 +225,10 @@ public class CupPong extends Game {
 
     public void ballLanded(PropertyChangeEvent e) {
         getMap().playerShooting = false;
-        // removeEntity(currentBall);
         handleCupCollisions();
         currentBall.resetLocation();
+
+        gameFinished();
 
     }
 
@@ -246,11 +236,16 @@ public class CupPong extends Game {
         for (Cup cup : allCups) {
             if (cup.colidesWith(currentBall.getPosition())) {
                 moveCup(cup);
+                allCups.remove(cup);
             }
         }
     }
 
     public PongMap getMap() {
         return (PongMap) gamePanel;
+    }
+
+    public boolean gameFinished() {
+        return allCups.size() == 0;
     }
 }

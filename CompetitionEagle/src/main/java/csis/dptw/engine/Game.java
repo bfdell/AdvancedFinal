@@ -20,14 +20,7 @@ public abstract class Game extends GameInput implements Runnable {
     public Map gamePanel;
     public Repainter refresher;
 
-    ////////////////////////////////////////////////////////////////
-    String test = "STRING";
-    int i;
-    String k = "SMH,";
-    ////////////////////////////////
-
     public final LayoutManager MAP_LAYOUT;
-    // NO NEED FOR MAP LAYOUT
 
     /**
      * Creates layout of the game panel
@@ -66,8 +59,6 @@ public abstract class Game extends GameInput implements Runnable {
         // KeyEvent.VK_C);
         // addKeyEvent(EventType.KRELEASED, e -> keyTest3(this, (KeyEvent) e), 1,
         // KeyEvent.VK_C);
-        addMouseEvent(EventType.MPRESSED, this::mRef, 1);
-        AWTEvent event = new MouseEvent(gamePanel, i, i, i, i, i, i, false);
     }
 
     /**
@@ -100,30 +91,11 @@ public abstract class Game extends GameInput implements Runnable {
      * @param e    the event in which the mouse has been pressed/released, etc.
      */
     public static void testEvent(Game game, MouseEvent e) {
-        System.out.println(game.test);
-        game.test += game.i++ + ",";
-    }
-
-    public void mRef(MouseEvent e) {
-        System.out.println("ITS WORKING  " + i++);
     }
 
     // TESTING PURPOSES
     public static void testEvent2(Game game, MouseEvent e) {
-        System.out.println(game.i * 50 + "------------");
         System.out.println(e.getPoint());
-    }
-
-    public void keyTest(Game game, KeyEvent e) {
-        System.out.println("KEY TYPE ACTIVATED");
-    }
-
-    public void keyTest2(Game game, KeyEvent e) {
-        System.out.println("KEY PRESS ACTIVATED");
-    }
-
-    public void keyTest3(Game game, KeyEvent e) {
-        System.out.println("KEY RELEASE ACTIVATED");
     }
 
     /**

@@ -215,4 +215,15 @@ public class CupPong extends Game {
 
         gamePanel.requestFocus();
     }
+
+    public Point calculatePath() {
+        double dx = (powerBar.bar.currentHeight * (0.1))
+                * (directionMeter.meter.endPoint.getX() - directionMeter.meter.position.x);
+        double dy = (powerBar.bar.currentHeight * (0.1))
+                * (directionMeter.meter.endPoint.getY() - directionMeter.meter.position.y);
+        Point landingPoint = new Point((int) dx, (int) dy);
+        return landingPoint;
+
+    }
+
 }

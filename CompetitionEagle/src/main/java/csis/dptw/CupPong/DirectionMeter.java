@@ -79,7 +79,7 @@ public class DirectionMeter extends Animation {
         return isDirectonSet;
     }
 
-    private static class Meter extends Entity {
+     static class Meter extends Entity {
         AffineTransform transformer;
         Point2D endPoint;
         Point2D topPoint;

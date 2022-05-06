@@ -49,7 +49,7 @@ public class Powerbar extends Animation {
         return powerSpecified;
     }
 
-    private static class Bar extends Entity {
+     static class Bar extends Entity {
 
         public static final int BAR_WIDTH = 30;
         public static final Color BAR_COLOR = Color.RED;

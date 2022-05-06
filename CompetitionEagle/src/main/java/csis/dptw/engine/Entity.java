@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import csis.dptw.Connect4.Connect4;
 
 import java.awt.*;
+import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 
 
@@ -36,6 +37,11 @@ public class Entity implements Serializable {
         this.eventHelper.removePropertyChangeListener(propertyName, listener);
     }
 
+
+    public Point2D getPosition() {
+        return position;
+    }
+    
 
     /**
      * Constructor to be used with anonymous class that overrides makeEntityImage

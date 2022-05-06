@@ -11,7 +11,13 @@ public class ConnectPlayer extends Player {
     final Color DARKER_COLOR;
     final String NAME;
 
-    //MAKE SET NAMES METHOD
+    /**
+     * Constructs a player for Connect4
+     * @param playerNum, The number of the player
+     * @param color, The color of the players chip
+     * @param name, The name of the player.
+     * 
+     */
     public ConnectPlayer(int playerNum, Color color, String name) {
         super(playerNum);
         COLOR = color;

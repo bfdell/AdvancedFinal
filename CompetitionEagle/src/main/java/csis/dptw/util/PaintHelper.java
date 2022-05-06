@@ -32,6 +32,22 @@ public class PaintHelper {
         
         g.drawOval(upperLeftX, upperLeftY, radius * 2, radius * 2);
     }
+    public static void fillCircleFromMiddleDouble(Point2D middle, double radius, Graphics2D g) {
+        double upperLeftX = middle.getX() - radius;
+        double upperLeftY = middle.getY() - radius;
+        
+       Arc2D.Double myArc =  makeArcFromMiddle(middle, radius, 0.0, 360.0, Arc2D.PIE);
+       g.fill(myArc);
+        // g.fillOval(upperLeftX, upperLeftY, radius * 2, radius * 2);
+    }
+    
+    public static void drawCircleFromMiddleDouble(Point2D middle, double radius, Graphics2D g) {
+        double upperLeftX = middle.getX() - radius;
+        double upperLeftY = middle.getY() - radius;
+        
+        Arc2D.Double myArc =  makeArcFromMiddle(middle, radius, 0.0, 360.0, Arc2D.PIE);
+        g.draw(myArc);
+    }
 
     public static void drawCircleFromMiddle(Point middle, int radius, Graphics2D g, int circleWidth) {
         int upperLeftX = middle.x - radius;
@@ -58,9 +74,9 @@ public class PaintHelper {
         g.setStroke(new BasicStroke(1));
     }
 
-    public static Arc2D.Double makeArcFromMiddle(Point middle, int radius, double start, double extent, int type) {
-        int upperLeftX = middle.x - radius;
-        int upperLeftY = middle.y - radius;
+    public static Arc2D.Double makeArcFromMiddle(Point2D middle, double radius, double start, double extent, int type) {
+        double upperLeftX = middle.getX() - radius;
+        double upperLeftY = middle.getY() - radius;
         
         return new Arc2D.Double(upperLeftX, upperLeftY, radius * 2.0, radius * 2.0,start, extent, type);
     }

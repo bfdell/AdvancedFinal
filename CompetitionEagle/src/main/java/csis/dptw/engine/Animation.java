@@ -26,4 +26,8 @@ public abstract class Animation extends Thread{
     public boolean done() {
         return true;
     }
+
+    public Entity getEntity() {
+        return entity;
+    }
 }

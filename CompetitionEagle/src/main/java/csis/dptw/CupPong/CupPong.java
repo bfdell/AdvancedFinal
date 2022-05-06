@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.geom.*;
 
 public class CupPong extends Game {
+    public static final double POWER_PERCENT = 0.022;
     public static final Point BALL_START = new Point(App.gameDimension.width / 2, 700);
     public Ball ball = new Ball(this, BALL_START);
     public static final String PROMPT_MESSAGE = "Press enter to start your shot";
@@ -51,16 +52,17 @@ public class CupPong extends Game {
         } else if (directionMeter != null && powerBar == null) {
             directionMeter.isDirectonSet = true;
             directionMeter.interrupt();
-        
+
             powerBar = new Powerbar(this);
             powerBar.start();
         } else if (powerBar != null) {
             powerBar.powerSpecified = true;
             powerBar.interrupt();
-            
-            Point landing = calculatePath();
-            BallAnimation throwBall = new BallAnimation(ball, this, landing);
-            throwBall.start();
+
+            // Point2D landing = calculatePath();
+            // BallAnimation throwBall = new BallAnimation(ball, this, landing);
+            // throwBall.start();
+            throwBall();
 
             Thread removeTimer = new Thread() {
                 @Override
@@ -213,15 +215,39 @@ public class CupPong extends Game {
         gamePanel.requestFocus();
     }
 
-    public Point calculatePath() {
-        double dx = (powerBar.bar.currentHeight * (0.1))
+    public Point2D calculatePath() {
+        double dx = (150 * (POWER_PERCENT))
                 * (directionMeter.meter.endPoint.getX() - directionMeter.meter.position.x);
-        double dy = (powerBar.bar.currentHeight * (0.1))
+        double dy = (150 * (POWER_PERCENT))
                 * (directionMeter.meter.endPoint.getY() - directionMeter.meter.position.y);
-                
-        Point landingPoint = new Point((int) dx + ball.position.x, ball.position.y + (int) dy);
-        return landingPoint;
 
+        double totalDy = (powerBar.bar.currentHeight * (3.666666));
+        // double totalDx =
+
+        double slope = dy / dx;
+        // Point2D landingPoint = new Point2D.Double(dx + ball.position.x,
+        // ball.position.y + dy);
+        Point2D landingPoint = new Point2D.Double(dx + ball.position.x, ball.position.y - totalDy);
+
+        return landingPoint;
+    }
+
+    public void throwBall() {
+        double dx = (150 * (POWER_PERCENT))
+                * (directionMeter.meter.endPoint.getX() - directionMeter.meter.position.x);
+        double dy = (150 * (POWER_PERCENT))
+                * (directionMeter.meter.endPoint.getY() - directionMeter.meter.position.y);
+
+        double totalDy = (powerBar.bar.currentHeight * (3.666666));
+        // double totalDx =
+
+        double slope = dy / dx;
+        // Point2D landingPoint = new Point2D.Double(dx + ball.position.x,
+        // ball.position.y + dy);
+        Point2D landingPoint = new Point2D.Double(dx + ball.position.x, ball.position.y - totalDy);
+
+        BallAnimation throwBall = new BallAnimation(ball, this, landingPoint, slope, totalDy);
+        throwBall.start();
     }
 
 }

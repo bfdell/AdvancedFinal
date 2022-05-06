@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Brian Dell
+ * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
  * @version Spring 2022
  */
 public class Connect4 extends Game {
@@ -91,17 +91,6 @@ public class Connect4 extends Game {
         titlePanel.setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // gbc.weightx = 0.5;
-        // gbc.gridx = 0;
-        // gbc.gridy = 0;
-        // gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-
-        // JLabel one = new JLabel(PLAYER1);
-        // Font playerOneFont = TEXT_FONT;
-        // one.setFont(playerOneFont);
-        // one.setForeground(PLAYERS[1].DARKER_COLOR);
-        // titlePanel.add(one, gbc);
-
         gbc.weightx = 0.5;
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -111,16 +100,6 @@ public class Connect4 extends Game {
         titleLabel.setFont(TITLE_FONT);
         titleLabel.setForeground(TITLE_COLOR);
         titlePanel.add(titleLabel, gbc);
-
-        // gbc.weightx = 0.5;
-        // gbc.gridx = 2;
-        // gbc.gridy = 0;
-        // gbc.anchor = GridBagConstraints.FIRST_LINE_END;
-        // Font playerTwoFont = TEXT_FONT;
-        // JLabel three = new JLabel(PLAYER2);
-        // three.setFont(playerTwoFont);
-        // three.setForeground(PLAYERS[0].DARKER_COLOR);
-        // titlePanel.add(three, gbcz );
 
         gbc.weightx = 0.5;
         gbc.gridx = 1;
@@ -136,6 +115,9 @@ public class Connect4 extends Game {
         gamePanel.add(titlePanel, BorderLayout.NORTH);
     }
 
+    /**
+     * Activates the event when a key is pressed
+     */
     @Override
     public void keyPressed(KeyEvent event) {
         if (gameActive) {
@@ -143,6 +125,10 @@ public class Connect4 extends Game {
         }
     }
 
+    /**
+     * Calls the super class actionPerformed and makes sure that the user can press
+     * a key after a button is pushed
+     */
     @Override
     public void actionPerformed(ActionEvent event) {
         super.actionPerformed(event);
@@ -152,7 +138,7 @@ public class Connect4 extends Game {
     /**
      * Shifts the chip to a column within the matrix, either left or right
      * 
-     * @param e
+     * @param e the key event
      */
     public void shiftChip(KeyEvent e) {
         if (!currentChip.moving) {
@@ -174,7 +160,7 @@ public class Connect4 extends Game {
      * Starts the first turn and player, and allows the user to start playing the
      * game
      * 
-     * @param e
+     * @param e Action event
      */
     public void startGame(ActionEvent e) {
         gameActive = true;
@@ -195,7 +181,7 @@ public class Connect4 extends Game {
     /**
      * Drops the chip to the next available index in that column of the matrix
      * 
-     * @param e
+     * @param e key event
      */
     public void dropChip(KeyEvent e) {
         if (!currentChip.moving) {
@@ -221,10 +207,10 @@ public class Connect4 extends Game {
     /**
      * If the button is pressed, it will clear all entities
      * 
-     * @param e
+     * @param e action event
      */
     public void restartGame(ActionEvent e) {
-        if(!gameActive) {
+        if (!gameActive) {
             restartButton.setText(RESTART);
             gameActive = true;
         }
@@ -251,7 +237,7 @@ public class Connect4 extends Game {
      * checks whether the matrix is not filled, and sets the player wins and the
      * button text to play again
      * 
-     * @param evt
+     * @param evt property change event
      */
     public void chipFell(PropertyChangeEvent evt) {
         // System.out.println("IS GAME OVER: " + gameOver());
@@ -306,12 +292,6 @@ public class Connect4 extends Game {
             statusLabel.setText("DRAW");
             return true;
         }
-        // DISPLAY MESSAGE ABOUT MATRIX BEING FILLED
-
-        // LinkedList<Point> vertical = checkVertical(currentDstRow, currentChipCol);
-        // LinkedList<Point> horizontal = checkHorizontal(currentDstRow, currentChipCol);
-        // LinkedList<Point> diagonalOne = BL_TR_Diagonal(currentDstRow, currentChipCol);
-        // LinkedList<Point> diagonalTwo = TL_BR_Diagonal(currentDstRow, currentChipCol);
 
         if (fourInARow(currentDstRow, currentChipCol)) {
             return true;
@@ -324,15 +304,11 @@ public class Connect4 extends Game {
      * Checks to see if there are 4 chips in a row, either vertical, diagonal,
      * bottom left to top right or bottom right to top left
      * 
-     * @param row
-     * @param col
+     * @param row current row of the chip that was inserted
+     * @param col current col of the chip that was inserted
      * @return true if one of these conditions has been met
      */
     public boolean fourInARow(int row, int col) {
-        // System.out.println(BL_TR_Diagonal(row, col));
-        // System.out.println(TL_BR_Diagonal(row, col));
-        // System.out.println(checkVertical(row, col));
-        // System.out.println(checkHorizontal(row, col));
 
         if (BL_TR_Diagonal(row, col).size() >= 4 || TL_BR_Diagonal(row, col).size() >= 4
                 || checkVertical(row, col).size() >= 4 || checkHorizontal(row, col).size() >= 4) {
@@ -346,8 +322,8 @@ public class Connect4 extends Game {
      * Checks to see whether the current player's chips are forming a bottom left to
      * top right diagonal connect4
      * 
-     * @param row
-     * @param col
+     * @param row current row of the chip that was inserted
+     * @param col current col of the chip that was inserted
      * @return winlist, the amount of chips in x value increasing order
      */
     private LinkedList<Point> BL_TR_Diagonal(int row, int col) {
@@ -410,8 +386,8 @@ public class Connect4 extends Game {
      * to
      * top left diagonal connect4
      * 
-     * @param row
-     * @param col
+     * @param row current row of the chip that was inserted
+     * @param col current col of the chip that was inserted
      * @return winlist, the amount of chips in x value increasing order
      */
     private LinkedList<Point> TL_BR_Diagonal(int row, int col) {
@@ -473,8 +449,8 @@ public class Connect4 extends Game {
      * Checks to see whether the current player's chips are forming a vertical
      * connect4
      * 
-     * @param row
-     * @param col
+     * @param row current row of the chip that was inserted
+     * @param col current col of the chip that was inserted
      * @return winlist, the amount of chips in x value increasing order
      */
     private LinkedList<Point> checkVertical(int row, int col) {
@@ -514,8 +490,8 @@ public class Connect4 extends Game {
      * Checks to see whether the current player's chips are forming a horizontal
      * connect4
      * 
-     * @param row
-     * @param col
+     * @param row current row of the chip that was inserted
+     * @param col current col of the chip that was inserted
      * @return winlist, the amount of chips in x value increasing order
      */
     private LinkedList<Point> checkHorizontal(int row, int col) {

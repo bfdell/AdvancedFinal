@@ -18,7 +18,7 @@ public class PongMap extends Map{
     public static final Color PONG_COLOR = Color.BLACK;
     public static final Color PROMPT_COLOR = Color.RED;
     public static final Font TITLE_FONT = new Font("SignPainter", Font.BOLD, 100);
-    public static final String PROMPT_MESSAGE = "Press enter to start your shot";   
+    public static final String PROMPT_MESSAGE = "Press space to start your shot";   
     public static final Font PROMPT_FONT = new Font("Comic Sans MS", Font.BOLD, 30);
     ///////////////////////
     public static final double BOARD_Y_PERCENT = .3;

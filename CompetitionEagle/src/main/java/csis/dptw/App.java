@@ -1,5 +1,6 @@
 package csis.dptw;
 
+import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,6 +31,8 @@ public class App implements ActionListener, Runnable {
     JButton startCupPong;
     JLabel select;
     JLabel title;
+
+    ImageIcon cupIcon = new ImageIcon("TCUP.PNG");
 
     Game testGame;
     JPanel app;
@@ -107,21 +110,41 @@ public class App implements ActionListener, Runnable {
         c.gridy = 1;    
         app.add(select,c);
 
-        startConnect4 = new JButton("Connect4");
+
+        Icon icon = new ImageIcon("CompetitionEagle/src/main/java/csis/dptw/CHIPS.png"); 
+
+        startConnect4 = new JButton(icon);
+
+        Box box1 = Box.createVerticalBox();
+
+        box1.add(startConnect4);
+
         c.fill = GridBagConstraints.LINE_START;
         c.weightx = 0.5;
         c.gridx = 0;
         c.gridy = 1;
-        app.add(startConnect4,c);
+        app.add(box1,c);
+        
         startConnect4.addActionListener(this);
 
-        startCupPong = new JButton("Cup Pong");
+        
+        Icon icon2 = new ImageIcon("CompetitionEagle/src/main/java/csis/dptw/BeFunky-photo.png"); 
+        startCupPong = new JButton(icon2);
+
+        Box box = Box.createVerticalBox();
+
+
+        box.add(startCupPong);
+
         c.fill = GridBagConstraints.LINE_END;
         c.weightx = 0.0;
         c.gridwidth = 3;
         c.gridx = 2;
-        c.gridy = 1;
-        app.add(startCupPong,c);
+        c.gridy = 1;  
+        // app.add(startCupPong,c);
+        
+        app.add(box,c);
+
         startCupPong.addActionListener(this);
 
         frame.add(app);

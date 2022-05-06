@@ -9,7 +9,7 @@ import csis.dptw.util.PaintHelper;
 import java.awt.*;
 
 /**
- *
+ * Creates the ball entity that will be used for cupPong
  * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
  * @version Spring 2022
  */

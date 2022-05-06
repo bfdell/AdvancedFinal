@@ -9,6 +9,7 @@ import csis.dptw.engine.Game;
 import csis.dptw.engine.Repainter;
 
 /**
+ * Constructs a power bar for the strength of the thrown ball object
  * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
  * @version Spring 2022
  */

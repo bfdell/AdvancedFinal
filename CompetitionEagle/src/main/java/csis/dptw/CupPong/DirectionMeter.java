@@ -11,7 +11,7 @@ import csis.dptw.engine.Repainter;
 import csis.dptw.util.PaintHelper;
 
 /**
- *  @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
+ * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
  * @version Spring 2022
  */
 
@@ -37,8 +37,8 @@ public class DirectionMeter extends Animation {
      * Calls the super class animation constructor, adds an entity to game,
      * initializes the meter and fulcrum point
      * 
-     * @param fulcrumPoint
-     * @param game
+     * @param fulcrumPoint, the point in which the meter is roating around
+     * @param game, the game in which the meter is created
      */
     public DirectionMeter(Point fulcrumPoint, Game game) {
         super(new Meter(game, fulcrumPoint, new Point(fulcrumPoint.x, fulcrumPoint.y - METER_HEIGHT)), game);

@@ -18,6 +18,7 @@ public class Ball extends Entity {
 
     Point2D.Double ballPos;
     public double size = 10;
+    boolean landed = false;
 
     /**
      * Creates entity Ball with call to super constructor Entity and initializes
@@ -51,4 +52,9 @@ public class Ball extends Entity {
         return ballPos;
     }
 
+    public void setLanded(boolean newLanded) {
+        boolean oldLanded = landed;
+        landed = newLanded;
+        eventHelper.firePropertyChange("landed", oldLanded, newLanded);
+    }
 }

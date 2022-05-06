@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.text.GapContent;
 
 import csis.dptw.*;
+import csis.dptw.engine.Animation;
 import csis.dptw.engine.Entity;
 import csis.dptw.engine.Game;
 import csis.dptw.engine.Event.EventType;
@@ -12,28 +13,30 @@ import java.awt.event.*;
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.beans.PropertyChangeEvent;
+import java.util.LinkedList;
 
 public class CupPong extends Game {
     public static final double POWER_PERCENT = 0.022;
     public static final Point BALL_START = new Point(App.gameDimension.width / 2, 700);
-    public Ball ball = new Ball(this, BALL_START);
+    public Ball currentBall = new Ball(this, BALL_START);
     public static final String PROMPT_MESSAGE = "Press enter to start your shot";
     public static final int DISSAPEAR_TIMER = 500;
 
+    public static final Font LABEL_FONT = new Font("Comic Sans MS", Font.BOLD, 30);
     private JLabel shotLabel = new JLabel(PROMPT_MESSAGE);
     private JButton play = new JButton("Play");
     private JButton mainMenu = new JButton("Main Menu");
 
-    //////////////////////////
     final String CUP = "Cup";
     final String PONG = "Pong";
 
     DirectionMeter directionMeter;
     Powerbar powerBar;
+    LinkedList<Cup> allCups = new LinkedList<Cup>();
 
     public CupPong() {
-        super();// FIX TIHIS LINE BECCUSE GAMAE PANEL IS BEING INITIOALIZED IN ANONYMOUS INNER
-                // CLASS
+        super();
         run();
     }
 
@@ -41,13 +44,14 @@ public class CupPong extends Game {
     public void run() {
         super.run();
         addKeyEvent(EventType.KPRESSED, this::adjustShot, 4, KeyEvent.VK_SPACE);
-        addMouseEvent(EventType.MPRESSED, this::clickInCup, 1);
+        // addMouseEvent(EventType.MPRESSED, this::clickInCup, 1);
         addActionEvent(this::startGame, 1, play);
+        shotLabel.setFont(LABEL_FONT);
     }
 
     public void adjustShot(KeyEvent e) {
         if (directionMeter == null && powerBar == null) {
-            directionMeter = new DirectionMeter(ball.position, this);
+            directionMeter = new DirectionMeter(currentBall.position, this);
             directionMeter.start();
         } else if (directionMeter != null && powerBar == null) {
             directionMeter.isDirectonSet = true;
@@ -58,11 +62,10 @@ public class CupPong extends Game {
         } else if (powerBar != null) {
             powerBar.powerSpecified = true;
             powerBar.interrupt();
-
-            // Point2D landing = calculatePath();
-            // BallAnimation throwBall = new BallAnimation(ball, this, landing);
-            // throwBall.start();
             throwBall();
+            // if()
+            // removePropertyEvent(currentChip, "landed", CHIP_LANDED_PRIORITY);
+            addPropertyEvent(this::ballLanded, 1, currentBall, "landed");
 
             Thread removeTimer = new Thread() {
                 @Override
@@ -80,7 +83,6 @@ public class CupPong extends Game {
                 }
             };
             removeTimer.start();
-
         }
     }
 
@@ -98,8 +100,9 @@ public class CupPong extends Game {
                 y += 35;
                 x = 389;
             }
-
-            addEntity(new Cup(this, new Point(x, y), "CompetitionEagle/src/main/java/csis/dptw/BeFunky-photo.png"));
+            Cup cup = new Cup(this, new Point(x, y), "CompetitionEagle/src/main/java/csis/dptw/BeFunky-photo.png");
+            addEntity(cup);
+            allCups.add(cup);
             x += 48;
         }
     }
@@ -168,14 +171,6 @@ public class CupPong extends Game {
         gamePanel.add(bottomMargin, gbc);
         gbc.anchor = GridBagConstraints.CENTER;
 
-        // gbc.weightx = 1;
-        // gbc.weighty = 1.0;
-
-        // gbc.weightx = 0.5;
-        // gbc.gridx = 2;
-        // gbc.gridy = 0;
-        // gbc.anchor = GridBagConstraints.FIRST_LINE_END;
-
         play.setVisible(true);
         mainMenu.setVisible(true);
     }
@@ -184,20 +179,35 @@ public class CupPong extends Game {
         Point cur = e.getPoint();
         for (Entity cup : gamePanel.entities) {
             if (cup instanceof Cup) {
-                if (cup != ball && ((Cup) cup).colidesWith(cur)) {
+                if (cup != currentBall && ((Cup) cup).colidesWith(cur)) {
                     System.out.println("col·li·sion");
-                    moveCup((Cup) cup, (CupPong) this);
+                    moveCup((Cup) cup);
                 }
             }
         }
     }
 
-    public void moveCup(Cup cup, CupPong game) {
-        CupAnimation animation = new CupAnimation(cup, game);
-        animation.start();
-        // if(Cup.colidesWith(ball.position)) {
-        // ball.position.y -= dy1;
+    public void moveCup(Cup cup) {
+        CupAnimation cupAnimation = new CupAnimation(cup, this);
+        cupAnimation.start();
+
+        // Thread cancelAnimation = new Thread(){
+        // CupAnimation animation = cupAnimation;
+        // @Override
+        // public void run(){
+        // while(!animation.done()) {
+        // try {
+        // sleep(1);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
         // }
+        // }
+        // animation.interrupt();
+        // animation = null;
+        // }
+        // };
+        // cancelAnimation.start();
+
     }
 
     public void startGame(ActionEvent e) {
@@ -206,30 +216,9 @@ public class CupPong extends Game {
         ((PongMap) gamePanel).remove(play);
         ((PongMap) gamePanel).remove(mainMenu);
         addCups();
-        addEntity(ball);
-        // directionMeter = new DirectionMeter(ball.position, this);
-        // directionMeter.start();
-        // pb = new Powerbar(this);
-        // pb.start();
-
+        addEntity(currentBall);
+        gamePanel.add(shotLabel);
         gamePanel.requestFocus();
-    }
-
-    public Point2D calculatePath() {
-        double dx = (150 * (POWER_PERCENT))
-                * (directionMeter.meter.endPoint.getX() - directionMeter.meter.position.x);
-        double dy = (150 * (POWER_PERCENT))
-                * (directionMeter.meter.endPoint.getY() - directionMeter.meter.position.y);
-
-        double totalDy = (powerBar.bar.currentHeight * (3.666666));
-        // double totalDx =
-
-        double slope = dy / dx;
-        // Point2D landingPoint = new Point2D.Double(dx + ball.position.x,
-        // ball.position.y + dy);
-        Point2D landingPoint = new Point2D.Double(dx + ball.position.x, ball.position.y - totalDy);
-
-        return landingPoint;
     }
 
     public void throwBall() {
@@ -239,15 +228,27 @@ public class CupPong extends Game {
                 * (directionMeter.meter.endPoint.getY() - directionMeter.meter.position.y);
 
         double totalDy = (powerBar.bar.currentHeight * (3.666666));
-        // double totalDx =
 
         double slope = dy / dx;
         // Point2D landingPoint = new Point2D.Double(dx + ball.position.x,
         // ball.position.y + dy);
-        Point2D landingPoint = new Point2D.Double(dx + ball.position.x, ball.position.y - totalDy);
+        Point2D landingPoint = new Point2D.Double(dx + currentBall.position.x, currentBall.position.y - totalDy);
 
-        BallAnimation throwBall = new BallAnimation(ball, this, landingPoint, slope, totalDy);
+        BallAnimation throwBall = new BallAnimation(currentBall, this, landingPoint, slope, totalDy);
         throwBall.start();
     }
 
+    public void ballLanded(PropertyChangeEvent e) {
+        removeEntity(currentBall);
+        handleCupCollisions();
+
+    }
+
+    public void handleCupCollisions() {
+        for (Cup cup : allCups) {
+            if (cup.colidesWith(currentBall.getPosition())) {
+                moveCup(cup);
+            }
+        }
+    }
 }

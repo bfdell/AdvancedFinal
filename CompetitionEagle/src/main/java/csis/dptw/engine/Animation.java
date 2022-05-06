@@ -1,7 +1,7 @@
 package csis.dptw.engine;
 
 public abstract class Animation extends Thread{
-    protected Entity entity;
+    public Entity entity;
     protected Game game;
 
 

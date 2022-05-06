@@ -17,6 +17,7 @@ public class CupPong extends Game {
     public static final Point BALL_START = new Point(App.gameDimension.width / 2, 700);
     public Ball ball = new Ball(this, BALL_START);
     public static final String PROMPT_MESSAGE = "Press enter to start your shot";
+    public static final int DISSAPEAR_TIMER = 500;
 
     private JLabel shotLabel = new JLabel(PROMPT_MESSAGE);
     private JButton play = new JButton("Play");
@@ -30,7 +31,8 @@ public class CupPong extends Game {
     Powerbar powerBar;
 
     public CupPong() {
-        super();//FIX TIHIS LINE BECCUSE GAMAE PANEL IS BEING INITIOALIZED IN ANONYMOUS INNER CLASS
+        super();// FIX TIHIS LINE BECCUSE GAMAE PANEL IS BEING INITIOALIZED IN ANONYMOUS INNER
+                // CLASS
         run();
     }
 
@@ -49,19 +51,37 @@ public class CupPong extends Game {
     }
 
     public void adjustShot(KeyEvent e) {
-        if (directionMeter != null) {
-            directionMeter.interrupt();
+        if (directionMeter == null && powerBar == null) {
+            directionMeter = new DirectionMeter(ball.position, this);
+            directionMeter.start();
+        } else if (directionMeter != null && powerBar == null) {
             directionMeter.isDirectonSet = true;
-            // removeEntity(m.meter);
-            directionMeter = null;
+            directionMeter.interrupt();
+            // directionMeter = null;
             powerBar = new Powerbar(this);
             powerBar.start();
         } else if (powerBar != null) {
-            powerBar.interrupt();
             powerBar.powerSpecified = true;
+            powerBar.interrupt();
             // removeEntity(pb.bar);
-            powerBar = null;
-            System.out.println("removeing powerbar");
+
+            Thread removeTimer = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        sleep(DISSAPEAR_TIMER);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    removeEntity(directionMeter.entity);
+                    removeEntity(powerBar.entity);
+                    powerBar = null;
+                    directionMeter = null;
+                    System.out.println("removeing powerbar");
+                }
+            };
+            removeTimer.start();
+
         }
     }
 
@@ -91,7 +111,6 @@ public class CupPong extends Game {
         gamePanel = new PongMap(layout);
         GridBagConstraints gbc = new GridBagConstraints();
 
-    
         shotLabel.setFont(PongMap.TITLE_FONT);
 
         gbc.weightx = 4;
@@ -120,7 +139,7 @@ public class CupPong extends Game {
         gbc.anchor = GridBagConstraints.CENTER;
         JLabel leftMargin = new JLabel("");
         gamePanel.add(leftMargin, gbc);
-        
+
         gbc.weightx = 0;
         gbc.weighty = 0;
         gbc.gridx = 1;
@@ -135,7 +154,6 @@ public class CupPong extends Game {
         JLabel verticalMargin = new JLabel("");
         gamePanel.add(verticalMargin, gbc);
 
-
         gbc.weightx = 0;
         gbc.weighty = 0;
         gbc.gridx = 1;
@@ -143,16 +161,13 @@ public class CupPong extends Game {
         gbc.ipady = 25;
         mainMenu.setFont(PongMap.TITLE_FONT);
         gamePanel.add(mainMenu, gbc);
-        
+
         gbc.gridy = 4;
         gbc.gridx = 1;
         gbc.weighty = 3;
         JLabel bottomMargin = new JLabel("");
         gamePanel.add(bottomMargin, gbc);
         gbc.anchor = GridBagConstraints.CENTER;
-        
-
-        
 
         // gbc.weightx = 1;
         // gbc.weighty = 1.0;
@@ -182,19 +197,19 @@ public class CupPong extends Game {
         CupAnimation animation = new CupAnimation(cup, game);
         animation.start();
         // if(Cup.colidesWith(ball.position)) {
-        //     ball.position.y -= dy1;
+        // ball.position.y -= dy1;
         // }
     }
 
     public void startGame(ActionEvent e) {
         ((PongMap) gamePanel).playing = true;
-        ////////////////REMOVE ALL BUTTONS AND SHIT
+        //////////////// REMOVE ALL BUTTONS AND SHIT
         ((PongMap) gamePanel).remove(play);
         ((PongMap) gamePanel).remove(mainMenu);
         addCups();
         addEntity(ball);
-        directionMeter = new DirectionMeter(ball.position, this);
-        directionMeter.start();
+        // directionMeter = new DirectionMeter(ball.position, this);
+        // directionMeter.start();
         // pb = new Powerbar(this);
         // pb.start();
 

@@ -147,7 +147,6 @@ public class Connect4 extends Game {
     public void actionPerformed(ActionEvent event) {
         super.actionPerformed(event);
         gamePanel.requestFocus();
-
     }
 
     /**

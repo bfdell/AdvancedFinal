@@ -9,7 +9,7 @@ import csis.dptw.engine.Game;
 import csis.dptw.engine.Repainter;
 
 public class Powerbar extends Animation {
-    public static final int MAX_HIEGHT = 158;
+    public static final int MAX_HIEGHT = 150;
     public static final Point BAR_LOCATION = new Point(500, 700);
     public boolean powerSpecified = false;
 
@@ -19,8 +19,9 @@ public class Powerbar extends Animation {
 
 
     public Powerbar(Game game) {
-        super(new Bar(game, BAR_LOCATION), game);
+        super(new Bar(game,  new Point(BAR_LOCATION.x, BAR_LOCATION.y)), game);
         bar = (Bar) entity;
+    
         game.addEntity(entity);
     }
 
@@ -33,7 +34,7 @@ public class Powerbar extends Animation {
         }
 
         bar.currentHeight += direction * Bar.GROWTH_RATE;
-        bar.position.y -= direction * Bar.GROWTH_RATE;
+        // bar.position.y -= direction * Bar.GROWTH_RATE;
  
         if(bar.currentHeight > MAX_HIEGHT || bar.currentHeight < 0) {
             direction *= -1;
@@ -63,7 +64,7 @@ public class Powerbar extends Animation {
         @Override
         public void paint(Graphics2D g) {
             g.setColor(BAR_COLOR);
-            g.fillRect(Powerbar.BAR_LOCATION.x, Powerbar.BAR_LOCATION.y, BAR_WIDTH, currentHeight);
+            g.fillRect(Powerbar.BAR_LOCATION.x, Powerbar.BAR_LOCATION.y, BAR_WIDTH, -1 * currentHeight);
             // g.fillRect(Powerbar.BAR_LOCATION.x, Powerbar.BAR_LOCATION.y, BAR_WIDTH, currentHeight);
         }
 

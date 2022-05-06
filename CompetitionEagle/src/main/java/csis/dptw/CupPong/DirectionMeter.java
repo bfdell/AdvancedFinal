@@ -24,7 +24,7 @@ public class DirectionMeter extends Animation {
     public static final int METER_WIDTH = (int) (App.gameDimension.width * PongMap.BOARD_X_PERCENT);
     // public boolean moovingLeft = true;
     public int direction = 1;
-    Meter meter = (Meter) entity;
+    Meter meter;
     public static final double LIMIT = (Math.PI / 6);
     public double currentRotationAmount = 0;
 
@@ -33,10 +33,11 @@ public class DirectionMeter extends Animation {
     public DirectionMeter(Point fulcrumPoint, Game game) {
         super(new Meter(game, fulcrumPoint, new Point(fulcrumPoint.x, fulcrumPoint.y - METER_HEIGHT)), game);
         game.addEntity(entity);
+        meter = (Meter) entity;
         FULCRUM_POINT = fulcrumPoint;
     }
 
-    @Override
+    @Override 
     public void animation() {
         // synchronized (lock) {
         // try {
@@ -52,7 +53,7 @@ public class DirectionMeter extends Animation {
 
         }
 
-        // System.out.println("moved: " + moveCount++);
+        System.out.println("moved: " + moveCount++);
         meter.rotate(direction);
         currentRotationAmount += Meter.ROTATION;
         // System.out.println(Meter.MAX_X + " " + Meter.MIN_X);

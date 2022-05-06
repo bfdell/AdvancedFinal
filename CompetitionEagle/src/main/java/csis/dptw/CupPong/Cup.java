@@ -19,7 +19,7 @@ public class Cup extends Entity {
         cupColision = new Arc2D.Double(position.x + 12, position.y + 2, WIDTH, HEIGHT, 0.0, 360.0, Arc2D.PIE);
     }
 
-    public boolean colidesWith(Point point) {
+    public boolean colidesWith(Point2D point) {
         return cupColision.contains(point);      
     }
 

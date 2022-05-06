@@ -12,6 +12,7 @@ public class Ball extends Entity{
 
     Point2D.Double ballPos;
     public double size = 10;
+    boolean landed = false;
     public Ball(Game game, Point position) {
         super(game, position);
         ballPos = new Point2D.Double(position.x, position.y);
@@ -29,4 +30,9 @@ public class Ball extends Entity{
         return ballPos;
     }
 
+    public void setLanded(boolean newLanded) {
+        boolean oldLanded = landed;
+        landed = newLanded;
+        eventHelper.firePropertyChange("landed", oldLanded, newLanded);
+    }
 }

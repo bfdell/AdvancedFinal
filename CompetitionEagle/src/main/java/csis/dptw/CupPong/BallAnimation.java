@@ -74,8 +74,8 @@ public class BallAnimation extends Animation {
             System.out.println(ball.getPosition());
             if (ball.size > MAX_SIZE) {
                 descending = true;
-                // slope = slope;
-            }
+                direction *= -1;
+            } 
         } else {
             ball.size -= SHRINKING_RATE;
             ball.getPosition().setLocation(ball.getPosition().getX() - direction, ball.getPosition().getY() - slope);
@@ -91,6 +91,7 @@ public class BallAnimation extends Animation {
     @Override
     public boolean done() {
         if (descending && ball.getPosition().getY() >= destination.getY()) {
+            ball.setLanded(true);
             return true;
         }
         return false;

@@ -24,7 +24,7 @@ public class DirectionMeter extends Animation {
     public static final int METER_WIDTH = (int) (App.gameDimension.width * PongMap.BOARD_X_PERCENT);
     // public boolean moovingLeft = true;
     public int direction = 1;
-    Meter meter = (Meter) entity;
+    public Meter meter = (Meter) entity;
     public static final double LIMIT = (Math.PI / 6);
     public double currentRotationAmount = 0;
 
@@ -78,7 +78,7 @@ public class DirectionMeter extends Animation {
         return isDirectonSet;
     }
 
-    private static class Meter extends Entity {
+     static class Meter extends Entity {
         AffineTransform transformer;
         Point2D endPoint;
         Point2D topPoint;

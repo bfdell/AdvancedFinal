@@ -30,7 +30,8 @@ public class CupPong extends Game {
     Powerbar powerBar;
 
     public CupPong() {
-        super();//FIX TIHIS LINE BECCUSE GAMAE PANEL IS BEING INITIOALIZED IN ANONYMOUS INNER CLASS
+        super();// FIX TIHIS LINE BECCUSE GAMAE PANEL IS BEING INITIOALIZED IN ANONYMOUS INNER
+                // CLASS
         run();
     }
 
@@ -91,7 +92,6 @@ public class CupPong extends Game {
         gamePanel = new PongMap(layout);
         GridBagConstraints gbc = new GridBagConstraints();
 
-    
         shotLabel.setFont(PongMap.TITLE_FONT);
 
         gbc.weightx = 4;
@@ -120,7 +120,7 @@ public class CupPong extends Game {
         gbc.anchor = GridBagConstraints.CENTER;
         JLabel leftMargin = new JLabel("");
         gamePanel.add(leftMargin, gbc);
-        
+
         gbc.weightx = 0;
         gbc.weighty = 0;
         gbc.gridx = 1;
@@ -135,7 +135,6 @@ public class CupPong extends Game {
         JLabel verticalMargin = new JLabel("");
         gamePanel.add(verticalMargin, gbc);
 
-
         gbc.weightx = 0;
         gbc.weighty = 0;
         gbc.gridx = 1;
@@ -143,16 +142,13 @@ public class CupPong extends Game {
         gbc.ipady = 25;
         mainMenu.setFont(PongMap.TITLE_FONT);
         gamePanel.add(mainMenu, gbc);
-        
+
         gbc.gridy = 4;
         gbc.gridx = 1;
         gbc.weighty = 3;
         JLabel bottomMargin = new JLabel("");
         gamePanel.add(bottomMargin, gbc);
         gbc.anchor = GridBagConstraints.CENTER;
-        
-
-        
 
         // gbc.weightx = 1;
         // gbc.weighty = 1.0;
@@ -182,13 +178,13 @@ public class CupPong extends Game {
         CupAnimation animation = new CupAnimation(cup, game);
         animation.start();
         // if(Cup.colidesWith(ball.position)) {
-        //     ball.position.y -= dy1;
+        // ball.position.y -= dy1;
         // }
     }
 
     public void startGame(ActionEvent e) {
         ((PongMap) gamePanel).playing = true;
-        ////////////////REMOVE ALL BUTTONS AND SHIT
+        //////////////// REMOVE ALL BUTTONS AND SHIT
         ((PongMap) gamePanel).remove(play);
         ((PongMap) gamePanel).remove(mainMenu);
         addCups();
@@ -200,4 +196,15 @@ public class CupPong extends Game {
 
         gamePanel.requestFocus();
     }
+
+    public Point calculatePath() {
+        double dx = (powerBar.bar.currentHeight * (0.1))
+                * (directionMeter.meter.endPoint.getX() - directionMeter.meter.position.x);
+        double dy = (powerBar.bar.currentHeight * (0.1))
+                * (directionMeter.meter.endPoint.getY() - directionMeter.meter.position.y);
+        Point landingPoint = new Point((int) dx, (int) dy);
+        return landingPoint;
+
+    }
+
 }

@@ -10,7 +10,7 @@ import csis.dptw.util.*;
 
 /**
  *
- * @author Brian Dell
+ * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
  * @version Spring 2022
  */
 public class ConnectBoard extends Map {
@@ -29,6 +29,15 @@ public class ConnectBoard extends Map {
     public final Area BOARD_AREA;
     public Point[][] circlePoints;
 
+    /**
+     * Creates the Connect4 board, and calls the superClass of Map
+     * 
+     * @param layout, The layout of the panel
+     * @param circlePoints, Point of every single cirlce in the map
+     * @param chipRadius, Radius of every chip
+     * @param chipPadding, Space in between the chips
+     * @param ringWidth, Outline of the spaces
+     */
     public ConnectBoard(LayoutManager layout, Point[][] circlePoints, int chipRadius, int chipPadding, int ringWidth) {
         super(layout, App.gameDimension);
         this.circlePoints = circlePoints;
@@ -46,6 +55,10 @@ public class ConnectBoard extends Map {
                 new Rectangle2D.Double(0, 0, (int) App.gameDimension.getWidth(), (int) App.gameDimension.getHeight()));
     }
 
+    /**
+     * Paints the board 
+     * @param g, the graphics object
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -58,12 +71,19 @@ public class ConnectBoard extends Map {
         paintRings((Graphics2D) g);
     }
 
+    /**
+     * Paints white cirlces in the board
+     * @param g, the graphics object
+     */
     private void paintEmptySpots(Graphics2D g) {
         g.setColor(Color.WHITE);
         Arrays.stream(circlePoints)
                 .forEach(pa -> Arrays.stream(pa).forEach(p -> PaintHelper.fillCircleFromMiddle(p, CHIP_RADIUS, g)));
     }
-
+    /**
+     * Paints the blue circles outlining the spaces
+     * @param g, the graphics object
+     */
     private void paintRings(Graphics2D g) {
         g.setColor(DARK_BLUE);
         g.setStroke(new BasicStroke(RING_WIDTH));
@@ -71,7 +91,9 @@ public class ConnectBoard extends Map {
                 .forEach(pa -> Arrays.stream(pa).forEach(p -> PaintHelper.drawCircleFromMiddle(p, CHIP_RADIUS, g)));
         g.setStroke(new BasicStroke(1));
     }
-
+    /**
+     * Creates all the circle points
+     */
     private void initializeBoard() {
         int firstChipMiddleX = MARGIN_X + CHIP_PADDING + CHIP_RADIUS;
         int chipDistance = CHIP_PADDING + CHIP_DIAMETER;
@@ -88,7 +110,11 @@ public class ConnectBoard extends Map {
             x = firstChipMiddleX;
         }
     }
-
+    /**
+     * Creates clipped area for chips
+     * @param baseBoard, The blue rectangle of the board
+     * @return the area with parts clipped that doesnt need to be drawn
+     */
     private Area createBoardArea(Rectangle2D.Double baseBoard) {
         Area baseArea = new Area(baseBoard);
         Area boardArea = new Area(baseBoard);
@@ -116,7 +142,9 @@ public class ConnectBoard extends Map {
 
         return boardArea;
     }
-
+    /**
+     * Creates the background for connect4
+     */
     @Override
     public void paintBackground(Graphics2D g) {
         g.fillRect(MARGIN_X, MARGIN_Y, BOARD_WIDTH, BOARD_HEIGHT);

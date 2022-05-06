@@ -4,6 +4,12 @@ import java.awt.Color;
 
 import csis.dptw.engine.Player;
 
+/**
+ *
+ * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
+ * @version Spring 2022
+ */
+
 public class ConnectPlayer extends Player {
     public static final Color DARK_RED = new Color(175, 0, 0);
     public static final Color DARK_YELLOW = new Color(210, 210, 0);;

@@ -1,5 +1,7 @@
 package csis.dptw;
 
+import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -8,13 +10,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import csis.dptw.CupPong.*;
+import csis.dptw.engine.Entity;
 import csis.dptw.engine.Game;
 import csis.dptw.Connect4.*;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 import java.awt.event.*;
+
 
 //POSSIBLY USE DATA TRANSFER TO TRANSFER DATA
 /**
@@ -31,9 +37,13 @@ public class App implements ActionListener, Runnable {
     JLabel select;
     JLabel title;
 
+    ImageIcon cupIcon = new ImageIcon("TCUP.PNG");
+
     Game testGame;
     JPanel app;
 
+    ////////////////////////////////
+    Image  image;
 
     // Icon imgIcon = new ImageIcon(this.getClass().getResource("ajax-loader.gif"));
 //     JLabel label = new JLabel(imgIcon);
@@ -78,7 +88,16 @@ public class App implements ActionListener, Runnable {
     }
 
     public void makeMenu() {
-        app = new JPanel(new GridBagLayout());
+        image = Entity.toolkit.createImage("CompetitionEagle/src/main/java/csis/dptw/eagle.gif");
+        image = image.getScaledInstance(450, 550, Image.SCALE_DEFAULT);
+        app = new JPanel(new GridBagLayout()){
+            @Override
+            public void paintComponent(Graphics g){
+                super.paintComponent(g);
+                 g.drawImage(image, app.getWidth()/4 + 10, app.getHeight()/4 -60, this);
+
+            }
+        };
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
 
@@ -107,22 +126,45 @@ public class App implements ActionListener, Runnable {
         c.gridy = 1;    
         app.add(select,c);
 
-        startConnect4 = new JButton("Connect4");
+
+        Icon icon = new ImageIcon("CompetitionEagle/src/main/java/csis/dptw/CHIPS.png"); 
+
+        startConnect4 = new JButton(icon);
+        startConnect4.setBackground(Color.WHITE);
+        Box box1 = Box.createVerticalBox();
+
+        box1.add(startConnect4);
+
         c.fill = GridBagConstraints.LINE_START;
         c.weightx = 0.5;
         c.gridx = 0;
         c.gridy = 1;
-        app.add(startConnect4,c);
+        app.add(box1,c);
+        
         startConnect4.addActionListener(this);
 
-        startCupPong = new JButton("Cup Pong");
+        
+        Icon icon2 = new ImageIcon("CompetitionEagle/src/main/java/csis/dptw/BeFunky-photo.png"); 
+        startCupPong = new JButton(icon2);
+        startCupPong.setBackground(Color.WHITE);
+
+
+        Box box = Box.createVerticalBox();
+
+
+        box.add(startCupPong);
+
         c.fill = GridBagConstraints.LINE_END;
         c.weightx = 0.0;
         c.gridwidth = 3;
         c.gridx = 2;
-        c.gridy = 1;
-        app.add(startCupPong,c);
-        startCupPong.addActionListener(this);
+        c.gridy = 1;  
+        // app.add(startCupPong,c);
+        
+        app.add(box,c);
+
+        startCupPong.addActionListener(this);      
+      
 
         frame.add(app);
     }

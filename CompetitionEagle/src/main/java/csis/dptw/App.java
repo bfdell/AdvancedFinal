@@ -21,6 +21,11 @@ import java.net.URL;
 import java.util.*;
 import java.awt.event.*;
 
+/**
+ *  @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
+ * @version Spring 2022
+ */
+
 public class App implements ActionListener, Runnable {
     public static Dimension gameDimension;
     JFrame frame;

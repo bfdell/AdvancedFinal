@@ -17,7 +17,7 @@ public class ChipFalling extends Animation {
     Point destination;
 
     /**
-     * Calls the super constructor to create a new chip in the game
+     * Calls the super constructor Animation to create a new chip in the game
      * 
      * @param chip        the entity that will be animated in connect4 (chip)
      * @param game        that is being accessed

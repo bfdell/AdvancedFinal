@@ -150,6 +150,9 @@ public class DirectionMeter extends Animation {
         public void rotate(int direction) {
             transformer.setToRotation(direction * ROTATION, position.x, position.y);
             endPoint = transformer.transform(topPoint, endPoint);
+            if(endPoint.getX() == topPoint.getX()) {
+                endPoint.setLocation(endPoint.getX() + direction, endPoint.getY());
+            }
         }
     }
 }

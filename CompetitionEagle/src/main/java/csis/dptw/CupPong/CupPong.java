@@ -50,6 +50,11 @@ public class CupPong extends Game {
     }
 
     public void adjustShot(KeyEvent e) {
+        if(getMap().cupsGone) {
+            addCups();
+            addEntity(currentBall);
+            return;
+        }
         if (directionMeter == null && powerBar == null) {
             getMap().playerShooting = true;
             directionMeter = new DirectionMeter(currentBall.position, this);
@@ -158,7 +163,8 @@ public class CupPong extends Game {
         gbc.gridy = 3;
         gbc.ipady = 25;
         mainMenu.setFont(PongMap.TITLE_FONT);
-        gamePanel.add(mainMenu, gbc);
+        //ADD BACK MAIN MENU
+        // gamePanel.add(mainMenu, gbc);
 
         gbc.gridy = 4;
         gbc.gridx = 1;
@@ -228,7 +234,9 @@ public class CupPong extends Game {
         handleCupCollisions();
         currentBall.resetLocation();
 
-        gameFinished();
+        if(gameFinished()) {
+            removeEntity(currentBall);
+        }
 
     }
 
@@ -246,6 +254,7 @@ public class CupPong extends Game {
     }
 
     public boolean gameFinished() {
-        return allCups.size() == 0;
+        getMap().cupsGone =  allCups.size() == 0;
+        return getMap().cupsGone;
     }
 }

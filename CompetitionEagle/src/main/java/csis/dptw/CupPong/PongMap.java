@@ -12,19 +12,21 @@ import csis.dptw.App;
 import csis.dptw.engine.Entity;
 import csis.dptw.engine.Map;
 
-public class PongMap extends Map{
+public class PongMap extends Map {
     public final Color DARK_GREEN = new Color(30, 112, 52);
     public static final Color CUP_COLOR = Color.RED;
     public static final Color PONG_COLOR = Color.BLACK;
+    public static final Color GAME_OVER_COLOR = Color.BLUE;
     public static final Color PROMPT_COLOR = Color.RED;
     public static final Font TITLE_FONT = new Font("SignPainter", Font.BOLD, 100);
-    public static final String PROMPT_MESSAGE = "Press space to start your shot";   
+    public static final String PROMPT_MESSAGE = "Press space to start your shot";
+    public static final String GAME_OVER = "Game Over. Press enter to play again";
     public static final Font PROMPT_FONT = new Font("Comic Sans MS", Font.BOLD, 30);
     ///////////////////////
     public static final double BOARD_Y_PERCENT = .3;
     public static final double BOARD_X_PERCENT = .3;
     boolean playerShooting = false;
-
+    boolean cupsGone = false;
     public boolean playing = false;
 
     final String CUP = "Cup";
@@ -32,14 +34,14 @@ public class PongMap extends Map{
 
     public PongMap(LayoutManager layout) {
         super(layout, App.gameDimension);
-        
+
     }
-    
+
     @Override
     public void paintBackground(Graphics2D g) {
         if (playing) {
-             Image img = Entity.toolkit.getImage("CompetitionEagle/src/main/java/csis/dptw/pongbg.png");
-             g.drawImage(img, -500, 0, this);
+            Image img = Entity.toolkit.getImage("CompetitionEagle/src/main/java/csis/dptw/pongbg.png");
+            g.drawImage(img, -500, 0, this);
             int height = getHeight();
             int endX = getWidth();
             int topY = (int) (height * BOARD_Y_PERCENT);
@@ -61,18 +63,28 @@ public class PongMap extends Map{
             g.drawLine(endX / 2, topY, endX / 2, height);
         } else {
             g.setFont(TITLE_FONT);
-    
+
             g.setColor(Color.RED);
-            g.drawString(CUP, (getWidth() - g.getFontMetrics().stringWidth(CUP + " " + PONG))/2, g.getFontMetrics().getHeight());
-    
+            g.drawString(CUP, (getWidth() - g.getFontMetrics().stringWidth(CUP + " " + PONG)) / 2,
+                    g.getFontMetrics().getHeight());
+
             g.setColor(Color.BLACK);
-            g.drawString(" "+ PONG, (getWidth() - g.getFontMetrics().stringWidth(CUP + " " + PONG))/2 + (g.getFontMetrics().stringWidth(CUP)), g.getFontMetrics().getHeight());
+            g.drawString(" " + PONG, (getWidth() - g.getFontMetrics().stringWidth(CUP + " " + PONG)) / 2
+                    + (g.getFontMetrics().stringWidth(CUP)), g.getFontMetrics().getHeight());
         }
 
-        if(!playerShooting && playing) {
+        if (!playerShooting && playing) {
             g.setColor(PROMPT_COLOR);
             g.setFont(PROMPT_FONT);
-            g.drawString(PROMPT_MESSAGE, (getWidth() - g.getFontMetrics().stringWidth(PROMPT_MESSAGE))/2, (int) (App.gameDimension.getHeight() / 2));
+            g.drawString(PROMPT_MESSAGE, (getWidth() - g.getFontMetrics().stringWidth(PROMPT_MESSAGE)) / 2,
+                    (int) (App.gameDimension.getHeight() / 2));
+        }
+
+        if(cupsGone) {
+            g.setColor(GAME_OVER_COLOR);
+            g.setFont(PROMPT_FONT);
+            g.drawString(GAME_OVER, (getWidth() - g.getFontMetrics().stringWidth(GAME_OVER)) / 2,
+                    (int) (App.gameDimension.getHeight() / 2));
         }
 
     }

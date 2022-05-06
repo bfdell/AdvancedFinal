@@ -36,12 +36,6 @@ public class CupPong extends Game {
         run();
     }
 
-    // ///////////////////////
-    // public double boardYPercent = .3;
-    // public double boardXPercent = .3;
-    // public double triangleYPercent = .35;
-    // public double triangleXPercent = .15;
-
     @Override
     public void run() {
         super.run();
@@ -57,13 +51,16 @@ public class CupPong extends Game {
         } else if (directionMeter != null && powerBar == null) {
             directionMeter.isDirectonSet = true;
             directionMeter.interrupt();
-            // directionMeter = null;
+        
             powerBar = new Powerbar(this);
             powerBar.start();
         } else if (powerBar != null) {
             powerBar.powerSpecified = true;
             powerBar.interrupt();
-            // removeEntity(pb.bar);
+            
+            Point landing = calculatePath();
+            BallAnimation throwBall = new BallAnimation(ball, this, landing);
+            throwBall.start();
 
             Thread removeTimer = new Thread() {
                 @Override
@@ -221,7 +218,8 @@ public class CupPong extends Game {
                 * (directionMeter.meter.endPoint.getX() - directionMeter.meter.position.x);
         double dy = (powerBar.bar.currentHeight * (0.1))
                 * (directionMeter.meter.endPoint.getY() - directionMeter.meter.position.y);
-        Point landingPoint = new Point((int) dx, (int) dy);
+                
+        Point landingPoint = new Point((int) dx + ball.position.x, ball.position.y + (int) dy);
         return landingPoint;
 
     }

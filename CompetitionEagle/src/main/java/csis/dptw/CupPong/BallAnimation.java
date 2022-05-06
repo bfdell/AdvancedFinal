@@ -8,16 +8,17 @@ import csis.dptw.engine.Repainter;
 import java.awt.*;
 
 public class BallAnimation extends Animation {
+    public static final int MAX_SIZE = 20;
+    public static final int MIN_SIZE = 5;
+    public static final int GROWTH_RATE = 2;
     public static final int TOTAL_FRAMES = 400;
+    public static final int BALL_SPEED = 7;
+    public final int TOP_DIFFERENCE = 20;
+
     public int currentFrame =  1;
     Point destination;
-    public static final int BALL_SPEED = 7;
 
-    public final int TOP_DIFFERENCE = 20;
     public Point abovePoint;
-    public final int MAX_SIZE = 20;
-    public final int MIN_SIZE = 5;
-    public final int GROWTH_RATE = 2;
     Ball ball;
     boolean descending = false;
 
@@ -36,14 +37,14 @@ public class BallAnimation extends Animation {
 
     @Override
     public void animation(){
-        
         try {
             sleep(Repainter.DELAY_TIME);
         } catch (InterruptedException e) {
         }
+
         if(!descending) {
             ball.size += 2;
-           // ball.position.x += dx1;
+           ball.position.x += dx1;
             ball.position.y -= dy1;
 
             if(ball.size > MAX_SIZE) {

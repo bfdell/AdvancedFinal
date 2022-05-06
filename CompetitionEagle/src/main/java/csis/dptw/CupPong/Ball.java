@@ -1,6 +1,6 @@
 package csis.dptw.CupPong;
 
-import java.awt.Point;
+import java.awt.geom.*;
 
 import csis.dptw.engine.Entity;
 import csis.dptw.engine.Game;
@@ -10,15 +10,23 @@ import java.awt.*;
 
 public class Ball extends Entity{
 
-    public int size = 10;
+    Point2D.Double ballPos;
+    public double size = 10;
     public Ball(Game game, Point position) {
         super(game, position);
+        ballPos = new Point2D.Double(position.x, position.y);
     }
     
     public void paint(Graphics2D g) {
         g.setColor(Color.LIGHT_GRAY);
-        PaintHelper.drawCircleFromMiddle(position, size,  g);
+        PaintHelper.drawCircleFromMiddleDouble(getPosition(), size,  g);
         g.setColor(Color.WHITE);
-        PaintHelper.fillCircleFromMiddle(position,  size,  g);
+        PaintHelper.fillCircleFromMiddleDouble(getPosition(),  size,  g);
     }
+
+    @Override
+    public Point2D.Double getPosition() {
+        return ballPos;
+    }
+
 }

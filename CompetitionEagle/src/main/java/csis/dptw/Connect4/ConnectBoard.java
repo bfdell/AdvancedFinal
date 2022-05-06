@@ -9,7 +9,7 @@ import csis.dptw.engine.Map;
 import csis.dptw.util.*;
 
 /**
- *
+ * Creates the connect4 board
  * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
  * @version Spring 2022
  */

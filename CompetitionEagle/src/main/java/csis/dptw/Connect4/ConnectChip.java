@@ -7,7 +7,7 @@ import csis.dptw.engine.Game;
 import csis.dptw.util.*;
 
 /**
- *
+ * Creates the entity chips for connect4
  * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
  * @version Spring 2022
  */

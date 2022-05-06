@@ -8,7 +8,9 @@ import csis.dptw.engine.Repainter;
 import java.awt.*;
 
 /**
+ * Animates the entity chip to fall in the board
  * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
+ * @version Spring 2022
  */
 
 public class ChipFalling extends Animation {

@@ -5,7 +5,7 @@ import java.awt.Color;
 import csis.dptw.engine.Player;
 
 /**
- *
+ * Creates the players for the connect4 game
  * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
  * @version Spring 2022
  */

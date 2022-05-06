@@ -34,6 +34,8 @@ public class CupPong extends Game {
     DirectionMeter directionMeter;
     Powerbar powerBar;
     LinkedList<Cup> allCups = new LinkedList<Cup>();
+    BallAnimation throwBall;
+    Point2D endBallPoint;
 
     public CupPong() {
         super();
@@ -50,7 +52,7 @@ public class CupPong extends Game {
     }
 
     public void adjustShot(KeyEvent e) {
-        if(getMap().cupsGone) {
+        if (getMap().cupsGone) {
             addCups();
             addEntity(currentBall);
             return;
@@ -163,7 +165,7 @@ public class CupPong extends Game {
         gbc.gridy = 3;
         gbc.ipady = 25;
         mainMenu.setFont(PongMap.TITLE_FONT);
-        //ADD BACK MAIN MENU
+        // ADD BACK MAIN MENU
         // gamePanel.add(mainMenu, gbc);
 
         gbc.gridy = 4;
@@ -176,7 +178,6 @@ public class CupPong extends Game {
         play.setVisible(true);
         mainMenu.setVisible(true);
     }
-
 
     public void moveCup(Cup cup) {
         CupAnimation cupAnimation = new CupAnimation(cup, this);
@@ -225,16 +226,19 @@ public class CupPong extends Game {
         // ball.position.y + dy);
         Point2D landingPoint = new Point2D.Double(dx + currentBall.position.x, currentBall.position.y - totalDy);
 
-        BallAnimation throwBall = new BallAnimation(currentBall, this, landingPoint, slope, totalDy);
+        throwBall = new BallAnimation(currentBall, this, landingPoint, slope, totalDy);
         throwBall.start();
     }
 
     public void ballLanded(PropertyChangeEvent e) {
+        endBallPoint = currentBall.getPosition();
+        throwBall.interrupt();
+        throwBall = null;
         getMap().playerShooting = false;
         handleCupCollisions();
         currentBall.resetLocation();
 
-        if(gameFinished()) {
+        if (gameFinished()) {
             removeEntity(currentBall);
         }
 
@@ -242,7 +246,7 @@ public class CupPong extends Game {
 
     public void handleCupCollisions() {
         for (Cup cup : allCups) {
-            if (cup.colidesWith(currentBall.getPosition())) {
+            if (cup.colidesWith(endBallPoint)) {
                 moveCup(cup);
                 allCups.remove(cup);
             }
@@ -254,7 +258,7 @@ public class CupPong extends Game {
     }
 
     public boolean gameFinished() {
-        getMap().cupsGone =  allCups.size() == 0;
+        getMap().cupsGone = allCups.size() == 0;
         return getMap().cupsGone;
     }
 }

@@ -60,7 +60,7 @@ public class Ball extends Entity {
     }
 
     public void resetLocation() {
-        ballPos = new Point2D.Double(position.x, position.y);
+        ballPos = new Point2D.Double(CupPong.BALL_START.x, CupPong.BALL_START.y);
         size = STARTING_SIZE;
         landed = false;
     }

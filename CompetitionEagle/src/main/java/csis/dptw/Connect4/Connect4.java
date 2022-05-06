@@ -54,7 +54,7 @@ public class Connect4 extends Game {
     private Point[][] circlePoints = new Point[NUM_ROWS][NUM_COLS];
 
     /**
-     * Initializes the players, calls the super class contructor and calls the run
+     * Initializes the players, calls the super class contructor game and calls the run
      * method
      */
     public Connect4() {
@@ -117,6 +117,8 @@ public class Connect4 extends Game {
 
     /**
      * Activates the event when a key is pressed
+     * 
+     * @param event the event in which the key is pressed
      */
     @Override
     public void keyPressed(KeyEvent event) {
@@ -128,6 +130,8 @@ public class Connect4 extends Game {
     /**
      * Calls the super class actionPerformed and makes sure that the user can press
      * a key after a button is pushed
+     * 
+     * @param event the event in which the button is pressed
      */
     @Override
     public void actionPerformed(ActionEvent event) {
@@ -138,7 +142,7 @@ public class Connect4 extends Game {
     /**
      * Shifts the chip to a column within the matrix, either left or right
      * 
-     * @param e the key event
+     * @param e the event in which the key is pressed
      */
     public void shiftChip(KeyEvent e) {
         if (!currentChip.moving) {
@@ -160,7 +164,7 @@ public class Connect4 extends Game {
      * Starts the first turn and player, and allows the user to start playing the
      * game
      * 
-     * @param e Action event
+     * @param e the event in which the button is pressed
      */
     public void startGame(ActionEvent e) {
         gameActive = true;
@@ -181,7 +185,7 @@ public class Connect4 extends Game {
     /**
      * Drops the chip to the next available index in that column of the matrix
      * 
-     * @param e key event
+     * @param e the event in which the key is pressed
      */
     public void dropChip(KeyEvent e) {
         if (!currentChip.moving) {
@@ -207,7 +211,7 @@ public class Connect4 extends Game {
     /**
      * If the button is pressed, it will clear all entities
      * 
-     * @param e action event
+     * @param e the event in which the button is pressed
      */
     public void restartGame(ActionEvent e) {
         if (!gameActive) {
@@ -237,7 +241,8 @@ public class Connect4 extends Game {
      * checks whether the matrix is not filled, and sets the player wins and the
      * button text to play again
      * 
-     * @param evt property change event
+     * @param evt property change event to check whether an instance value has been
+     *            changed
      */
     public void chipFell(PropertyChangeEvent evt) {
         // System.out.println("IS GAME OVER: " + gameOver());

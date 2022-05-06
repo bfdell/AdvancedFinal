@@ -16,8 +16,9 @@ import java.awt.*;
 
 public class Ball extends Entity {
 
+    public static final int STARTING_SIZE = 10; 
     Point2D.Double ballPos;
-    public double size = 10;
+    public double size = STARTING_SIZE;
     boolean landed = false;
 
     /**
@@ -56,5 +57,11 @@ public class Ball extends Entity {
         boolean oldLanded = landed;
         landed = newLanded;
         eventHelper.firePropertyChange("landed", oldLanded, newLanded);
+    }
+
+    public void resetLocation() {
+        ballPos = new Point2D.Double(position.x, position.y);
+        size = STARTING_SIZE;
+        landed = false;
     }
 }

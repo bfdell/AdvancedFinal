@@ -16,10 +16,14 @@ public class PongMap extends Map{
     public final Color DARK_GREEN = new Color(30, 112, 52);
     public static final Color CUP_COLOR = Color.RED;
     public static final Color PONG_COLOR = Color.BLACK;
+    public static final Color PROMPT_COLOR = Color.RED;
     public static final Font TITLE_FONT = new Font("SignPainter", Font.BOLD, 100);
+    public static final String PROMPT_MESSAGE = "Press enter to start your shot";   
+    public static final Font PROMPT_FONT = new Font("Comic Sans MS", Font.BOLD, 30);
     ///////////////////////
     public static final double BOARD_Y_PERCENT = .3;
     public static final double BOARD_X_PERCENT = .3;
+    boolean playerShooting = false;
 
     public boolean playing = false;
 
@@ -64,32 +68,12 @@ public class PongMap extends Map{
             g.setColor(Color.BLACK);
             g.drawString(" "+ PONG, (getWidth() - g.getFontMetrics().stringWidth(CUP + " " + PONG))/2 + (g.getFontMetrics().stringWidth(CUP)), g.getFontMetrics().getHeight());
         }
-        
 
-        // g.setColor(Color.BLACK);
-        // g.drawOval(389, 305, 50, 50);
-        
-        //////////////////////
-        // int boardHeight = height - topY;
-        // int boardWidth = rightX - leftX;
+        if(!playerShooting && playing) {
+            g.setColor(PROMPT_COLOR);
+            g.setFont(PROMPT_FONT);
+            g.drawString(PROMPT_MESSAGE, (getWidth() - g.getFontMetrics().stringWidth(PROMPT_MESSAGE))/2, (int) (App.gameDimension.getHeight() / 2));
+        }
 
-        // int triangleOffset = (int) (boardWidth * triangleXPercent);
-        // int outlineLeftX = (int) leftX + triangleOffset;
-        // int outlineRightX = (int) rightX - triangleOffset;
-
-        // int cupTip = (int) (boardHeight * triangleYPercent) + topY;
-        // int[] outlineXS = { outlineLeftX, outlineRightX, endX / 2 };
-        // int[] outlineYS = { topY, topY, cupTip };
-
-        // Polygon cupOutline = new Polygon(outlineXS, outlineYS, outlineXS.length);
-        // g.setColor(Color.BLACK);
-        // ((Graphics2D) g).setStroke(new BasicStroke(8));
-        // g.drawPolygon(cupOutline);
     }
-
-    // @Override
-    // public void paintEntities(Graphics2D g) {
-
-    // }
-
 }

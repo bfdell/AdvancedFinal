@@ -7,6 +7,7 @@ import csis.dptw.*;
 import csis.dptw.engine.Animation;
 import csis.dptw.engine.Entity;
 import csis.dptw.engine.Game;
+import csis.dptw.engine.Map;
 import csis.dptw.engine.Event.EventType;
 
 import java.awt.event.*;
@@ -20,11 +21,10 @@ public class CupPong extends Game {
     public static final double POWER_PERCENT = 0.022;
     public static final Point BALL_START = new Point(App.gameDimension.width / 2, 700);
     public Ball currentBall = new Ball(this, BALL_START);
-    public static final String PROMPT_MESSAGE = "Press enter to start your shot";
-    public static final int DISSAPEAR_TIMER = 500;
 
-    public static final Font LABEL_FONT = new Font("Comic Sans MS", Font.BOLD, 30);
-    private JLabel shotLabel = new JLabel(PROMPT_MESSAGE);
+    public static final int DISSAPEAR_TIMER = 500;
+    private static final int BALL_LANDED_PRIORITY = 1;
+
     private JButton play = new JButton("Play");
     private JButton mainMenu = new JButton("Main Menu");
 
@@ -46,11 +46,11 @@ public class CupPong extends Game {
         addKeyEvent(EventType.KPRESSED, this::adjustShot, 4, KeyEvent.VK_SPACE);
         // addMouseEvent(EventType.MPRESSED, this::clickInCup, 1);
         addActionEvent(this::startGame, 1, play);
-        shotLabel.setFont(LABEL_FONT);
     }
 
     public void adjustShot(KeyEvent e) {
         if (directionMeter == null && powerBar == null) {
+            getMap().playerShooting = true;
             directionMeter = new DirectionMeter(currentBall.position, this);
             directionMeter.start();
         } else if (directionMeter != null && powerBar == null) {
@@ -63,9 +63,7 @@ public class CupPong extends Game {
             powerBar.powerSpecified = true;
             powerBar.interrupt();
             throwBall();
-            // if()
-            // removePropertyEvent(currentChip, "landed", CHIP_LANDED_PRIORITY);
-            addPropertyEvent(this::ballLanded, 1, currentBall, "landed");
+            addPropertyEvent(this::ballLanded, BALL_LANDED_PRIORITY, currentBall, "landed");
 
             Thread removeTimer = new Thread() {
                 @Override
@@ -112,8 +110,6 @@ public class CupPong extends Game {
         GridBagLayout layout = new GridBagLayout();
         gamePanel = new PongMap(layout);
         GridBagConstraints gbc = new GridBagConstraints();
-
-        shotLabel.setFont(PongMap.TITLE_FONT);
 
         gbc.weightx = 4;
         gbc.weighty = 0;
@@ -191,22 +187,23 @@ public class CupPong extends Game {
         CupAnimation cupAnimation = new CupAnimation(cup, this);
         cupAnimation.start();
 
-        // Thread cancelAnimation = new Thread(){
-        // CupAnimation animation = cupAnimation;
-        // @Override
-        // public void run(){
-        // while(!animation.done()) {
-        // try {
-        // sleep(1);
-        // } catch (InterruptedException e) {
-        // e.printStackTrace();
-        // }
-        // }
-        // animation.interrupt();
-        // animation = null;
-        // }
-        // };
-        // cancelAnimation.start();
+        Thread cancelAnimation = new Thread() {
+            CupAnimation animation = cupAnimation;
+
+            @Override
+            public void run() {
+                while (!animation.done()) {
+                    try {
+                        sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                animation.interrupt();
+                animation = null;
+            }
+        };
+        cancelAnimation.start();
 
     }
 
@@ -217,7 +214,6 @@ public class CupPong extends Game {
         ((PongMap) gamePanel).remove(mainMenu);
         addCups();
         addEntity(currentBall);
-        gamePanel.add(shotLabel);
         gamePanel.requestFocus();
     }
 
@@ -239,8 +235,10 @@ public class CupPong extends Game {
     }
 
     public void ballLanded(PropertyChangeEvent e) {
-        removeEntity(currentBall);
+        getMap().playerShooting = false;
+        // removeEntity(currentBall);
         handleCupCollisions();
+        currentBall.resetLocation();
 
     }
 
@@ -250,5 +248,9 @@ public class CupPong extends Game {
                 moveCup(cup);
             }
         }
+    }
+
+    public PongMap getMap() {
+        return (PongMap) gamePanel;
     }
 }

@@ -7,8 +7,6 @@ import csis.dptw.engine.Event.EventType;
 import java.awt.*;
 import java.awt.event.*;
 
-//MAYBE CHANGE TO ABSTRACT CLASS OR INTERFACE
-
 //TO SAVE DATA: MAKE A GAME DATA CLASS THAT IS SERIALIZABLE AND SAVE DATA BEFORE GAME HAS ENDED
 public abstract class Game extends GameInput implements Runnable {
     public Map gamePanel;
@@ -101,5 +99,9 @@ public abstract class Game extends GameInput implements Runnable {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         gamePanel.requestFocus();
+    }
+
+    public Map getMap() {
+        return gamePanel;
     }
 }

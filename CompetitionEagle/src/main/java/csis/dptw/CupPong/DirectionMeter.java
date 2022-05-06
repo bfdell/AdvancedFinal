@@ -10,6 +10,11 @@ import csis.dptw.engine.Game;
 import csis.dptw.engine.Repainter;
 import csis.dptw.util.PaintHelper;
 
+/**
+ * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
+ * @version Spring 2022
+ */
+
 public class DirectionMeter extends Animation {
     Object lock = new Object();
     public final Point FULCRUM_POINT;
@@ -20,9 +25,7 @@ public class DirectionMeter extends Animation {
     public final static int METER_HEIGHT = 70;
     boolean isDirectonSet = false;
 
-    // Chechk later
     public static final int METER_WIDTH = (int) (App.gameDimension.width * PongMap.BOARD_X_PERCENT);
-    // public boolean moovingLeft = true;
     public int direction = 1;
     Meter meter;
     public static final double LIMIT = (Math.PI / 6);
@@ -30,6 +33,13 @@ public class DirectionMeter extends Animation {
 
     private int moveCount;
 
+    /**
+     * Calls the super class animation constructor, adds an entity to game,
+     * initializes the meter and fulcrum point
+     * 
+     * @param fulcrumPoint, the point in which the meter is roating around
+     * @param game, the game in which the meter is created
+     */
     public DirectionMeter(Point fulcrumPoint, Game game) {
         super(new Meter(game, fulcrumPoint, new Point(fulcrumPoint.x, fulcrumPoint.y - METER_HEIGHT)), game);
         game.addEntity(entity);
@@ -37,15 +47,11 @@ public class DirectionMeter extends Animation {
         FULCRUM_POINT = fulcrumPoint;
     }
 
-    @Override 
+    /**
+     * Creates a line that pivots on an arc to display aiming positions
+     */
+    @Override
     public void animation() {
-        // synchronized (lock) {
-        // try {
-        // sleep(Repainter.DELAY_TIME);
-        // } catch (InterruptedException e) {
-
-        // }
-        // }
 
         try {
             sleep(Repainter.DELAY_TIME);
@@ -74,12 +80,15 @@ public class DirectionMeter extends Animation {
 
     }
 
+    /**
+     * Returns true if the direction is set
+     */
     @Override
     public boolean done() {
         return isDirectonSet;
     }
 
-     static class Meter extends Entity {
+    static class Meter extends Entity {
         AffineTransform transformer;
         Point2D endPoint;
         Point2D topPoint;
@@ -89,6 +98,15 @@ public class DirectionMeter extends Animation {
         public static double MIN_X;
         public static double MAX_X;
 
+        /**
+         * Calls the super constructor Entity, initializes endpoint, fullMeter,
+         * transformer, top point, testPoint, and sets the rotation of the transformer
+         * to intialize MIN_X and MIN_Y
+         * 
+         * @param game     the current game being accessed
+         * @param position starting position of the meter
+         * @param endPoint the position of the end of the aiming line
+         */
         public Meter(Game game, Point position, Point endPoint) {
             super(game, position);
             this.endPoint = endPoint;
@@ -109,19 +127,25 @@ public class DirectionMeter extends Animation {
             topPoint = transformer.transform(endPoint, topPoint);
         }
 
+        /**
+         * Draws the meter line
+         * 
+         * @param g graphics2d object
+         */
         @Override
         public void paint(Graphics2D g) {
-            // g.setStroke(DASHED_LINE);
-            // g.drawLine(position.x, position.y, endPoint.x, endPoint.y);
-            // g.setStroke(new BasicStroke(1));
-            // g.fill(fullMeter);
-            // g.fill(path);
+
             g.setColor(Color.BLACK);
             g.setStroke(DASHED_LINE);
             g.drawLine(position.x, position.y, (int) topPoint.getX(), (int) topPoint.getY());
             g.drawLine(position.x, position.y, (int) endPoint.getX(), (int) endPoint.getY());
         }
 
+        /**
+         * Rotates the line pivoting at start position and saves the end point
+         * 
+         * @param direction of the lines rotation
+         */
         public void rotate(int direction) {
             transformer.setToRotation(direction * ROTATION, position.x, position.y);
             endPoint = transformer.transform(topPoint, endPoint);

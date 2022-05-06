@@ -22,86 +22,80 @@ public class Entity implements Serializable {
     private Game game;
     public Point position;
 
-    //MAKE LISTENER AS A FUNCTINAL INTERFACE MAYBE
+   /**
+    * Adds a listener to a property of entity
+    * @param listener that is responding to the property change
+    */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.eventHelper.addPropertyChangeListener(listener);
     }
+    /**
+    * removes a listener to a property of entity
+    * @param listener that is responding to the property change
+    */
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         this.eventHelper.removePropertyChangeListener(listener);
     }
 
+    /**
+     * Adds a listener to a property of entity
+     * @param listener that is responding to the property change
+     * @param propertyName name of the instance variable
+     */
     public void addPropertyChangeListener(PropertyChangeListener listener, String propertyName) {
         this.eventHelper.addPropertyChangeListener(propertyName, listener);
     }
+
+     /**
+     * Removes a listener to a property of entity
+     * @param listener that is responding to the property change
+     * @param propertyName name of the instance variable
+     */
     public void removePropertyChangeListener(PropertyChangeListener listener, String propertyName) {
         this.eventHelper.removePropertyChangeListener(propertyName, listener);
     }
 
 
+    /**
+     * 
+     * @return position as a point2d object
+     */
     public Point2D getPosition() {
         return position;
     }
     
 
     /**
-     * Constructor to be used with anonymous class that overrides makeEntityImage
-     * @param game
+     * Initializes game and position
+     * @param game that is being played
+     * @param position of the entity
      */
     public Entity(Game game, Point position) {
         this.game = game;
-        makeEntityImage();
         this.position = position;
     }
+    /**
+     * Initializes game, position and imagePath
+     * @param game that is being played
+     * @param position of the entity
+     * @param imagePath to the image of the entity
+     */
     public Entity(Game game, Point position, String imagePath) {
-        // System.out.println("SKLFSLDFj");
-        // try {
-        //     String currentPath;
-        //     currentPath = new java.io.File(".").getCanonicalPath();
-        //     System.out.println("Current dir:" + currentPath);
-        // } catch (IOException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // }
+       
         entityImage = toolkit.getImage(imagePath);
-        // try {
-        //     entityImage = ImageIO.read(new File(imagePath));
-        // JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
+        
         this.game = game;
         this.position = position;
     }
-    // public Entity(Game game, Point position, String imagePath, int size) {
-    //     System.out.println("SKLFSLDFj");
-    //     try {
-    //         String currentPath;
-    //         currentPath = new java.io.File(".").getCanonicalPath();
-    //         System.out.println("Current dir:" + currentPath);
-    //     } catch (IOException e) {
-    //         // TODO Auto-generated catch block
-    //         e.printStackTrace();
-    //     }
-    //     entityImage = toolkit.getImage(imagePath);
-    //     // try {
-    //     //     entityImage = ImageIO.read(new File(imagePath));
-    //     // JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-    //     // } catch (IOException e) {
-    //     //     e.printStackTrace();
-    //     // }
-    //     this.game = game;
-    //     this.position = position;
-    // }
-    //SAVE GRAPHICS INFO IN LAMBDA COMMANDS?
-    //MAYBE MAKE CLASS THAT SAVES GRAPHICS INFORMATON
-
-    //OR HAVE GRAPHICS LINES IN HERE AND CALL THIS WHEN PAINTING ENTITY
-    private BufferedImage makeEntityImage() {
-        return null;
-    }
+    
+  
 
 
     //DEFAULT PAINT METHOD ONLY WORKS FOR IMAGES
+    /**
+     * paints the entity
+     * @param g graphics2d object
+     */
     public void paint(Graphics2D g) {
         g.drawImage(entityImage, position.x, position.y, game.gamePanel);
     }

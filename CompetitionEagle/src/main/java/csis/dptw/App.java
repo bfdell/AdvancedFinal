@@ -21,12 +21,11 @@ import java.net.URL;
 import java.util.*;
 import java.awt.event.*;
 
-
-//POSSIBLY USE DATA TRANSFER TO TRANSFER DATA
 /**
- * Hello world!
- *
+ *  @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
+ * @version Spring 2022
  */
+
 public class App implements ActionListener, Runnable {
     public static Dimension gameDimension;
     JFrame frame;
@@ -43,40 +42,36 @@ public class App implements ActionListener, Runnable {
     JPanel app;
 
     ////////////////////////////////
-    Image  image;
-
-    // Icon imgIcon = new ImageIcon(this.getClass().getResource("ajax-loader.gif"));
-//     JLabel label = new JLabel(imgIcon);
-//     label.setBounds(668, 43, 46, 14); // for example, you can use your own values
-//     frame.getContentPane().add(label);
-    //Icon eagle = new ImageIcon(this.getClass().getResource(")TheCompetitionEagle.gif"));
+    Image image;
 
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new App());
     }
 
+    /**
+     * Calls the initFrame and makeMenu methods and the frame is set visible
+     */
     @Override
     public void run() {
         initFrame();
         makeMenu();
 
-        // Game testGame = new Connect4();
-         //Game testGame = new CupPong();
-         //Thread gameThread = new Thread(testGame);
-         //gameThread.start();
-
-        // ASK TERESCO QUESTIONS ABOUT RUNNABLE AND NOT USING INVOKE LATER ETC.....
-        // testGame.gamePanel.addEntity(new Entity(testGame, new Point(1, 1),
-        // "competitioneagle/src/main/java/csis/dptw/TCUP.png"));
-
         frame.setVisible(true);
     }
 
+    /**
+     * Displays the current game being played
+     * 
+     * @param testGame game that is being played
+     */
     private void displayGame(Game testGame) {
         frame.add(testGame.gamePanel);
         frame.setVisible(true);
     }
 
+    /**
+     * Sets the frame dimensions, title and exit on close method
+     */
     private void initFrame() {
         JFrame.setDefaultLookAndFeelDecorated(true);
         frame = new JFrame("Competition Eagle ");
@@ -87,25 +82,23 @@ public class App implements ActionListener, Runnable {
         gameDimension = new Dimension(850, 850 - frame.getInsets().top - frame.getInsets().bottom);
     }
 
+    /**
+     * Creates what will be displayed in the panel, calling the Paint Component
+     * method, creating a grid layout and adding components displayed in the frame
+     */
     public void makeMenu() {
         image = Entity.toolkit.createImage("CompetitionEagle/src/main/java/csis/dptw/eagle.gif");
         image = image.getScaledInstance(450, 550, Image.SCALE_DEFAULT);
-        app = new JPanel(new GridBagLayout()){
+        app = new JPanel(new GridBagLayout()) {
             @Override
-            public void paintComponent(Graphics g){
+            public void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                 g.drawImage(image, app.getWidth()/4 + 10, app.getHeight()/4 -60, this);
+                g.drawImage(image, app.getWidth() / 4 + 10, app.getHeight() / 4 - 60, this);
 
             }
         };
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-
-        // JLabel l = new JLabel(eagle);
-        // l.add(select);
-        // select.setBounds(212, 212, 850, 850);
-        // frame.getContentPane().add(l);
-
 
         title = new JLabel("Competition Eagle");
         Font titleFont = new Font("SansSerif", Font.BOLD, 50);
@@ -115,19 +108,18 @@ public class App implements ActionListener, Runnable {
         c.fill = GridBagConstraints.PAGE_START;
         c.gridx = 1;
         c.gridy = 0;
-        app.add(title,c);
+        app.add(title, c);
 
         select = new JLabel("Select A Game");
         Font selectFont = new Font("SansSerif", Font.BOLD, 20);
         select.setFont(selectFont);
         c.fill = GridBagConstraints.CENTER;
-        c .weightx = 0.5;
+        c.weightx = 0.5;
         c.gridx = 1;
-        c.gridy = 1;    
-        app.add(select,c);
+        c.gridy = 1;
+        app.add(select, c);
 
-
-        Icon icon = new ImageIcon("CompetitionEagle/src/main/java/csis/dptw/CHIPS.png"); 
+        Icon icon = new ImageIcon("CompetitionEagle/src/main/java/csis/dptw/CHIPS.png");
 
         startConnect4 = new JButton(icon);
         startConnect4.setBackground(Color.WHITE);
@@ -139,18 +131,15 @@ public class App implements ActionListener, Runnable {
         c.weightx = 0.5;
         c.gridx = 0;
         c.gridy = 1;
-        app.add(box1,c);
-        
+        app.add(box1, c);
+
         startConnect4.addActionListener(this);
 
-        
-        Icon icon2 = new ImageIcon("CompetitionEagle/src/main/java/csis/dptw/BeFunky-photo.png"); 
+        Icon icon2 = new ImageIcon("CompetitionEagle/src/main/java/csis/dptw/BeFunky-photo.png");
         startCupPong = new JButton(icon2);
         startCupPong.setBackground(Color.WHITE);
 
-
         Box box = Box.createVerticalBox();
-
 
         box.add(startCupPong);
 
@@ -158,17 +147,20 @@ public class App implements ActionListener, Runnable {
         c.weightx = 0.0;
         c.gridwidth = 3;
         c.gridx = 2;
-        c.gridy = 1;  
-        // app.add(startCupPong,c);
-        
-        app.add(box,c);
+        c.gridy = 1;
 
-        startCupPong.addActionListener(this);      
-      
+        app.add(box, c);
+
+        startCupPong.addActionListener(this);
 
         frame.add(app);
     }
 
+    /**
+     * Checks to see which button is pressed, and accesses a game based on the
+     * button press
+     * @param e the event in which the button is pressed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == startConnect4) {
@@ -177,15 +169,10 @@ public class App implements ActionListener, Runnable {
             testGame = new CupPong();
         }
 
-        // app.remove(c4);
-        // app.remove(cPong);
-        // app.remove(select);
-        // app.remove(title);
         frame.remove(app);
         displayGame(testGame);
 
-
-        //Add return to main menu as method refrence in game superclass?
+        // Add return to main menu as method refrence in game superclass?
 
     }
 }

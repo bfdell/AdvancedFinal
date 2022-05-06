@@ -4,7 +4,7 @@ import javax.swing.JComponent;
 
 /**
  * Repaints the panel
- * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
+ * @author Brian Dell
  * @version Spring 2022
  */
 

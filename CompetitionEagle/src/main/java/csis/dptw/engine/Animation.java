@@ -2,7 +2,7 @@ package csis.dptw.engine;
 
 /**
  * Animates the entities within the games
- * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
+ * @author Brian Dell
  * @version Spring 2022
  */
 public abstract class Animation extends Thread {

@@ -2,7 +2,6 @@ package csis.dptw.engine;
 
 import javax.swing.*;
 
-import csis.dptw.engine.Event.EventType;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -13,9 +12,6 @@ import java.awt.event.*;
  * @author Brian Dell
  * @version Spring 2022
  */
-
-// TO SAVE DATA: MAKE A GAME DATA CLASS THAT IS SERIALIZABLE AND SAVE DATA
-// BEFORE GAME HAS ENDED
 public abstract class Game extends GameInput implements Runnable {
     public Map gamePanel;
     public Repainter refresher;

@@ -19,8 +19,6 @@ import java.awt.image.BufferedImage;
  * @author Spencer Caramanna, Brian Dell, Madelyn Papa, David Tang, Jaclyn Wirth
  * @version Spring 2022
  */
-
-
 public class Entity implements Serializable { 
     protected PropertyChangeSupport eventHelper = new PropertyChangeSupport(this);
     public static Toolkit toolkit = Toolkit.getDefaultToolkit();

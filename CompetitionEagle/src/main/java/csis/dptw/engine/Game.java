@@ -49,16 +49,6 @@ public abstract class Game extends GameInput implements Runnable {
         refresher = new Repainter(gamePanel);
         refresher.start();
         addInputListeners();
-
-        // addMouseEvent(EventType.MRELEASED, e -> testEvent(this, (MouseEvent) e), 2);
-        // addMouseEvent(EventType.MPRESSED, e -> testEvent2(this, (MouseEvent) e), 1);
-        addMouseEvent(EventType.MCLICKED, e -> testEvent2(this, (MouseEvent) e), 1);
-        // addKeyEvent(EventType.KTYPED, e -> keyTest(this, (KeyEvent) e), 1,
-        // KeyEvent.VK_C);
-        // addKeyEvent(EventType.KPRESSED, e -> keyTest2(this, (KeyEvent) e), 1,
-        // KeyEvent.VK_C);
-        // addKeyEvent(EventType.KRELEASED, e -> keyTest3(this, (KeyEvent) e), 1,
-        // KeyEvent.VK_C);
     }
 
     /**
@@ -80,23 +70,6 @@ public abstract class Game extends GameInput implements Runnable {
     }
 
     public abstract void initializeMap();
-
-    // public abstract void addAllMouseEvents();
-    // public abstract void addAllKeyEvents();
-    // TESTING PURPOSES
-    /**
-     * Tests the game
-     * 
-     * @param game being accessed
-     * @param e    the event in which the mouse has been pressed/released, etc.
-     */
-    public static void testEvent(Game game, MouseEvent e) {
-    }
-
-    // TESTING PURPOSES
-    public static void testEvent2(Game game, MouseEvent e) {
-        System.out.println(e.getPoint());
-    }
 
     /**
      * This method adds a MouseListener, MouseMotionListener, and KeyListener, to
